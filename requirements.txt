@@ -1,0 +1,14 @@
+torch==1.8.1
+numpy==1.21.1
+termcolor==1.1.0
+rl-games==1.1.4
+torchvision==0.9.1
+cuda-python
+pyyaml>=5.3.1
+scipy>=1.5.0
+tensorboard>=2.2.1
+pybullet==3.2.1
+six==1.16.0
+placo==0.6.2
+meshcat
+scipy
