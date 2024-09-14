@@ -55,10 +55,12 @@ python awd/run.py --test --task DucklingAMP --num_envs 16 --cfg_env awd/data/cfg
 
 ### Motion Data
 
-Motion clips are located in `awd/data/motions/`. Individual motion clips are stored as `.npy` files. Motion datasets are specified by `.yaml` files, which contains a list of motion clips to be included in the dataset. Motion clips can be visualized with the following command:
+Motion clips are located in `awd/data/motions/`. Individual motion clips are stored as `.json` files. Motion datasets are specified by `.yaml` files, which contains a list of motion clips to be included in the dataset. Motion clips can be visualized with the following command:
 ```
-python awd/run.py --test --task DucklingViewMotion --num_envs 2 --cfg_env awd/data/cfg/go_bdx/duckling.yaml --cfg_train awd/data/cfg/go_bdx/train/amp_duckling.yaml --motion_file awd/data/motions/go_bdx/walk_forward.txt
+python awd/run.py --test --task DucklingViewMotion --num_envs 2 --cfg_env awd/data/cfg/go_bdx/duckling.yaml --cfg_train awd/data/cfg/go_bdx/train/amp_duckling.yaml --motion_file awd/data/motions/go_bdx/walk_forward.json
 ```
-python awd/run.py --test --task DucklingViewMotion --num_envs 2 --cfg_env awd/data/cfg/mini_bdx/duckling.yaml --cfg_train awd/data/cfg/mini_bdx/train/amp_duckling.yaml --motion_file awd/data/motions/mini_bdx/walk_forward.txt
+
+```
+python awd/run.py --test --task DucklingViewMotion --num_envs 2 --cfg_env awd/data/cfg/mini_bdx/duckling.yaml --cfg_train awd/data/cfg/mini_bdx/train/amp_duckling.yaml --motion_file awd/data/motions/mini_bdx/walk_forward.json
 ```
 `--motion_file` can be used to visualize a single motion clip `.npy` or a motion dataset `.yaml`.
