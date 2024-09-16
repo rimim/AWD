@@ -68,12 +68,32 @@ python awd/run.py --test --task DucklingViewMotion --num_envs 2 --cfg_env awd/da
 
 ### Gait Generation
 
+#### Gait Playground
+
+```
+python gait_playground.py
+```
+
+```
+python gait_playground.py --mini
+```
+
+#### Viewing URDF
+
+```
+python view_urdf.py awd/data/assets/go_bdx/go_bdx.urdf
+```
+
+```
+python view_urdf.py awd/data/assets/mini_bdx/urdf/bdx.urdf
+```
+
 #### Viewing Placo Frames
 
 ```
-python -m placo_utils.view awd/data/assets/go_bdx/go_bdx.urdf --frames left_foot right_foot trunk head
+python view_urdf.py awd/data/assets/go_bdx/go_bdx.urdf --frames left_foot right_foot trunk head
 ```
 
 ```
-python -m placo_utils.view awd/data/assets/mini_bdx/urdf/bdx.urdf --frames left_foot right_foot trunk head
+python view_urdf.py awd/data/assets/mini_bdx/urdf/bdx.urdf --frames left_foot right_foot trunk head
 ```

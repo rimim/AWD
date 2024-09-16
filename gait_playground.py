@@ -140,6 +140,21 @@ class GaitParameters:
         pwe.set_traj(0, 0, 0)
         return pwe
 
+    def custom_preset_name(self):
+        return f"placo_{gait.robot}_defaults.json"
+
+    def load_custom_presets(self, pwe):
+        filename = self.custom_preset_name()
+        if os.path.exists(filename):
+            self.load_from_json(filename)
+        else:
+            self.load_defaults(pwe)
+        self.reset(pwe)
+
+    def save_custom_presets(self):
+        filename = self.custom_preset_name()
+        self.save_to_json(filename)
+
     def load_defaults(self, pwe):
         self.load_from_json(os.path.join(pwe.asset_path, "placo_defaults.json"))
 
@@ -176,9 +191,7 @@ if __name__ == '__main__':
 
 gait = GaitParameters()
 pwe = gait.create_pwe(True)
-if os.path.exists("bdx_state.json"):
-    gait.load_from_json("bdx_state.json")
-    gait.reset(pwe)
+gait.load_custom_presets(pwe)
 viz = robot_viz(pwe.robot)
 viz.display(pwe.robot.state.q)
 
@@ -204,13 +217,13 @@ def index():
 
 @app.route('/save_state', methods=['POST'])
 def save_state():
-    gait.save_to_json("bdx_state.json")
+    gait.save_custom_presets()
     return "", 200
 
 @app.route('/defaults', methods=['GET'])
 def defaults():
     if os.path.exists("bdx_state.json"):
-        gait.load_from_json("bdx_state.json")
+        gait.load_from_json()
     else:
         gait.load_defaults(pwe)
     parameters = gait.__dict__
@@ -244,15 +257,17 @@ def change_robot():
     global doreset
     global dorun
     data = request.get_json()
-    selected_robot = data.get('speed')
-    if selected_robot in ['go_bdx', 'mini_bdx'] and selected_robot != gait.robot:
-        gait.robot = selected_robot
-        # Reset the gait generator to use the new robot
-        with gait_condition:
-            run_loop = False
-            doreset = True
-            dorun = False
-            gait_condition.notify()
+    selected_robot = data.get('robot')
+    print(f"selected_robot: {selected_robot}")
+    if selected_robot in ['go_bdx', 'mini_bdx']:
+        if selected_robot != gait.robot:
+            gait.robot = selected_robot
+            # Reset the gait generator to use the new robot
+            with gait_condition:
+                run_loop = False
+                doreset = True
+                dorun = False
+                gait_condition.notify()
         return "Robot changed successfully", 200
     else:
         return "Invalid robot selection", 400

@@ -1,5 +1,5 @@
 *.pyc
-
+placo_*_defaults.json
 .vs/
 runs/
 __pycache__/

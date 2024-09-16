@@ -301,9 +301,15 @@ class Duckling(BaseTask):
         asset_file = os.path.basename(asset_path)
 
         asset_options = gymapi.AssetOptions()
-        asset_options.angular_damping = 0.01
-        asset_options.max_angular_velocity = 100.0
-        asset_options.default_dof_drive_mode = gymapi.DOF_MODE_NONE
+        asset_options.density = 0.001
+        asset_options.armature = 0.0
+        asset_options.thickness = 0.01
+        asset_options.angular_damping = 0.0
+        asset_options.linear_damping = 0.0
+        asset_options.max_angular_velocity = 1000.0
+        asset_options.max_linear_velocity = 1000.0
+        # see GymDofDriveModeFlags (0 is none, 1 is pos tgt, 2 is vel tgt, 3 effort)
+        asset_options.default_dof_drive_mode = 0
         #asset_options.fix_base_link = True
         motor_efforts = None
         duckling_asset = self.gym.load_asset(self.sim, asset_root, asset_file, asset_options)
