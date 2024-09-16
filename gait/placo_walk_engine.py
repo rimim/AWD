@@ -17,7 +17,7 @@ class PlacoWalkEngine:
         self,
         asset_path: str = "",
         model_filename: str = "go_bdx.urdf",
-        ignore_feet_contact: bool = True,
+        ignore_feet_contact: bool = False,
     ) -> None:
         model_filename = os.path.join(asset_path, model_filename)
         self.asset_path = asset_path
