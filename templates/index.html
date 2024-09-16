@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Placo Gait Generator</title>
+    <style>
+        /* Existing styles */
+        .parameter-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .parameter-row label {
+            width: 200px; /* Fixed width for labels */
+            margin-right: 10px;
+            text-align: right; /* Align label text to the right */
+        }
+        .parameter-row input[type="range"] {
+            width: 100%; /* Sliders take up full available width */
+            margin-right: 10px;
+        }
+        .slider-container {
+            flex: 1; /* Allow the slider container to grow */
+            display: flex;
+            align-items: center;
+        }
+        .slider-value {
+            width: 50px; /* Fixed width for displayed values */
+            text-align: left;
+        }
+        .parameter-column {
+            display: flex;
+            flex-direction: column;
+            width: 48%;
+        }
+        .parameter-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+        /* Adjust iframe size if needed */
+        #meshcat {
+            width: 100%;
+            height: 800px;
+            border: none;
+        }
+        /* Ensure form buttons are centered */
+        .form-buttons {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .form-buttons button {
+            margin: 0 5px;
+        }
+        /* New styles for the robot selector */
+        .robot-selector {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+        .robot-selector label {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body onload="loadParameters(); initValues()">
+    <h1>Placo Gait Generator</h1>
+
+    <!-- Robot Selector Dropdown -->
+    <div class="robot-selector">
+        <label for="robot-select">Select Robot:</label>
+        <select id="robot-select" name="robot" onchange="changeRobot()">
+            <option value="go_bdx" {{ 'selected' if parameters.robot == 'go_bdx' else '' }}>Go-BDX</option>
+            <option value="mini_bdx" {{ 'selected' if parameters.robot == 'mini_bdx' else '' }}>Mini-BDX</option>
+        </select>
+    </div>
+
+    <form id="gait-form" method="POST">
+        <!-- Your existing form content -->
+        <!-- Left and right columns with sliders -->
+        <div style="display: flex; justify-content: space-between;">
+            <!-- Left Column -->
+            <div class="parameter-column">
+                <!-- dx -->
+                <div class="parameter-row">
+                    <label for="dx">dx:</label>
+                    <div class="slider-container">
+                        <input type="range" id="dx" name="dx" min="-1" max="1" step="0.01" value="{{ parameters.dx }}" oninput="liveUpdate(); updateValue('dx')">
+                        <span id="dx-value" class="slider-value">{{ parameters.dx }}</span>
+                    </div>
+                </div>
+                <!-- dy -->
+                <div class="parameter-row">
+                    <label for="dy">dy:</label>
+                    <div class="slider-container">
+                        <input type="range" id="dy" name="dy" min="-1" max="1" step="0.01" value="{{ parameters.dy }}" oninput="liveUpdate(); updateValue('dy')">
+                        <span id="dy-value" class="slider-value">{{ parameters.dy }}</span>
+                    </div>
+                </div>
+                <!-- Add other parameters as needed -->
+            </div>
+            <!-- Right Column -->
+            <div class="parameter-column">
+                <!-- dtheta -->
+                <div class="parameter-row">
+                    <label for="dtheta">dtheta:</label>
+                    <div class="slider-container">
+                        <input type="range" id="dtheta" name="dtheta" min="-1" max="1" step="0.01" value="{{ parameters.dtheta }}" oninput="liveUpdate(); updateValue('dtheta')">
+                        <span id="dtheta-value" class="slider-value">{{ parameters.dtheta }}</span>
+                    </div>
+                </div>
+                <!-- Duration -->
+                <div class="parameter-row">
+                    <label for="duration">Duration:</label>
+                    <div class="slider-container">
+                        <input type="range" id="duration" name="duration" min="1" max="60" step="1" value="{{ parameters.duration }}" oninput="liveUpdate(); updateValue('duration')">
+                        <span id="duration-value" class="slider-value">{{ parameters.duration }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <iframe id="meshcat" src="http://127.0.0.1:7000/static/"></iframe>
+
+        <div style="display: flex; justify-content: space-between;">
+            <!-- Left Column -->
+            <div class="parameter-column">
+                <!-- Double Support Ratio -->
+                <div class="parameter-row">
+                    <label for="double_support_ratio">Double Support Ratio:</label>
+                    <div class="slider-container">
+                        <input type="range" id="double_support_ratio" name="double_support_ratio" min="0" max="1" step="0.01" value="{{ parameters.double_support_ratio }}" oninput="liveUpdate(); updateValue('double_support_ratio')">
+                        <span id="double_support_ratio-value" class="slider-value">{{ parameters.double_support_ratio }}</span>
+                    </div>
+                </div>
+                <!-- Start/End Double Support Ratio -->
+                <div class="parameter-row">
+                    <label for="startend_double_support_ratio">Start/End Double Support Ratio:</label>
+                    <div class="slider-container">
+                        <input type="range" id="startend_double_support_ratio" name="startend_double_support_ratio" min="0" max="1" step="0.01" value="{{ parameters.startend_double_support_ratio }}" oninput="liveUpdate(); updateValue('startend_double_support_ratio')">
+                        <span id="startend_double_support_ratio-value" class="slider-value">{{ parameters.startend_double_support_ratio }}</span>
+                    </div>
+                </div>
+                <!-- Planned Timesteps -->
+                <div class="parameter-row">
+                    <label for="planned_timesteps">Planned Timesteps:</label>
+                    <div class="slider-container">
+                        <input type="range" id="planned_timesteps" name="planned_timesteps" min="1" max="100" step="1" value="{{ parameters.planned_timesteps }}" oninput="liveUpdate(); updateValue('planned_timesteps')">
+                        <span id="planned_timesteps-value" class="slider-value">{{ parameters.planned_timesteps }}</span>
+                    </div>
+                </div>
+                <!-- Replan Timesteps -->
+                <div class="parameter-row">
+                    <label for="replan_timesteps">Replan Timesteps:</label>
+                    <div class="slider-container">
+                        <input type="range" id="replan_timesteps" name="replan_timesteps" min="1" max="50" step="1" value="{{ parameters.replan_timesteps }}" oninput="liveUpdate(); updateValue('replan_timesteps')">
+                        <span id="replan_timesteps-value" class="slider-value">{{ parameters.replan_timesteps }}</span>
+                    </div>
+                </div>
+                <!-- Walk CoM Height -->
+                <div class="parameter-row">
+                    <label for="walk_com_height">Walk CoM Height:</label>
+                    <div class="slider-container">
+                        <input type="range" id="walk_com_height" name="walk_com_height" min="0.1" max="1" step="0.01" value="{{ parameters.walk_com_height }}" oninput="liveUpdate(); updateValue('walk_com_height')">
+                        <span id="walk_com_height-value" class="slider-value">{{ parameters.walk_com_height }}</span>
+                    </div>
+                </div>
+                <!-- Walk Foot Height -->
+                <div class="parameter-row">
+                    <label for="walk_foot_height">Walk Foot Height:</label>
+                    <div class="slider-container">
+                        <input type="range" id="walk_foot_height" name="walk_foot_height" min="0" max="0.2" step="0.01" value="{{ parameters.walk_foot_height }}" oninput="liveUpdate(); updateValue('walk_foot_height')">
+                        <span id="walk_foot_height-value" class="slider-value">{{ parameters.walk_foot_height }}</span>
+                    </div>
+                </div>
+                <!-- Walk Trunk Pitch -->
+                <div class="parameter-row">
+                    <label for="walk_trunk_pitch">Walk Trunk Pitch (degrees):</label>
+                    <div class="slider-container">
+                        <input type="range" id="walk_trunk_pitch" name="walk_trunk_pitch" min="-100" max="100" step="1" value="{{ parameters.walk_trunk_pitch }}" oninput="liveUpdate(); updateValue('walk_trunk_pitch')">
+                        <span id="walk_trunk_pitch-value" class="slider-value">{{ parameters.walk_trunk_pitch }}</span>
+                    </div>
+                </div>
+                <!-- Walk Foot Rise Ratio -->
+                <div class="parameter-row">
+                    <label for="walk_foot_rise_ratio">Walk Foot Rise Ratio:</label>
+                    <div class="slider-container">
+                        <input type="range" id="walk_foot_rise_ratio" name="walk_foot_rise_ratio" min="0" max="1" step="0.01" value="{{ parameters.walk_foot_rise_ratio }}" oninput="liveUpdate(); updateValue('walk_foot_rise_ratio')">
+                        <span id="walk_foot_rise_ratio-value" class="slider-value">{{ parameters.walk_foot_rise_ratio }}</span>
+                    </div>
+                </div>
+                <!-- Single Support Duration -->
+                <div class="parameter-row">
+                    <label for="single_support_duration">Single Support Duration:</label>
+                    <div class="slider-container">
+                        <input type="range" id="single_support_duration" name="single_support_duration" min="0.1" max="1" step="0.01" value="{{ parameters.single_support_duration }}" oninput="liveUpdate(); updateValue('single_support_duration')">
+                        <span id="single_support_duration-value" class="slider-value">{{ parameters.single_support_duration }}</span>
+                    </div>
+                </div>
+                <!-- Single Support Timesteps -->
+                <div class="parameter-row">
+                    <label for="single_support_timesteps">Single Support Timesteps:</label>
+                    <div class="slider-container">
+                        <input type="range" id="single_support_timesteps" name="single_support_timesteps" min="1" max="50" step="1" value="{{ parameters.single_support_timesteps }}" oninput="liveUpdate(); updateValue('single_support_timesteps')">
+                        <span id="single_support_timesteps-value" class="slider-value">{{ parameters.single_support_timesteps }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="parameter-column">
+                <!-- Foot Length -->
+                <div class="parameter-row">
+                    <label for="foot_length">Foot Length:</label>
+                    <div class="slider-container">
+                        <input type="range" id="foot_length" name="foot_length" min="0" max="1" step="0.01" value="{{ parameters.foot_length }}" oninput="liveUpdate(); updateValue('foot_length')">
+                        <span id="foot_length-value" class="slider-value">{{ parameters.foot_length }}</span>
+                    </div>
+                </div>
+                <!-- Feet Spacing -->
+                <div class="parameter-row">
+                    <label for="feet_spacing">Feet Spacing:</label>
+                    <div class="slider-container">
+                        <input type="range" id="feet_spacing" name="feet_spacing" min="0" max="1" step="0.01" value="{{ parameters.feet_spacing }}" oninput="liveUpdate(); updateValue('feet_spacing')">
+                        <span id="feet_spacing-value" class="slider-value">{{ parameters.feet_spacing }}</span>
+                    </div>
+                </div>
+                <!-- ZMP Margin -->
+                <div class="parameter-row">
+                    <label for="zmp_margin">ZMP Margin:</label>
+                    <div class="slider-container">
+                        <input type="range" id="zmp_margin" name="zmp_margin" min="0" max="1" step="0.01" value="{{ parameters.zmp_margin }}" oninput="liveUpdate(); updateValue('zmp_margin')">
+                        <span id="zmp_margin-value" class="slider-value">{{ parameters.zmp_margin }}</span>
+                    </div>
+                </div>
+                <!-- Foot ZMP Target X -->
+                <div class="parameter-row">
+                    <label for="foot_zmp_target_x">Foot ZMP Target X:</label>
+                    <div class="slider-container">
+                        <input type="range" id="foot_zmp_target_x" name="foot_zmp_target_x" min="-1" max="1" step="0.01" value="{{ parameters.foot_zmp_target_x }}" oninput="liveUpdate(); updateValue('foot_zmp_target_x')">
+                        <span id="foot_zmp_target_x-value" class="slider-value">{{ parameters.foot_zmp_target_x }}</span>
+                    </div>
+                </div>
+                <!-- Foot ZMP Target Y -->
+                <div class="parameter-row">
+                    <label for="foot_zmp_target_y">Foot ZMP Target Y:</label>
+                    <div class="slider-container">
+                        <input type="range" id="foot_zmp_target_y" name="foot_zmp_target_y" min="-1" max="1" step="0.01" value="{{ parameters.foot_zmp_target_y }}" oninput="liveUpdate(); updateValue('foot_zmp_target_y')">
+                        <span id="foot_zmp_target_y-value" class="slider-value">{{ parameters.foot_zmp_target_y }}</span>
+                    </div>
+                </div>
+                <!-- Walk Max dTheta -->
+                <div class="parameter-row">
+                    <label for="walk_max_dtheta">Walk Max dTheta:</label>
+                    <div class="slider-container">
+                        <input type="range" id="walk_max_dtheta" name="walk_max_dtheta" min="0" max="2" step="0.01" value="{{ parameters.walk_max_dtheta }}" oninput="liveUpdate(); updateValue('walk_max_dtheta')">
+                        <span id="walk_max_dtheta-value" class="slider-value">{{ parameters.walk_max_dtheta }}</span>
+                    </div>
+                </div>
+                <!-- Walk Max dY -->
+                <div class="parameter-row">
+                    <label for="walk_max_dy">Walk Max dY:</label>
+                    <div class="slider-container">
+                        <input type="range" id="walk_max_dy" name="walk_max_dy" min="0" max="0.5" step="0.01" value="{{ parameters.walk_max_dy }}" oninput="liveUpdate(); updateValue('walk_max_dy')">
+                        <span id="walk_max_dy-value" class="slider-value">{{ parameters.walk_max_dy }}</span>
+                    </div>
+                </div>
+                <!-- Walk Max dX Forward -->
+                <div class="parameter-row">
+                    <label for="walk_max_dx_forward">Walk Max dX Forward:</label>
+                    <div class="slider-container">
+                        <input type="range" id="walk_max_dx_forward" name="walk_max_dx_forward" min="0" max="0.5" step="0.01" value="{{ parameters.walk_max_dx_forward }}" oninput="liveUpdate(); updateValue('walk_max_dx_forward')">
+                        <span id="walk_max_dx_forward-value" class="slider-value">{{ parameters.walk_max_dx_forward }}</span>
+                    </div>
+                </div>
+                <!-- Walk Max dX Backward -->
+                <div class="parameter-row">
+                    <label for="walk_max_dx_backward">Walk Max dX Backward:</label>
+                    <div class="slider-container">
+                        <input type="range" id="walk_max_dx_backward" name="walk_max_dx_backward" min="0" max="0.5" step="0.01" value="{{ parameters.walk_max_dx_backward }}" oninput="liveUpdate(); updateValue('walk_max_dx_backward')">
+                        <span id="walk_max_dx_backward-value" class="slider-value">{{ parameters.walk_max_dx_backward }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="form-buttons">
+        <button id="run-button" name="run_button" onclick="triggerRun()">Run</button>
+        <button onclick="triggerStop()">Stop</button>
+        <button onclick="triggerReset()">Reset</button>
+        <button onclick="triggerSave()">Save</button>
+        <button onclick="triggerDefaults()">Defaults</button>
+        <button onclick="setPlaybackSpeed(0.25)">¼-x</button>
+        <button onclick="setPlaybackSpeed(0.5)">½-x</button>
+        <button onclick="setPlaybackSpeed(0.75)">¾-x</button>
+        <button onclick="setPlaybackSpeed(1.0)">1-x</button>
+    </div>
+
+    <script>
+        // Existing JavaScript functions
+        function liveUpdate() {
+            // Get form data
+            const formData = new FormData(document.getElementById('gait-form'));
+
+            // Send the form data via fetch
+            fetch('/update', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log("Parameters updated successfully.");
+                } else {
+                    console.error("Failed to update parameters.");
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        }
+
+        function updateValue(id) {
+            var slider = document.getElementById(id);
+            var display = document.getElementById(id + '-value');
+            display.innerText = slider.value;
+        }
+
+        function initValues() {
+            var sliders = document.querySelectorAll('input[type="range"]');
+            sliders.forEach(function(slider) {
+                updateValue(slider.id);
+            });
+        }
+
+        function triggerRun() {
+            // Get form data
+            const formData = new FormData(document.getElementById('gait-form'));
+
+            // Send the form data via fetch
+            fetch('/run', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log("Gait generation started.");
+                } else {
+                    console.error("Failed to start gait generation.");
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        }
+
+        function triggerStop() {
+            fetch('/stop', {
+                method: 'POST'
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log("Gait generation stopped.");
+                } else {
+                    console.log("Failed to stop gait generation.");
+                }
+            })
+            .catch(error => console.log("Error:", error));
+        }
+
+        function triggerReset() {
+            fetch('/reset', {
+                method: 'POST'
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log("Gait generator reset.");
+                } else {
+                    console.log("Failed to reset gait generator.");
+                }
+            })
+            .catch(error => console.log("Error:", error));
+        }
+
+        function triggerSave() {
+            fetch('/save_state', {
+                method: 'POST'
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log("State saved successfully.");
+                } else {
+                    console.log("Failed to save state.");
+                }
+            })
+            .catch(error => console.log("Error:", error));
+        }
+
+        function triggerDefaults() {
+            fetch('/defaults')
+            .then(response => response.json())
+            .then(data => {
+                // Update the robot selector
+                const robotSelect = document.getElementById('robot-select');
+                robotSelect.value = data.robot;
+
+                // Update sliders, checkboxes, and other inputs
+                for (const key in data) {
+                    console.log(key)
+                    const element = document.getElementById(key);
+                    if (element) {
+                        if (element.type === 'checkbox') {
+                            element.checked = data[key];
+                        } else {
+                            element.value = data[key];
+                            updateValue(key); // Update displayed value next to sliders
+                        }
+                    } else {
+                        console.log("NOT FOUND")
+                    }
+                }
+            })
+            .catch(error => console.error('Error fetching parameters:', error));
+        }
+
+        // New function to handle robot selection
+        function changeRobot() {
+            const robotSelect = document.getElementById('robot-select');
+            const selectedRobot = robotSelect.value;
+
+            // Send the selected robot to the server
+            fetch('/change_robot', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ 'robot': selectedRobot })
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log("Robot changed to " + selectedRobot);
+                    triggerDefaults()
+                    // Optionally, you can reset the form or perform other actions
+                } else {
+                    console.error("Failed to change robot.");
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        }
+
+        function loadParameters() {
+            fetch('/get')
+            .then(response => response.json())
+            .then(data => {
+                // Update sliders, checkboxes, and other inputs
+                for (const key in data) {
+                    const element = document.getElementById(key);
+                    if (element) {
+                        if (element.type === 'checkbox') {
+                            element.checked = data[key];
+                        } else {
+                            element.value = data[key];
+                            updateValue(key); // Update displayed value next to sliders
+                        }
+                    }
+                }
+            })
+            .catch(error => console.error('Error fetching parameters:', error));
+        }
+
+        // New function to set playback speed
+        function setPlaybackSpeed(speed) {
+            fetch('/set_playback_speed', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ 'speed': speed })
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log("Playback speed set to " + speed + "x");
+                } else {
+                    console.error("Failed to set playback speed.");
+                }
+            })
+            .catch(error => console.error("Error:", error));
+        }
+    </script>
+</body>
+</html>
