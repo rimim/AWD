@@ -64,3 +64,16 @@ python awd/run.py --test --task DucklingViewMotion --num_envs 2 --cfg_env awd/da
 python awd/run.py --test --task DucklingViewMotion --num_envs 2 --cfg_env awd/data/cfg/mini_bdx/duckling.yaml --cfg_train awd/data/cfg/mini_bdx/train/amp_duckling.yaml --motion_file awd/data/motions/mini_bdx/walk_forward.json
 ```
 `--motion_file` can be used to visualize a single motion clip `.npy` or a motion dataset `.yaml`.
+
+
+### Gait Generation
+
+#### Viewing Placo Frames
+
+```
+python -m placo_utils.view awd/data/assets/go_bdx/go_bdx.urdf --frames left_foot right_foot trunk head
+```
+
+```
+python -m placo_utils.view awd/data/assets/mini_bdx/urdf/bdx.urdf --frames left_foot right_foot trunk head
+```
