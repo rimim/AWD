@@ -17,6 +17,29 @@ from scipy.spatial.transform import Rotation as R
 from gait.placo_walk_engine import PlacoWalkEngine
 
 parser = argparse.ArgumentParser()
+parser.add_argument("--dx", type=float, default=0)
+parser.add_argument("--dy", type=float, default=0)
+parser.add_argument("--dtheta", type=float, default=0)
+parser.add_argument("--double_support_ratio", type=float, default=None)
+parser.add_argument("--startend_double_support_ratio", type=float, default=None)
+parser.add_argument("--planned_timesteps", type=float, default=None)
+parser.add_argument("--replan_timesteps", type=float, default=None)
+parser.add_argument("--walk_com_height", type=float, default=None)
+parser.add_argument("--walk_foot_height", type=float, default=None)
+parser.add_argument("--walk_trunk_pitch", type=float, default=None)
+parser.add_argument("--walk_foot_rise_ratio", type=float, default=None)
+parser.add_argument("--single_support_duration", type=float, default=None)
+parser.add_argument("--single_support_timesteps", type=float, default=None)
+parser.add_argument("--foot_length", type=float, default=None)
+parser.add_argument("--feet_spacing", type=float, default=None)
+parser.add_argument("--zmp_margin", type=float, default=None)
+parser.add_argument("--foot_zmp_target_x", type=float, default=None)
+parser.add_argument("--foot_zmp_target_y", type=float, default=None)
+parser.add_argument("--walk_max_dtheta", type=float, default=None)
+parser.add_argument("--walk_max_dy", type=float, default=None)
+parser.add_argument("--walk_max_dx_forward", type=float, default=None)
+parser.add_argument("--walk_max_dx_backward", type=float, default=None)
+parser.add_argument("-l", "--length", type=int, default=10)
 parser.add_argument("--mini", action="store_true", default=False)
 args = parser.parse_args()
 
@@ -51,8 +74,12 @@ class GaitParameters:
     def __init__(self):
         if args.mini:
             self.robot = 'mini_bdx'
+            self.robot_urdf = "urdf/bdx.urdf"
+            self.asset_path = "awd/data/assets/mini_bdx"
         else:
             self.robot = 'go_bdx'
+            self.robot_urdf = "go_bdx.urdf"
+            self.asset_path = "awd/data/assets/go_bdx"
         self.dx = 0.1
         self.dy = 0.0
         self.dtheta = 0.0
@@ -110,46 +137,14 @@ class GaitParameters:
         with open(filename, 'w') as f:
             json.dump(data, f, indent=4)
 
-    def create_pwe(self, init_params):
-        if gait.robot == 'go_bdx':
-            pwe = PlacoWalkEngine("awd/data/assets/go_bdx", "go_bdx.urdf")
-        elif gait.robot == 'mini_bdx':
-            pwe = PlacoWalkEngine("awd/data/assets/mini_bdx", "urdf/bdx.urdf")
-        if init_params:
-            self.double_support_ratio = pwe.parameters.double_support_ratio
-            self.startend_double_support_ratio = pwe.parameters.startend_double_support_ratio
-            self.planned_timesteps = pwe.parameters.planned_timesteps
-            self.replan_timesteps = pwe.parameters.replan_timesteps
-            self.walk_com_height = pwe.parameters.walk_com_height
-            self.walk_foot_height = pwe.parameters.walk_foot_height
-            self.walk_trunk_pitch = np.rad2deg(pwe.parameters.walk_trunk_pitch)
-            self.walk_foot_rise_ratio = pwe.parameters.walk_foot_rise_ratio
-            self.single_support_duration = pwe.parameters.single_support_duration
-            self.single_support_timesteps = pwe.parameters.single_support_timesteps
-            self.foot_length = pwe.parameters.foot_length
-            self.feet_spacing = pwe.parameters.feet_spacing
-            self.zmp_margin = pwe.parameters.zmp_margin
-            self.foot_zmp_target_x = pwe.parameters.foot_zmp_target_x
-            self.foot_zmp_target_y = pwe.parameters.foot_zmp_target_y
-            self.walk_max_dtheta = pwe.parameters.walk_max_dtheta
-            self.walk_max_dy = pwe.parameters.walk_max_dy
-            self.walk_max_dx_forward = pwe.parameters.walk_max_dx_forward
-            self.walk_max_dx_backward = pwe.parameters.walk_max_dx_backward
-        else:
-            self.reset(pwe)
+    def create_pwe(self, parameters=None):
+        pwe = PlacoWalkEngine(self.asset_path, self.robot_urdf, parameters)
+        self.reset(pwe)
         pwe.set_traj(0, 0, 0)
         return pwe
 
     def custom_preset_name(self):
         return f"placo_{gait.robot}_defaults.json"
-
-    def load_custom_presets(self, pwe):
-        filename = self.custom_preset_name()
-        if os.path.exists(filename):
-            self.load_from_json(filename)
-        else:
-            self.load_defaults(pwe)
-        self.reset(pwe)
 
     def save_custom_presets(self):
         filename = self.custom_preset_name()
@@ -161,37 +156,84 @@ class GaitParameters:
     def load_from_json(self, filename):
         with open(filename, 'r') as f:
             data = json.load(f)
-        self.dx = data.get('dx', self.dx)
-        self.dy = data.get('dy', self.dy)
-        self.dtheta = data.get('dtheta', self.dtheta)
-        self.duration = data.get('duration', self.duration)
-        self.hardware = data.get('hardware', self.hardware)
-        self.double_support_ratio = data.get('double_support_ratio', self.double_support_ratio)
-        self.startend_double_support_ratio = data.get('startend_double_support_ratio', self.startend_double_support_ratio)
-        self.planned_timesteps = data.get('planned_timesteps', self.planned_timesteps)
-        self.replan_timesteps = data.get('replan_timesteps', self.replan_timesteps)
-        self.walk_com_height = data.get('walk_com_height', self.walk_com_height)
-        self.walk_foot_height = data.get('walk_foot_height', self.walk_foot_height)
-        self.walk_trunk_pitch = data.get('walk_trunk_pitch', self.walk_trunk_pitch)
-        self.walk_foot_rise_ratio = data.get('walk_foot_rise_ratio', self.walk_foot_rise_ratio)
-        self.single_support_duration = data.get('single_support_duration', self.single_support_duration)
-        self.single_support_timesteps = data.get('single_support_timesteps', self.single_support_timesteps)
-        self.foot_length = data.get('foot_length', self.foot_length)
-        self.feet_spacing = data.get('feet_spacing', self.feet_spacing)
-        self.zmp_margin = data.get('zmp_margin', self.zmp_margin)
-        self.foot_zmp_target_x = data.get('foot_zmp_target_x', self.foot_zmp_target_x)
-        self.foot_zmp_target_y = data.get('foot_zmp_target_y', self.foot_zmp_target_y)
-        self.walk_max_dtheta = data.get('walk_max_dtheta', self.walk_max_dtheta)
-        self.walk_max_dy = data.get('walk_max_dy', self.walk_max_dy)
-        self.walk_max_dx_forward = data.get('walk_max_dx_forward', self.walk_max_dx_forward)
-        self.walk_max_dx_backward = data.get('walk_max_dx_backward', self.walk_max_dx_backward)
+        self.load_from_data(data)
+
+    def load_from_data(self, data):
+        self.dx = data.get('dx')
+        self.dy = data.get('dy')
+        self.dtheta = data.get('dtheta')
+        self.duration = data.get('duration')
+        self.hardware = data.get('hardware')
+        self.double_support_ratio = data.get('double_support_ratio')
+        self.startend_double_support_ratio = data.get('startend_double_support_ratio')
+        self.planned_timesteps = data.get('planned_timesteps')
+        self.replan_timesteps = data.get('replan_timesteps')
+        self.walk_com_height = data.get('walk_com_height')
+        self.walk_foot_height = data.get('walk_foot_height')
+        self.walk_trunk_pitch = data.get('walk_trunk_pitch')
+        self.walk_foot_rise_ratio = data.get('walk_foot_rise_ratio')
+        self.single_support_duration = data.get('single_support_duration')
+        self.single_support_timesteps = data.get('single_support_timesteps')
+        self.foot_length = data.get('foot_length')
+        self.feet_spacing = data.get('feet_spacing')
+        self.zmp_margin = data.get('zmp_margin')
+        self.foot_zmp_target_x = data.get('foot_zmp_target_x')
+        self.foot_zmp_target_y = data.get('foot_zmp_target_y')
+        self.walk_max_dtheta = data.get('walk_max_dtheta')
+        self.walk_max_dy = data.get('walk_max_dy')
+        self.walk_max_dx_forward = data.get('walk_max_dx_forward')
+        self.walk_max_dx_backward = data.get('walk_max_dx_backward')
 
 if __name__ == '__main__':
     print('exit')
 
 gait = GaitParameters()
-pwe = gait.create_pwe(True)
-gait.load_custom_presets(pwe)
+filename = gait.custom_preset_name()
+if not os.path.exists(filename):
+    filename = os.path.join(gait.asset_path, "placo_defaults.json")
+with open(filename, 'r') as f:
+    gait_parameters = json.load(f)
+    print(f"gait_parameters {gait_parameters}")
+    if args.double_support_ratio is not None:
+        gait_parameters['double_support_ratio'] = args.double_support_ratio
+    if args.startend_double_support_ratio is not None:
+        gait_parameters['startend_double_support_ratio'] = args.startend_double_support_ratio
+    if args.planned_timesteps is not None:
+        gait_parameters['planned_timesteps'] = args.planned_timesteps
+    if args.replan_timesteps is not None:
+        gait_parameters['replan_timesteps'] = args.replan_timesteps
+    if args.walk_com_height is not None:
+        gait_parameters['walk_com_height'] = args.walk_com_height
+    if args.walk_foot_height is not None:
+        gait_parameters['walk_foot_height'] = args.walk_foot_height
+    if args.walk_trunk_pitch is not None:
+        gait_parameters['walk_trunk_pitch'] = np.deg2rad(args.walk_trunk_pitch)
+    if args.walk_foot_rise_ratio is not None:
+        gait_parameters['walk_foot_rise_ratio'] = args.walk_foot_rise_ratio
+    if args.single_support_duration is not None:
+        gait_parameters['single_support_duration'] = args.single_support_duration
+    if args.single_support_timesteps is not None:
+        gait_parameters['single_support_timesteps'] = args.single_support_timesteps
+    if args.foot_length is not None:
+        gait_parameters['foot_length'] = args.foot_length
+    if args.feet_spacing is not None:
+        gait_parameters['feet_spacing'] = args.feet_spacing
+    if args.zmp_margin is not None:
+        gait_parameters['zmp_margin'] = args.zmp_margin
+    if args.foot_zmp_target_x is not None:
+        gait_parameters['foot_zmp_target_x'] = args.foot_zmp_target_x
+    if args.foot_zmp_target_y is not None:
+        gait_parameters['foot_zmp_target_y'] = args.foot_zmp_target_y
+    if args.walk_max_dtheta is not None:
+        gait_parameters['walk_max_dtheta'] = args.walk_max_dtheta
+    if args.walk_max_dy is not None:
+        gait_parameters['walk_max_dy'] = args.walk_max_dy
+    if args.walk_max_dx_forward is not None:
+        gait_parameters['walk_max_dx_forward'] = args.walk_max_dx_forward
+    if args.walk_max_dx_backward is not None:
+        gait_parameters['walk_max_dx_backward'] = args.walk_max_dx_backward
+    gait.load_from_data(gait_parameters)
+pwe = gait.create_pwe(gait_parameters)
 viz = robot_viz(pwe.robot)
 viz.display(pwe.robot.state.q)
 
@@ -371,7 +413,7 @@ def gait_generator_thread():
         print("gait generator waiting")
         with gait_condition:
             if doreset:
-                pwe = gait.create_pwe(False)
+                pwe = gait.create_pwe()
                 viz = robot_viz(pwe.robot)
                 viz.display(pwe.robot.state.q)
                 footsteps_viz(pwe.trajectory.get_supports())
@@ -385,7 +427,7 @@ def gait_generator_thread():
                 dorun = False
             if doreset:
                 print("RESETTING")
-                pwe = gait.create_pwe(False)
+                pwe = gait.create_pwe()
                 viz = robot_viz(pwe.robot)
                 viz.display(pwe.robot.state.q)
                 footsteps_viz(pwe.trajectory.get_supports())

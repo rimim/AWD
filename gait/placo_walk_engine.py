@@ -17,6 +17,7 @@ class PlacoWalkEngine:
         self,
         asset_path: str = "",
         model_filename: str = "go_bdx.urdf",
+        init_params: dict = {},
         ignore_feet_contact: bool = False,
     ) -> None:
         model_filename = os.path.join(asset_path, model_filename)
@@ -27,9 +28,12 @@ class PlacoWalkEngine:
         # Loading the robot
         self.robot = placo.HumanoidRobot(model_filename)
 
-        defaults_filename = os.path.join(asset_path, "placo_defaults.json")
         self.parameters = placo.HumanoidParameters()
-        self.load_parameters(defaults_filename)
+        if init_params is not None:
+            self.load_parameters(init_params)
+        else:
+            defaults_filename = os.path.join(asset_path, "placo_defaults.json")
+            self.load_defaults(defaults_filename)
 
         # Creating the kinematics solver
         self.solver = placo.KinematicsSolver(self.robot)
@@ -43,7 +47,7 @@ class PlacoWalkEngine:
 
         # Creating the walk QP tasks
         self.tasks = placo.WalkTasks()
-        if not self.parameters.trunk_mode is None:
+        if hasattr(self.parameters, 'trunk_mode'):
             self.tasks.trunk_mode = self.parameters.trunk_mode
         self.tasks.com_x = 0.0
         self.tasks.initialize_tasks(self.solver, self.robot)
@@ -115,9 +119,13 @@ class PlacoWalkEngine:
             + 2 * self.parameters.double_support_duration()
         )
 
-    def load_parameters(self, filename):
+    def load_defaults(self, filename):
         with open(filename, 'r') as f:
             data = json.load(f)
+        params = self.parameters
+        load_parameters(data)
+
+    def load_parameters(self, data):
         params = self.parameters
         params.double_support_ratio = data.get('double_support_ratio', params.double_support_ratio)
         params.startend_double_support_ratio = data.get('startend_double_support_ratio', params.startend_double_support_ratio)

@@ -103,59 +103,62 @@ if args.debug:
 
 if args.mini:
     robot = 'mini_bdx'
+    robot_urdf = "urdf/bdx.urdf"
+    asset_path = "awd/data/assets/mini_bdx"
 else:
     robot = 'go_bdx'
+    robot_urdf = "go_bdx.urdf"
+    asset_path = "awd/data/assets/go_bdx"
 
-if robot == 'go_bdx':
-    pwe = PlacoWalkEngine("awd/data/assets/go_bdx", "go_bdx.urdf")
-elif robot == 'mini_bdx':
-    pwe = PlacoWalkEngine("awd/data/assets/mini_bdx", "urdf/bdx.urdf")
 preset_filename = f"placo_{robot}_defaults.json"
-
+filename = os.path.join(asset_path, "placo_defaults.json")
 if args.presets:
-    if os.path.exists(filename):
-        pwe.load_parameters(filename)
+    if os.path.exists(preset_filename):
+        preset_filename = filename
     else:
-        print(f"No such file: {filename}")
-
-if args.double_support_ratio is not None:
-    pwe.parameters.double_support_ratio = args.double_support_ratio
-if args.startend_double_support_ratio is not None:
-    pwe.parameters.startend_double_support_ratio = args.startend_double_support_ratio
-if args.planned_timesteps is not None:
-    pwe.parameters.planned_timesteps = args.planned_timesteps
-if args.replan_timesteps is not None:
-    pwe.parameters.replan_timesteps = args.replan_timesteps
-if args.walk_com_height is not None:
-    pwe.parameters.walk_com_height = args.walk_com_height
-if args.walk_foot_height is not None:
-    pwe.parameters.walk_foot_height = args.walk_foot_height
-if args.walk_trunk_pitch is not None:
-    pwe.parameters.walk_trunk_pitch = np.deg2rad(args.walk_trunk_pitch)
-if args.walk_foot_rise_ratio is not None:
-    pwe.parameters.walk_foot_rise_ratio = args.walk_foot_rise_ratio
-if args.single_support_duration is not None:
-    pwe.parameters.single_support_duration = args.single_support_duration
-if args.single_support_timesteps is not None:
-    pwe.parameters.single_support_timesteps = args.single_support_timesteps
-if args.foot_length is not None:
-    pwe.parameters.foot_length = args.foot_length
-if args.feet_spacing is not None:
-    pwe.parameters.feet_spacing = args.feet_spacing
-if args.zmp_margin is not None:
-    pwe.parameters.zmp_margin = args.zmp_margin
-if args.foot_zmp_target_x is not None:
-    pwe.parameters.foot_zmp_target_x = args.foot_zmp_target_x
-if args.foot_zmp_target_y is not None:
-    pwe.parameters.foot_zmp_target_y = args.foot_zmp_target_y
-if args.walk_max_dtheta is not None:
-    pwe.parameters.walk_max_dtheta = args.walk_max_dtheta
-if args.walk_max_dy is not None:
-    pwe.parameters.walk_max_dy = args.walk_max_dy
-if args.walk_max_dx_forward is not None:
-    pwe.parameters.walk_max_dx_forward = args.walk_max_dx_forward
-if args.walk_max_dx_backward is not None:
-    pwe.parameters.walk_max_dx_backward = args.walk_max_dx_backward
+        print(f"No such file: {preset_filename}")
+with open(filename, 'r') as f:
+    gait_parameters = json.load(f)
+    print(f"gait_parameters {gait_parameters}")
+    if args.double_support_ratio is not None:
+        gait_parameters['double_support_ratio'] = args.double_support_ratio
+    if args.startend_double_support_ratio is not None:
+        gait_parameters['startend_double_support_ratio'] = args.startend_double_support_ratio
+    if args.planned_timesteps is not None:
+        gait_parameters['planned_timesteps'] = args.planned_timesteps
+    if args.replan_timesteps is not None:
+        gait_parameters['replan_timesteps'] = args.replan_timesteps
+    if args.walk_com_height is not None:
+        gait_parameters['walk_com_height'] = args.walk_com_height
+    if args.walk_foot_height is not None:
+        gait_parameters['walk_foot_height'] = args.walk_foot_height
+    if args.walk_trunk_pitch is not None:
+        gait_parameters['walk_trunk_pitch'] = np.deg2rad(args.walk_trunk_pitch)
+    if args.walk_foot_rise_ratio is not None:
+        gait_parameters['walk_foot_rise_ratio'] = args.walk_foot_rise_ratio
+    if args.single_support_duration is not None:
+        gait_parameters['single_support_duration'] = args.single_support_duration
+    if args.single_support_timesteps is not None:
+        gait_parameters['single_support_timesteps'] = args.single_support_timesteps
+    if args.foot_length is not None:
+        gait_parameters['foot_length'] = args.foot_length
+    if args.feet_spacing is not None:
+        gait_parameters['feet_spacing'] = args.feet_spacing
+    if args.zmp_margin is not None:
+        gait_parameters['zmp_margin'] = args.zmp_margin
+    if args.foot_zmp_target_x is not None:
+        gait_parameters['foot_zmp_target_x'] = args.foot_zmp_target_x
+    if args.foot_zmp_target_y is not None:
+        gait_parameters['foot_zmp_target_y'] = args.foot_zmp_target_y
+    if args.walk_max_dtheta is not None:
+        gait_parameters['walk_max_dtheta'] = args.walk_max_dtheta
+    if args.walk_max_dy is not None:
+        gait_parameters['walk_max_dy'] = args.walk_max_dy
+    if args.walk_max_dx_forward is not None:
+        gait_parameters['walk_max_dx_forward'] = args.walk_max_dx_forward
+    if args.walk_max_dx_backward is not None:
+        gait_parameters['walk_max_dx_backward'] = args.walk_max_dx_backward
+pwe = PlacoWalkEngine(asset_path, robot_urdf, gait_parameters)
 
 first_joints_positions = list(pwe.get_angles().values())
 first_T_world_fbase = pwe.robot.get_T_world_fbase()
