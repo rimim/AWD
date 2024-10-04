@@ -66,7 +66,7 @@ params:
     learning_rate: 2e-5
     lr_schedule: constant
     score_to_win: 20000
-    max_epochs: 100000
+    max_epochs: 1000000
     save_best_after: 50
     save_frequency: 50
     print_stats: True
@@ -82,8 +82,8 @@ params:
     clip_value: False
     seq_len: 4
     bounds_loss_coef: 10
-    amp_obs_demo_buffer_size: 200000
-    amp_replay_buffer_size: 200000
+    amp_obs_demo_buffer_size: 100000
+    amp_replay_buffer_size: 100000
     amp_replay_keep_prob: 0.01
     amp_batch_size: 512
     amp_minibatch_size: 4096

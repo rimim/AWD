@@ -538,7 +538,7 @@ class AMPLoader:
         key_pos0 = self.get_left_toe_pos_local_batch(frames)
         key_pos1 = self.get_right_toe_pos_local_batch(frames)
 
-        return root_pos, root_rot, dof_pos, root_vel, root_ang_vel, dof_vel, key_pos0
+        return root_pos, root_rot, dof_pos, root_vel, root_ang_vel, dof_vel, torch.cat((key_pos0.unsqueeze(1), key_pos1.unsqueeze(1)), dim=1) 
 
     @property
     def observation_dim(self):

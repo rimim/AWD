@@ -19,6 +19,7 @@ from gait.placo_walk_engine import PlacoWalkEngine
 parser = argparse.ArgumentParser()
 parser.add_argument("--dx", type=float, default=0)
 parser.add_argument("--dy", type=float, default=0)
+parser.add_argument("--output_dir", type=str, default=".")
 parser.add_argument("--dtheta", type=float, default=0)
 parser.add_argument("--double_support_ratio", type=float, default=None)
 parser.add_argument("--startend_double_support_ratio", type=float, default=None)
@@ -568,14 +569,14 @@ def gait_generator_thread():
 
             i += 1
         run_loop = False
-        # print("recorded", len(episode["Frames"]), "frames")
-        # args_name = "dummy"
-        # file_name = args_name + str(".txt")
-        # file_path = os.path.join(args.output_dir, file_name)
-        # os.makedirs(args.output_dir, exist_ok=True)
-        # print("DONE, saving", file_name)
-        # with open(file_path, "w") as f:
-        #     json.dump(episode, f)
+        print("recorded", len(episode["Frames"]), "frames")
+        args_name = "dummy"
+        file_name = args_name + str(".txt")
+        file_path = os.path.join(args.output_dir, file_name)
+        os.makedirs(args.output_dir, exist_ok=True)
+        print("DONE, saving", file_name)
+        with open(file_path, "w") as f:
+            json.dump(episode, f)
 
 def open_browser():
     try:

@@ -209,6 +209,9 @@ class DucklingAMP(Duckling):
         self._reset_ref_motion_times = motion_times
         return
 
+    def _get_duckling_collision_filter(self):
+        return 1 # disable self collisions
+
     def _reset_hybrid_state_init(self, env_ids):
         num_envs = env_ids.shape[0]
         ref_probs = to_torch(np.array([self._hybrid_init_prob] * num_envs), device=self.device)
@@ -324,23 +327,19 @@ def build_amp_observations(root_pos, root_rot, root_vel, root_ang_vel, dof_pos, 
     local_root_vel = quat_rotate(heading_rot, root_vel)
     local_root_ang_vel = quat_rotate(heading_rot, root_ang_vel)
 
-    # if key_body_pos is None or key_body_pos.numel() == 0:
     dof_obs = dof_to_obs(dof_pos, dof_obs_size, dof_offsets, dof_axis)
-    obs = torch.cat((root_h_obs, root_rot_obs, local_root_vel, local_root_ang_vel, dof_obs, dof_vel), dim=-1)
-    # else:
-    #     print("WTF2")
-    #     root_pos_expand = root_pos.unsqueeze(-2)
-    #     local_key_body_pos = key_body_pos - root_pos_expand
     
-    #     heading_rot_expand = heading_rot.unsqueeze(-2)
-    #     heading_rot_expand = heading_rot_expand.repeat((1, local_key_body_pos.shape[1], 1))
-    #     flat_end_pos = local_key_body_pos.view(local_key_body_pos.shape[0] * local_key_body_pos.shape[1], local_key_body_pos.shape[2])
-    #     flat_heading_rot = heading_rot_expand.view(heading_rot_expand.shape[0] * heading_rot_expand.shape[1], 
-    #                                                heading_rot_expand.shape[2])
-    #     local_end_pos = quat_rotate(flat_heading_rot, flat_end_pos)
-    #     flat_local_key_pos = local_end_pos.view(local_key_body_pos.shape[0], local_key_body_pos.shape[1] * local_key_body_pos.shape[2])
+    root_pos_expand = root_pos.unsqueeze(-2)
+    local_key_body_pos = key_body_pos - root_pos_expand
 
-    #     dof_obs = dof_to_obs(dof_pos, dof_obs_size, dof_offsets)
-    #     obs = torch.cat((root_h_obs, root_rot_obs, local_root_vel, local_root_ang_vel, dof_obs, dof_vel, flat_local_key_pos), dim=-1)
+    heading_rot_expand = heading_rot.unsqueeze(-2)
+    heading_rot_expand = heading_rot_expand.repeat((1, local_key_body_pos.shape[1], 1))
+    flat_end_pos = local_key_body_pos.view(local_key_body_pos.shape[0] * local_key_body_pos.shape[1], local_key_body_pos.shape[2])
+    flat_heading_rot = heading_rot_expand.view(heading_rot_expand.shape[0] * heading_rot_expand.shape[1], 
+                                                heading_rot_expand.shape[2])
+    local_end_pos = quat_rotate(flat_heading_rot, flat_end_pos)
+    flat_local_key_pos = local_end_pos.view(local_key_body_pos.shape[0], local_key_body_pos.shape[1] * local_key_body_pos.shape[2])
+
+    obs = torch.cat((root_h_obs, root_rot_obs, local_root_vel, local_root_ang_vel, dof_obs, dof_vel), dim=-1)
 
     return obs

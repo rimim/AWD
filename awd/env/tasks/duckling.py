@@ -77,6 +77,7 @@ class Duckling(BaseTask):
         self.dt = self.control_freq_inv * sim_params.dt
         
         # get gym GPU state tensors
+        #self.gym.refresh_actor_root_state_tensor(self.sim)
         actor_root_state = self.gym.acquire_actor_root_state_tensor(self.sim)
         dof_state_tensor = self.gym.acquire_dof_state_tensor(self.sim)
         sensor_tensor = self.gym.acquire_force_sensor_tensor(self.sim)
@@ -100,6 +101,7 @@ class Duckling(BaseTask):
         self._duckling_root_states = self._root_states.view(self.num_envs, num_actors, actor_root_state.shape[-1])[..., 0, :]
         self._initial_duckling_root_states = self._duckling_root_states.clone()
         self._initial_duckling_root_states[:, 7:13] = 0
+        self._initial_duckling_root_states[:, 2] = 0.0
 
         self._duckling_actor_ids = num_actors * torch.arange(self.num_envs, device=self.device, dtype=torch.int32)
 
@@ -301,13 +303,12 @@ class Duckling(BaseTask):
         asset_file = os.path.basename(asset_path)
 
         asset_options = gymapi.AssetOptions()
-        asset_options.density = 0.001
-        asset_options.armature = 0.0
-        asset_options.thickness = 0.01
-        asset_options.angular_damping = 0.0
-        asset_options.linear_damping = 0.0
-        asset_options.max_angular_velocity = 1000.0
-        asset_options.max_linear_velocity = 1000.0
+        # asset_options.density = 0.001
+        # asset_options.armature = 0.0
+        # asset_options.thickness = 0.01
+        asset_options.angular_damping = 0.01
+        asset_options.max_angular_velocity = 100.0
+        asset_options.max_linear_velocity = 100.0
         # see GymDofDriveModeFlags (0 is none, 1 is pos tgt, 2 is vel tgt, 3 effort)
         asset_options.default_dof_drive_mode = 0
         #asset_options.fix_base_link = True
@@ -485,16 +486,20 @@ class Duckling(BaseTask):
         self.gym.refresh_force_sensor_tensor(self.sim)
         self.gym.refresh_dof_force_tensor(self.sim)
         self.gym.refresh_net_contact_force_tensor(self.sim)
+        # print(torch.isnan(self._dof_state).sum(), "### _dof_state")
+        # print(torch.isnan(self._rigid_body_pos).sum(), "### _rigid_body_pos")
+        # print(torch.isnan(self._rigid_body_rot).sum(), "### _rigid_body_rot")
+        # print(torch.isnan(self._rigid_body_vel).sum(), "### _rigid_body_vel")
         return
 
     def _compute_observations(self, env_ids=None):
         obs = self._compute_duckling_obs(env_ids)
 
         # TODO
-        # if (env_ids is None):
-        #     self.obs_buf[:] = obs
-        # else:
-        #     self.obs_buf[env_ids] = obs
+        if (env_ids is None):
+            self.obs_buf[:] = obs
+        else:
+            self.obs_buf[env_ids] = obs
 
         return
 
@@ -764,7 +769,7 @@ def compute_duckling_reset(reset_buf, progress_buf, contact_buf, contact_body_id
         fall_height[:, contact_body_ids] = False
         fall_height = torch.any(fall_height, dim=-1)
 
-        has_fallen = torch.logical_and(fall_contact, fall_height)
+        has_fallen = fall_height # torch.logical_and(fall_contact, fall_height)
 
         # first timestep can sometimes still have nonzero contact forces
         # so only check after first couple of steps
