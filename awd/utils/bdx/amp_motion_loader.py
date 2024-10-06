@@ -357,14 +357,17 @@ class AMPLoader:
             all_frame_amp_ends[traj_mask] = trajectory[idx_high[traj_mask]][
                 :, self.JOINT_POSE_START_IDX : self.JOINT_VEL_END_IDX
             ]
+
         blend = torch.tensor(
             p * n - idx_low, device=self.device, dtype=torch.float32
         ).unsqueeze(-1)
 
         pos_blend = self.slerp(all_frame_pos_starts, all_frame_pos_ends, blend)
+        
         rot_blend = utils.quaternion_slerp(
             all_frame_rot_starts, all_frame_rot_ends, blend
         )
+        
         amp_blend = self.slerp(all_frame_amp_starts, all_frame_amp_ends, blend)
         return torch.cat([pos_blend, rot_blend, amp_blend], dim=-1)
 

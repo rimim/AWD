@@ -82,6 +82,14 @@ class DucklingViewMotion(DucklingAMP):
         dof_vel = torch.zeros_like(dof_vel)
 
         env_ids = torch.arange(self.num_envs, dtype=torch.long, device=self.device)
+
+        # print(torch.isnan(root_pos).sum(), "### root_pos")
+        # print(torch.isnan(root_rot).sum(), "### root_rot")
+        # print(torch.isnan(dof_pos).sum(), "### dof_pos")
+        # print(torch.isnan(root_vel).sum(), "### root_vel")
+        # print(torch.isnan(dof_vel).sum(), "### dof_vel")
+        # print(torch.isnan(root_ang_vel).sum(), "### root_ang_vel")
+
         self._set_env_state(env_ids=env_ids, 
                             root_pos=root_pos, 
                             root_rot=root_rot, 

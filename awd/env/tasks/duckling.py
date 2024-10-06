@@ -486,6 +486,7 @@ class Duckling(BaseTask):
         self.gym.refresh_force_sensor_tensor(self.sim)
         self.gym.refresh_dof_force_tensor(self.sim)
         self.gym.refresh_net_contact_force_tensor(self.sim)
+
         # print(torch.isnan(self._dof_state).sum(), "### _dof_state")
         # print(torch.isnan(self._rigid_body_pos).sum(), "### _rigid_body_pos")
         # print(torch.isnan(self._rigid_body_rot).sum(), "### _rigid_body_rot")

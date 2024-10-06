@@ -29,6 +29,7 @@
 from enum import Enum
 import numpy as np
 import torch
+import os
 
 from isaacgym import gymapi
 from isaacgym import gymtorch
@@ -66,7 +67,11 @@ class DucklingAMP(Duckling):
                          headless=headless)
 
         motion_file = cfg['env']['motion_file']
-        self._load_motion(motion_file)
+        if os.path.isdir(motion_file):
+            motion_files = [os.path.join(motion_file, file) for file in os.listdir(motion_file) if file.endswith(".json") or file.endswith(".txt")]
+        else:
+            motion_files = [motion_file]
+        self._load_motion(motion_files)
 
         self._amp_obs_buf = torch.zeros((self.num_envs, self._num_amp_obs_steps, self._num_amp_obs_per_step), device=self.device, dtype=torch.float)
         self._curr_amp_obs_buf = self._amp_obs_buf[:, 0]
@@ -141,12 +146,12 @@ class DucklingAMP(Duckling):
 
         return
 
-    def _load_motion(self, motion_file):
+    def _load_motion(self, motion_files):
         print(f"self.num_dof: {self.num_dof}")
         print(f"self._dof_offsets[-1]: {self._dof_offsets[-1]}")
         assert(self._dof_offsets[-1] == self.num_dof)
         self._motion_lib = AMPLoader(
-            motion_files=[motion_file],
+            motion_files=motion_files,
             device=self.device,
             time_between_frames=self.dt,
             key_body_ids=self._key_body_ids.cpu().numpy(), 
@@ -283,6 +288,14 @@ class DucklingAMP(Duckling):
     
     def _compute_amp_observations(self, env_ids=None):
         key_body_pos = self._rigid_body_pos[:, self._key_body_ids, :]
+
+        # print(torch.isnan(self._rigid_body_pos).sum(), "### self._rigid_body_pos 2")
+        # print(torch.isnan(self._rigid_body_rot).sum(), "### self._rigid_body_rot")
+        # print(torch.isnan(self._rigid_body_vel).sum(), "### self._rigid_body_vel")
+        # print(torch.isnan(self._dof_pos).sum(), "### self._dof_pos")
+        # print(torch.isnan(self._dof_vel).sum(), "### self._dof_vel")
+        # print(torch.isnan(key_body_pos).sum(), "### self.key_body_pos")
+
         if (env_ids is None):
             self._curr_amp_obs_buf[:] = build_amp_observations(self._rigid_body_pos[:, 0, :],
                                                                self._rigid_body_rot[:, 0, :],
@@ -341,5 +354,4 @@ def build_amp_observations(root_pos, root_rot, root_vel, root_ang_vel, dof_pos, 
     flat_local_key_pos = local_end_pos.view(local_key_body_pos.shape[0], local_key_body_pos.shape[1] * local_key_body_pos.shape[2])
 
     obs = torch.cat((root_h_obs, root_rot_obs, local_root_vel, local_root_ang_vel, dof_obs, dof_vel), dim=-1)
-
     return obs
