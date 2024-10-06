@@ -180,9 +180,47 @@ def quaternion_slerp(q0, q1, fraction, spin=0, shortestpath=True):
     final_mask = torch.logical_or(final_mask, angle_mask)
     final_mask = torch.logical_not(final_mask)
 
-    isin = 1.0 / angle
+    isin = 1.0 / (angle + _EPS)
     q0 *= torch.sin((1.0 - fraction) * angle) * isin
     q1 *= torch.sin(fraction * angle) * isin
     q0 += q1
     out[final_mask] = q0[final_mask]
     return out
+
+def quaternion_slerp(q1, q2, t, epsilon=1e-6):
+    # Ensure the input is CUDA tensors
+    q1 = q1.to('cuda')
+    q2 = q2.to('cuda')
+    t = t.to('cuda')
+    
+    # Normalize the quaternions
+    q1 = q1 / q1.norm(p=2, dim=-1, keepdim=True)
+    q2 = q2 / q2.norm(p=2, dim=-1, keepdim=True)
+
+    # Compute the dot product (cosine of the angle between quaternions)
+    dot = (q1 * q2).sum(dim=-1, keepdim=True)
+    
+    # Clamp dot to the valid range for acos to avoid NaNs
+    dot = torch.clamp(dot, -1.0 + epsilon, 1.0 - epsilon)
+
+    # Compute the angle between the quaternions
+    theta_0 = torch.acos(dot)  # theta_0 is the angle between the input quaternions
+    sin_theta_0 = torch.sin(theta_0)
+
+    # Avoid division by zero by checking if sin_theta_0 is near zero
+    mask = sin_theta_0.abs() < epsilon
+    if mask.any():
+        # For very small angles, use linear interpolation
+        result = (1.0 - t) * q1 + t * q2
+    else:
+        # Compute sin(theta) and perform SLERP
+        theta = theta_0 * t
+        sin_theta = torch.sin(theta)
+        slerp = (torch.sin((1.0 - t) * theta_0) / sin_theta_0) * q1 + (sin_theta / sin_theta_0) * q2
+        result = slerp
+    
+    # Normalize the result to ensure it's a valid quaternion
+    result = result / result.norm(p=2, dim=-1, keepdim=True)
+
+    return result
+
