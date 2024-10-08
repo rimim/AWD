@@ -190,8 +190,8 @@ while True:
             T_world_leftFoot = pwe.robot.get_T_world_left()
             T_world_rightFoot = pwe.robot.get_T_world_right()
 
-        T_body_leftFoot = np.linalg.inv(T_world_fbase) @ T_world_leftFoot
-        T_body_rightFoot = np.linalg.inv(T_world_fbase) @ T_world_rightFoot
+        T_body_leftFoot = T_world_leftFoot #np.linalg.inv(T_world_fbase) @ T_world_leftFoot
+        T_body_rightFoot = T_world_rightFoot  #np.linalg.inv(T_world_fbase) @ T_world_rightFoot
 
         left_toe_pos = list(T_body_leftFoot[:3, 3])
         right_toe_pos = list(T_body_rightFoot[:3, 3])
