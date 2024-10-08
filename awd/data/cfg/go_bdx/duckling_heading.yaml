@@ -14,7 +14,7 @@ env:
   numAMPObsSteps: 5
   
   localRootObs: True
-  keyBodies: ["left_foot", "right_foot"]
+  keyBodies: ["right_foot", "left_foot"]
   contactBodies: ["right_foot", "left_foot"]
   terminationHeight: -0.1
   enableEarlyTermination: True
