@@ -48,7 +48,7 @@ class AMPLoader:
             self.trajectory_names.append(motion_file.split(".")[0])
             with open(motion_file, "r") as f:
                 motion_json = json.load(f)
-                motion_data = np.array(motion_json["Frames"])
+                motion_data = np.array(motion_json["Frames"])[120:]
                 # motion_data = self.reorder_from_pybullet_to_isaac(motion_data)
 
                 self.init_field_offsets(motion_json["Frame_offset"], motion_json["Frame_size"])

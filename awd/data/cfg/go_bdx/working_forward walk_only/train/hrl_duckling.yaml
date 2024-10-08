@@ -2,13 +2,13 @@ params:
   seed: -1
 
   algo:
-    name: amp
+    name: hrl
 
   model:
-    name: amp
+    name: hrl
 
   network:
-    name: amp
+    name: hrl
     separate: True
 
     space:
@@ -19,7 +19,7 @@ params:
           name: default
         sigma_init:
           name: const_initializer
-          val: -2.9
+          val: -2.3
         fixed_sigma: True
         learn_sigma: False
 
@@ -32,14 +32,7 @@ params:
         name: default
       regularizer:
         name: None
-
-    disc:
-      units: [1024, 512]
-      activation: relu
-
-      initializer:
-        name: default
-
+        
   load_checkpoint: False
 
   config:
@@ -59,7 +52,7 @@ params:
     lr_schedule: constant
     score_to_win: 20000
     max_epochs: 10000
-    save_best_after: 50
+    save_best_after: 10
     save_frequency: 50
     print_stats: True
     grad_norm: 1.0
@@ -74,18 +67,10 @@ params:
     clip_value: False
     seq_len: 4
     bounds_loss_coef: 10
-    amp_obs_demo_buffer_size: 200000
-    amp_replay_buffer_size: 200000
-    amp_replay_keep_prob: 0.01
-    # amp_batch_size: 512
-    # amp_minibatch_size: 4096
-    disc_coef: 5
-    disc_logit_reg: 0.01
-    disc_grad_penalty: 5
-    disc_reward_scale: 2
-    disc_weight_decay: 0.0001
-    normalize_amp_input: True
-    enable_eps_greedy: False
+    
+    task_reward_w: 0.9
+    disc_reward_w: 0.1
 
-    task_reward_w: 0.0
-    disc_reward_w: 1.0
+    llc_steps: 5
+    llc_config: awd/data/cfg/train/rlg/awd_duckling_hrl.yaml
+

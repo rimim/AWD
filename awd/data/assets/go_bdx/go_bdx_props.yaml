@@ -24,7 +24,7 @@ num_actions: 16
 num_obs: 313
 motor_efforts: [100, 100, 100, 100, 100, 50, 50, 50, 50, 10, 10, 100, 100, 100, 100, 100]
 #13 + dof_obs_size + 28 + 3 * num_key_bodies # [root_h, root_rot, root_vel, root_ang_vel, dof_pos, dof_vel, key_body_pos]
-num_amp_obs_per_step: 125
+num_amp_obs_per_step: 131
 damping:
   left_ankle: 1.6
   left_antenna: 0.2

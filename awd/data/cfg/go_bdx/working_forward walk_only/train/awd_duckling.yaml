@@ -2,13 +2,13 @@ params:
   seed: -1
 
   algo:
-    name: amp
+    name: awd
 
   model:
-    name: amp
+    name: awd
 
   network:
-    name: amp
+    name: awd
     separate: True
 
     space:
@@ -24,7 +24,7 @@ params:
         learn_sigma: False
 
     mlp:
-      units: [1024, 512]
+      units: [1024, 1024, 512]
       activation: relu
       d2rl: False
 
@@ -34,8 +34,16 @@ params:
         name: None
 
     disc:
+      units: [1024, 1024, 512]
+      activation: relu
+
+      initializer:
+        name: default
+
+    enc:
       units: [1024, 512]
       activation: relu
+      separate: False
 
       initializer:
         name: default
@@ -53,15 +61,15 @@ params:
     reward_shaper:
       scale_value: 1
     normalize_advantage: True
-    gamma: 0.99
+    gamma: 0.95
     tau: 0.95
-    learning_rate: 2e-5
+    learning_rate: 4e-5
     lr_schedule: constant
     score_to_win: 20000
-    max_epochs: 10000
+    max_epochs: 1000000
     save_best_after: 50
     save_frequency: 50
-    print_stats: True
+    print_stats: False
     grad_norm: 1.0
     entropy_coef: 0.0
     truncate_grads: False
@@ -74,18 +82,33 @@ params:
     clip_value: False
     seq_len: 4
     bounds_loss_coef: 10
-    amp_obs_demo_buffer_size: 200000
-    amp_replay_buffer_size: 200000
+    amp_obs_demo_buffer_size: 100000
+    amp_replay_buffer_size: 100000
     amp_replay_keep_prob: 0.01
-    # amp_batch_size: 512
-    # amp_minibatch_size: 4096
+    amp_batch_size: 512
+    amp_minibatch_size: 4096
     disc_coef: 5
     disc_logit_reg: 0.01
     disc_grad_penalty: 5
     disc_reward_scale: 2
     disc_weight_decay: 0.0001
     normalize_amp_input: True
-    enable_eps_greedy: False
+    enable_eps_greedy: True
+
+    latent_dim: 64
+    latent_steps_min: 1
+    latent_steps_max: 150
+    
+    amp_latent_grad_bonus: 0.1
+    amp_latent_grad_bonus_max: 100.0
+    amp_diversity_bonus: 0.5
+    amp_diversity_tar: 1.5
+    
+    enc_coef: 5
+    enc_weight_decay: 0.0000
+    enc_reward_scale: 1
+    enc_grad_penalty: 0
 
     task_reward_w: 0.0
-    disc_reward_w: 1.0
+    disc_reward_w: 0.5
+    enc_reward_w: 0.5

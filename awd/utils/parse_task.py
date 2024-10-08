@@ -28,7 +28,7 @@
 
 from env.tasks.duckling import Duckling
 from env.tasks.duckling_amp import DucklingAMP
-# from env.tasks.duckling_heading import DucklingHeading
+from env.tasks.duckling_heading import DucklingHeading
 # from env.tasks.duckling_location import DucklingLocation
 # from env.tasks.duckling_strike import DucklingStrike
 # from env.tasks.duckling_reach import DucklingReach

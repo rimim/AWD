@@ -77,9 +77,9 @@ class DucklingViewMotion(DucklingAMP):
         root_pos, root_rot, dof_pos, root_vel, root_ang_vel, dof_vel, key_pos \
            = self._motion_lib.get_motion_state(motion_ids, motion_times)
         
-        root_vel = torch.zeros_like(root_vel)
-        root_ang_vel = torch.zeros_like(root_ang_vel)
-        dof_vel = torch.zeros_like(dof_vel)
+        # root_vel = torch.zeros_like(root_vel)
+        # root_ang_vel = torch.zeros_like(root_ang_vel)
+        # dof_vel = torch.zeros_like(dof_vel)
 
         env_ids = torch.arange(self.num_envs, dtype=torch.long, device=self.device)
 

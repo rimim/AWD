@@ -77,8 +77,8 @@ params:
     amp_obs_demo_buffer_size: 200000
     amp_replay_buffer_size: 200000
     amp_replay_keep_prob: 0.01
-    # amp_batch_size: 512
-    # amp_minibatch_size: 4096
+    amp_batch_size: 512
+    amp_minibatch_size: 4096
     disc_coef: 5
     disc_logit_reg: 0.01
     disc_grad_penalty: 5
@@ -87,5 +87,5 @@ params:
     normalize_amp_input: True
     enable_eps_greedy: False
 
-    task_reward_w: 0.0
-    disc_reward_w: 1.0
+    task_reward_w: 0.5
+    disc_reward_w: 0.5

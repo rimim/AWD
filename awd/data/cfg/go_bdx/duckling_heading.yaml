@@ -1,7 +1,7 @@
 # if given, will override the device setting in gym. 
 env: 
   numEnvs: 4096
-  envSpacing: 3
+  envSpacing: 1
   episodeLength: 300
   isFlagrun: False
   enableDebugVis: False
@@ -13,11 +13,18 @@ env:
   hybridInitProb: 0.5
   numAMPObsSteps: 5
   
-  localRootObs: False
+  localRootObs: True
   keyBodies: ["left_foot", "right_foot"]
-  contactBodies: ["left_foot", "right_foot"]
+  contactBodies: ["right_foot", "left_foot"]
   terminationHeight: -0.1
   enableEarlyTermination: True
+  
+  tarSpeedMin: 0.0
+  tarSpeedMax: 0.5
+  headingChangeStepsMin: 100
+  headingChangeStepsMax: 200
+  enableRandHeading: True
+  enableTaskObs: True
 
   asset:
     assetRoot: "awd/data/assets"
