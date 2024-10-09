@@ -10,17 +10,17 @@ env:
   powerScale: 1.0
   controlFrequencyInv: 2 # 30 Hz
   stateInit: "Hybrid"
-  hybridInitProb: 0.5
+  hybridInitProb: 0.0
   numAMPObsSteps: 5
   
   localRootObs: True
-  keyBodies: ["right_foot", "left_foot"]
-  contactBodies: ["right_foot", "left_foot"]
+  keyBodies: ["left_foot", "right_foot"]
+  contactBodies: ["left_foot", "right_foot"]
   terminationHeight: -0.1
   enableEarlyTermination: True
   
   tarSpeedMin: 0.0
-  tarSpeedMax: 0.8
+  tarSpeedMax: 1.8
   headingChangeStepsMin: 100
   headingChangeStepsMax: 150
   enableRandHeading: False

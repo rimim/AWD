@@ -27,6 +27,7 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import torch
+import numpy as np
 
 from isaacgym import gymtorch
 
@@ -51,6 +52,9 @@ class DucklingViewMotion(DucklingAMP):
         num_motions = self._motion_lib.num_motions()
         self._motion_ids = torch.arange(self.num_envs, device=self.device, dtype=torch.long)
         self._motion_ids = torch.remainder(self._motion_ids, num_motions)
+
+        self.accumulated_key_pos_anim = []
+        self.accumulated_key_pos_sim = []
 
         return
 
@@ -77,7 +81,8 @@ class DucklingViewMotion(DucklingAMP):
         root_pos, root_rot, dof_pos, root_vel, root_ang_vel, dof_vel, key_pos \
            = self._motion_lib.get_motion_state(motion_ids, motion_times)
         
-        print("key pos", key_pos-self._rigid_body_pos[:, self._key_body_ids, :])
+        self.accumulated_key_pos_anim.append(key_pos.detach().cpu().numpy())
+        self.accumulated_key_pos_sim.append(self._rigid_body_pos[:, self._key_body_ids, :].detach().cpu().numpy())
         
         # root_vel = torch.zeros_like(root_vel)
         # root_ang_vel = torch.zeros_like(root_ang_vel)
@@ -113,6 +118,12 @@ class DucklingViewMotion(DucklingAMP):
     def _compute_reset(self):
         motion_lengths = self._motion_lib.get_motion_length(self._motion_ids)
         self.reset_buf[:], self._terminate_buf[:] = compute_view_motion_reset(self.reset_buf, motion_lengths, self.progress_buf, self._motion_dt)
+        accumulated_key_pos_anim = np.array(self.accumulated_key_pos_anim)
+        accumulated_key_pos_sim = np.array(self.accumulated_key_pos_sim)
+
+        np.save("anim", accumulated_key_pos_anim)
+        np.save("sim", accumulated_key_pos_sim)
+
         return
 
     def _reset_actors(self, env_ids):

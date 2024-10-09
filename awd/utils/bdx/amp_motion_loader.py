@@ -538,8 +538,8 @@ class AMPLoader:
         root_vel = self.get_linear_vel_batch(frames)
         root_ang_vel = self.get_angular_vel_batch(frames)
         dof_vel = self.get_joint_vel_batch(frames)
-        key_pos0 = self.get_left_toe_pos_local_batch(frames)
-        key_pos1 = self.get_right_toe_pos_local_batch(frames)
+        key_pos0 = self.get_left_toe_pos_local_batch(frames) + 0.01
+        key_pos1 = self.get_right_toe_pos_local_batch(frames) + 0.01
 
         return root_pos, root_rot, dof_pos, root_vel, root_ang_vel, dof_vel, torch.cat((key_pos0.unsqueeze(1), key_pos1.unsqueeze(1)), dim=1) 
 
