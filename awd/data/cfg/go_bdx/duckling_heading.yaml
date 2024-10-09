@@ -14,16 +14,16 @@ env:
   numAMPObsSteps: 5
   
   localRootObs: True
-  keyBodies: ["left_foot", "right_foot"]
+  keyBodies: ["right_foot", "left_foot"]
   contactBodies: ["right_foot", "left_foot"]
   terminationHeight: -0.1
   enableEarlyTermination: True
   
   tarSpeedMin: 0.0
-  tarSpeedMax: 0.5
+  tarSpeedMax: 0.8
   headingChangeStepsMin: 100
-  headingChangeStepsMax: 200
-  enableRandHeading: True
+  headingChangeStepsMax: 150
+  enableRandHeading: False
   enableTaskObs: True
 
   asset:
