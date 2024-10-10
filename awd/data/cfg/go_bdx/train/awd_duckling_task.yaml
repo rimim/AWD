@@ -95,20 +95,20 @@ params:
     normalize_amp_input: True
     enable_eps_greedy: False
 
-    latent_dim: 64
+    latent_dim: 32
     latent_steps_min: 1
     latent_steps_max: 150
     
     amp_latent_grad_bonus: 0.00
     amp_latent_grad_bonus_max: 100.0
     amp_diversity_bonus: 0.01
-    amp_diversity_tar: 1.0
+    amp_diversity_tar: 0.5
     
     enc_coef: 5
     enc_weight_decay: 0.0000
     enc_reward_scale: 1
     enc_grad_penalty: 0
 
-    task_reward_w: 0.0
-    disc_reward_w: 0.5
-    enc_reward_w: 0.5
+    task_reward_w: 0.33
+    disc_reward_w: 0.33
+    enc_reward_w: 0.33
