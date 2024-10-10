@@ -32,6 +32,7 @@ from env.tasks.duckling_heading import DucklingHeading
 # from env.tasks.duckling_location import DucklingLocation
 # from env.tasks.duckling_strike import DucklingStrike
 # from env.tasks.duckling_reach import DucklingReach
+from env.tasks.duckling_command import DucklingCommand
 from env.tasks.duckling_perturb import DucklingPerturb
 from env.tasks.duckling_view_motion import DucklingViewMotion
 from env.tasks.vec_task_wrappers import VecTaskPythonWrapper
