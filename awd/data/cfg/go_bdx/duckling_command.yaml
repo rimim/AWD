@@ -2,7 +2,7 @@
 env: 
   numEnvs: 4096
   envSpacing: 1
-  episodeLength: 300
+  episodeLength: 500
   isFlagrun: False
   enableDebugVis: False
   
@@ -16,7 +16,7 @@ env:
   localRootObs: True
   keyBodies: ["left_foot", "right_foot"]
   contactBodies: ["left_foot", "right_foot"]
-  terminationHeight: -0.1
+  terminationHeight: -0.05
   enableEarlyTermination: True
   enableTaskObs: True
 
@@ -33,7 +33,7 @@ env:
     # rewards
     linearVelocityXYRewardScale: 1.0
     angularVelocityZRewardScale: 0.5
-    torqueRewardScale: -0.00001 
+    torqueRewardScale: 0.0 #-0.00001 
 
     # normalization
     linearVelocityScale: 2.0

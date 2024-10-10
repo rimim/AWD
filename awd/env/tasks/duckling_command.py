@@ -42,8 +42,8 @@ class DucklingCommand(duckling_amp_task.DucklingAMPTask):
         self.command_y_range = self.cfg["env"]["randomCommandVelocityRanges"]["linear_y"]
         self.command_yaw_range = self.cfg["env"]["randomCommandVelocityRanges"]["yaw"]
         
-        for key in self.rew_scales.keys():
-            self.rew_scales[key] *= self.dt
+        # for key in self.rew_scales.keys():
+        #     self.rew_scales[key] *= self.dt
 
         # rename variables to maintain consistency with anymal env
         self.root_states = self._root_states
@@ -96,6 +96,7 @@ class DucklingCommand(duckling_amp_task.DucklingAMPTask):
         self.commands_x[env_ids] = torch_rand_float(self.command_x_range[0], self.command_x_range[1], (len(env_ids), 1), device=self.device).squeeze()
         self.commands_y[env_ids] = torch_rand_float(self.command_y_range[0], self.command_y_range[1], (len(env_ids), 1), device=self.device).squeeze()
         self.commands_yaw[env_ids] = torch_rand_float(self.command_yaw_range[0], self.command_yaw_range[1], (len(env_ids), 1), device=self.device).squeeze()
+
         return
 
     def _compute_task_obs(self, env_ids=None):
@@ -149,4 +150,4 @@ def compute_task_reward(
     total_reward = rew_lin_vel_xy + rew_ang_vel_z + rew_torque
     total_reward = torch.clip(total_reward, 0., None)
 
-    return total_reward.detach()
+    return total_reward
