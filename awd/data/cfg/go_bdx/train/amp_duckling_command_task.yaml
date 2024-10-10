@@ -53,7 +53,7 @@ params:
     reward_shaper:
       scale_value: 1
     normalize_advantage: True
-    gamma: 0.97
+    gamma: 0.99
     tau: 0.95
     learning_rate: 3e-5
     lr_schedule: constant
@@ -81,11 +81,11 @@ params:
     amp_minibatch_size: 4096
     disc_coef: 5
     disc_logit_reg: 0.01
-    disc_grad_penalty: 5
+    disc_grad_penalty: 1
     disc_reward_scale: 2
     disc_weight_decay: 0.0001
     normalize_amp_input: True
     enable_eps_greedy: False
 
-    task_reward_w: 0.5
-    disc_reward_w: 0.5
+    task_reward_w: 0.45
+    disc_reward_w: 0.55
