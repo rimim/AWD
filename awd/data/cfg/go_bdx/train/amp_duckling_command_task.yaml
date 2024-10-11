@@ -81,7 +81,7 @@ params:
     amp_minibatch_size: 4096
     disc_coef: 5
     disc_logit_reg: 0.01
-    disc_grad_penalty: 7
+    disc_grad_penalty: 5
     disc_reward_scale: 2
     disc_weight_decay: 0.0001
     normalize_amp_input: True

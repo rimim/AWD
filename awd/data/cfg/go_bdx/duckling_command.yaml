@@ -31,9 +31,9 @@ env:
 
   learn:
     # rewards
-    linearVelocityXYRewardScale: 1.0
-    angularVelocityZRewardScale: 0.5
-    torqueRewardScale: -0.00005 
+    linearVelocityXYRewardScale: 0.25
+    angularVelocityZRewardScale: 0.25
+    torqueRewardScale: -0.00000
 
     # normalization
     linearVelocityScale: 0.25
