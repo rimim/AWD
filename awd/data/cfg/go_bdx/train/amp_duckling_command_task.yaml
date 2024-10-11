@@ -58,7 +58,7 @@ params:
     learning_rate: 3e-5
     lr_schedule: constant
     score_to_win: 20000
-    max_epochs: 10000
+    max_epochs: 1000000
     save_best_after: 50
     save_frequency: 50
     print_stats: True
@@ -81,7 +81,7 @@ params:
     amp_minibatch_size: 4096
     disc_coef: 5
     disc_logit_reg: 0.01
-    disc_grad_penalty: 1
+    disc_grad_penalty: 7
     disc_reward_scale: 2
     disc_weight_decay: 0.0001
     normalize_amp_input: True

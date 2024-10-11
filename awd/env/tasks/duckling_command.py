@@ -24,8 +24,6 @@ class DucklingCommand(duckling_amp_task.DucklingAMPTask):
         # normalization
         self.lin_vel_scale = self.cfg["env"]["learn"]["linearVelocityScale"]
         self.ang_vel_scale = self.cfg["env"]["learn"]["angularVelocityScale"]
-        self.dof_pos_scale = self.cfg["env"]["learn"]["dofPositionScale"]
-        self.dof_vel_scale = self.cfg["env"]["learn"]["dofVelocityScale"]
 
         # reward scales
         self.rew_scales = {}
@@ -44,6 +42,8 @@ class DucklingCommand(duckling_amp_task.DucklingAMPTask):
         
         # for key in self.rew_scales.keys():
         #     self.rew_scales[key] *= self.dt
+
+        self.rew_scales["torque"] *= self.dt
 
         # rename variables to maintain consistency with anymal env
         self.root_states = self._root_states
@@ -141,8 +141,8 @@ def compute_task_reward(
     # velocity tracking reward
     lin_vel_error = torch.sum(torch.square(commands[:, :2] - base_lin_vel[:, :2]), dim=1)
     ang_vel_error = torch.square(commands[:, 2] - base_ang_vel[:, 2])
-    rew_lin_vel_xy = torch.exp(-lin_vel_error/0.25) * rew_scales["lin_vel_xy"]
-    rew_ang_vel_z = torch.exp(-ang_vel_error/0.25) * rew_scales["ang_vel_z"]
+    rew_lin_vel_xy = torch.exp(-lin_vel_error*0.25) * rew_scales["lin_vel_xy"]
+    rew_ang_vel_z = torch.exp(-ang_vel_error*0.25) * rew_scales["ang_vel_z"]
 
     # torque penalty
     rew_torque = torch.sum(torch.square(torques), dim=1) * rew_scales["torque"]
