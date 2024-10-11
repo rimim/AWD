@@ -10,8 +10,8 @@ env:
   powerScale: 1.0
   controlFrequencyInv: 2 # 30 Hz
   stateInit: "Hybrid"
-  hybridInitProb: 0.5
-  numAMPObsSteps: 5
+  hybridInitProb: 0.0
+  numAMPObsSteps: 10
   
   localRootObs: True
   keyBodies: ["left_foot", "right_foot"]
@@ -31,18 +31,18 @@ env:
 
   learn:
     # rewards
-    linearVelocityXYRewardScale: 0.25
-    angularVelocityZRewardScale: 0.25
+    linearVelocityXYRewardScale: 1.0
+    angularVelocityZRewardScale: 0.5
     torqueRewardScale: -0.00000
 
     # normalization
-    linearVelocityScale: 0.25
-    angularVelocityScale: 0.1
+    linearVelocityScale: 1.0
+    angularVelocityScale: 0.25
   
   randomCommandVelocityRanges:
-    linear_x: [-0.5, 0.5] # min max [m/s]
-    linear_y: [-0.5, 0.5]   # min max [m/s]
-    yaw: [-0.3, 0.3]          # min max [rad/s]
+    linear_x: [-0.3, 0.3] # min max [m/s]
+    linear_y: [-0.3, 0.3]   # min max [m/s]
+    yaw: [-0.2, 0.2]          # min max [rad/s]
 
 sim:
   substeps: 2
