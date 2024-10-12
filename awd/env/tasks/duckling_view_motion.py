@@ -39,7 +39,7 @@ class DucklingViewMotion(DucklingAMP):
         control_freq_inv = cfg["env"]["controlFrequencyInv"]
         self._motion_dt = control_freq_inv * sim_params.dt
 
-        cfg["env"]["controlFrequencyInv"] = 1
+        #cfg["env"]["controlFrequencyInv"] = 1
         cfg["env"]["pdControl"] = False
 
         super().__init__(cfg=cfg,

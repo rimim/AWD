@@ -26,22 +26,22 @@ motor_efforts: [100, 100, 100, 100, 100, 50, 50, 50, 50, 10, 10, 100, 100, 100, 
 #13 + dof_obs_size + 28 + 3 * num_key_bodies # [root_h, root_rot, root_vel, root_ang_vel, dof_pos, dof_vel, key_body_pos]
 num_amp_obs_per_step: 131
 damping:
-  left_ankle: 3.0
-  left_antenna: 3.0
-  left_hip_pitch: 3.0
-  left_hip_roll: 3.0
-  left_hip_yaw: 3.0
-  left_knee: 3.0
-  neck_pitch: 3.0
-  head_pitch: 3.0
-  head_roll: 3.0
-  head_yaw: 3.0
-  right_ankle: 3.0
-  right_antenna: 3.0
-  right_hip_pitch: 3.0
-  right_hip_roll: 3.0
-  right_hip_yaw: 3.0
-  right_knee: 3.0
+  left_ankle: 1.5
+  left_antenna: 1.5
+  left_hip_pitch: 1.5
+  left_hip_roll: 1.5
+  left_hip_yaw: 1.5
+  left_knee: 1.5
+  neck_pitch: 1.5
+  head_pitch: 1.5
+  head_roll: 1.5
+  head_yaw: 1.5
+  right_ankle: 1.5
+  right_antenna: 1.5
+  right_hip_pitch: 1.5
+  right_hip_roll: 1.5
+  right_hip_yaw: 1.5
+  right_knee: 1.5
 stiffness:
   left_ankle: 30
   left_antenna: 3

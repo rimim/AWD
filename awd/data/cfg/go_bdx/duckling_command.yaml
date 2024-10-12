@@ -11,7 +11,7 @@ env:
   controlFrequencyInv: 2 # 30 Hz
   stateInit: "Hybrid"
   hybridInitProb: 0.0
-  numAMPObsSteps: 10
+  numAMPObsSteps: 5
   
   localRootObs: True
   keyBodies: ["left_foot", "right_foot"]
@@ -31,12 +31,12 @@ env:
 
   learn:
     # rewards
-    linearVelocityXYRewardScale: 1.0
-    angularVelocityZRewardScale: 0.5
-    torqueRewardScale: -0.00000
+    linearVelocityXYRewardScale: 0.5
+    angularVelocityZRewardScale: 0.25
+    torqueRewardScale: -0.000025
 
     # normalization
-    linearVelocityScale: 1.0
+    linearVelocityScale: 0.5
     angularVelocityScale: 0.25
   
   randomCommandVelocityRanges:

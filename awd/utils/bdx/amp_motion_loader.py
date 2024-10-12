@@ -48,7 +48,7 @@ class AMPLoader:
             self.trajectory_names.append(motion_file.split(".")[0])
             with open(motion_file, "r") as f:
                 motion_json = json.load(f)
-                motion_data = np.array(motion_json["Frames"])[120:]
+                motion_data = np.array(motion_json["Frames"])[:-120*4]
                 # motion_data = self.reorder_from_pybullet_to_isaac(motion_data)
 
                 self.init_field_offsets(motion_json["Frame_offset"], motion_json["Frame_size"])
@@ -538,8 +538,11 @@ class AMPLoader:
         root_vel = self.get_linear_vel_batch(frames)
         root_ang_vel = self.get_angular_vel_batch(frames)
         dof_vel = self.get_joint_vel_batch(frames)
-        key_pos0 = self.get_left_toe_pos_local_batch(frames) + 0.015
-        key_pos1 = self.get_right_toe_pos_local_batch(frames) + 0.015
+        key_pos0 = self.get_left_toe_pos_local_batch(frames)
+        key_pos1 = self.get_right_toe_pos_local_batch(frames)
+
+        key_pos0[:, 2] += 0.01
+        key_pos1[:, 2] += 0.01
 
         return root_pos, root_rot, dof_pos, root_vel, root_ang_vel, dof_vel, torch.cat((key_pos0.unsqueeze(1), key_pos1.unsqueeze(1)), dim=1) 
 
