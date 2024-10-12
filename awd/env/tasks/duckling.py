@@ -109,8 +109,11 @@ class Duckling(BaseTask):
             self.num_envs, num_actors, actor_root_state.shape[-1]
         )[..., 0, :]
         self._initial_duckling_root_states = self._duckling_root_states.clone()
-        self._initial_duckling_root_states[:, 7:13] = 0
-        self._initial_duckling_root_states[:, 2] = 0.0
+        self._initial_duckling_root_states[:, 7:13] = 0.0
+        self._initial_duckling_root_states[:, 2] = self.cfg["env"]["initHeight"]
+        self._initial_duckling_root_states[:, 3:7] = torch.Tensor(
+            self.cfg["env"]["initQuat"]
+        ).to(self.device)
 
         self._duckling_actor_ids = num_actors * torch.arange(
             self.num_envs, device=self.device, dtype=torch.int32
@@ -126,9 +129,20 @@ class Duckling(BaseTask):
             ..., : self.num_dof, 1
         ]
 
+        self._default_dof_pos = torch.zeros_like(
+            self._dof_pos, device=self.device, dtype=torch.float
+        )
+
+        props = self._get_asset_properties()
+        for i, name in enumerate(props["init_pos"]):
+            angle = props["init_pos"][name]
+            self._default_dof_pos[:, i] = angle
+
         self._initial_dof_pos = torch.zeros_like(
             self._dof_pos, device=self.device, dtype=torch.float
         )
+        self._initial_dof_pos[:, :] = self._default_dof_pos
+
         self._initial_dof_vel = torch.zeros_like(
             self._dof_vel, device=self.device, dtype=torch.float
         )
@@ -288,13 +302,13 @@ class Duckling(BaseTask):
         self._num_obs = props["num_obs"]
         self._stiffness = props["stiffness"]
         self._damping = props["damping"]
-        self._friction = props.get("friction", {})
-        self._armature = props.get("armature", {})
+        self._friction = props["friction"]
+        self._armature = props["armature"]
         return
 
     def _build_termination_heights(self):
-        head_term_height = 0.3
-        shield_term_height = 0.32
+        head_term_height = self.cfg["env"]["headTerminationHeight"]
+        # shield_term_height = 0.32
 
         termination_height = self.cfg["env"]["terminationHeight"]
         self._termination_heights = np.array([termination_height] * self.num_bodies)
@@ -389,6 +403,7 @@ class Duckling(BaseTask):
         duckling_asset = self.gym.load_asset(
             self.sim, asset_root, asset_file, asset_options
         )
+
         props = self._get_asset_properties()
         dof_axis = self.get_dof_axis()
         for key, value in dof_axis.items():
@@ -493,10 +508,10 @@ class Duckling(BaseTask):
                     dof_prop["damping"][i] = self._damping[dof_name]
                 else:
                     print(f"WARNING: No damping values for {dof_name}")
-                if dof_name in self._friction:
-                    dof_prop["friction"][i] = self._friction[dof_name]
-                if dof_name in self._armature:
-                    dof_prop["armature"][i] = self._armature[dof_name]
+                # if dof_name in self._friction:
+                dof_prop["friction"][i] = self._friction
+
+                dof_prop["armature"][i] = self._armature
             # for key in dof_prop.dtype.names:
             #     print(f"{key}: {dof_prop[key]}")
             self.gym.set_actor_dof_properties(env_ptr, duckling_handle, dof_prop)
@@ -652,11 +667,24 @@ class Duckling(BaseTask):
         return
 
     def pre_physics_step(self, actions):
+        # actions = torch.zeros(
+        #     self.num_envs,
+        #     self.num_actions,
+        #     dtype=torch.float,
+        #     device=self.device,
+        #     requires_grad=False,
+        # )
         self.actions = actions.to(self.device).clone()
         if self._pd_control:
-            pd_tar = self._action_to_pd_targets(self.actions)
-            pd_tar_tensor = gymtorch.unwrap_tensor(pd_tar)
-            self.gym.set_dof_position_target_tensor(self.sim, pd_tar_tensor)
+            # TODO WARNING broke (?) this for go_bdx
+            # pd_tar = self._action_to_pd_targets(self.actions)
+            # pd_tar_tensor = gymtorch.unwrap_tensor(pd_tar)
+            # pd_tar_tensor = gymtorch.unwrap_tensor(pd_tar)
+            # self.gym.set_dof_position_target_tensor(self.sim, pd_tar_tensor)
+
+            tar = self.actions + self._default_dof_pos
+            tar_tensor = gymtorch.unwrap_tensor(tar)
+            self.gym.set_dof_position_target_tensor(self.sim, tar_tensor)
         else:
             forces = self.actions * self.motor_efforts.unsqueeze(0) * self.power_scale
             force_tensor = gymtorch.unwrap_tensor(forces)

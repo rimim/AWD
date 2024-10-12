@@ -16,14 +16,17 @@ env:
   localRootObs: True
   keyBodies: ["left_foot", "right_foot"]
   contactBodies: ["left_foot", "right_foot"]
-  terminationHeight: -0.05
+  terminationHeight: 0.03
+  headTerminationHeight: 0.2
+  initHeight: 0.18
+  initQuat: [0, -0.08, 0, 1]
   enableEarlyTermination: True
 
   tarSpeedMin: 0.0
   tarSpeedMax: 0.14
   headingChangeStepsMin: 250
   headingChangeStepsMax: 300
-  enableRandHeading: True
+  enableRandHeading: False
   enableTaskObs: True
 
   asset:

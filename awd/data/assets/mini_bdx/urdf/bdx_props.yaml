@@ -19,43 +19,65 @@ dof_offsets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
 # 15*6
 dof_obs_size: 90
 num_actions: 15
-# 1 + 15 * (3 + 6 + 3 + 3) - 3
-num_obs: 54
+# 1 + 15 * (3 + 6 + 3 + 3) - 3 ???
+num_obs: 124
 motor_efforts:
   [0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8]
 #13 + dof_obs_size + 28 + 3 * num_key_bodies # [root_h, root_rot, root_vel, root_ang_vel, dof_pos, dof_vel, key_body_pos]
-num_amp_obs_per_step: 118
+num_amp_obs_per_step: 124
+
+# 15 + dof_obs_size + 28 + 3 * 7 ?
+# num_amp_obs_per_step: 154
+friction: 0.058
+angular_damping: 0.0
+armature: 0.0018
+thickness: 0.001
+
 damping:
-  left_ankle: 0.095
   left_antenna: 0.095
   left_hip_pitch: 0.095
   left_hip_roll: 0.095
   left_hip_yaw: 0.095
   left_knee: 0.095
+  left_ankle: 0.095
   neck_pitch: 0.095
   head_pitch: 0.095
-  head_roll: 0.095
   head_yaw: 0.095
-  right_ankle: 0.095
   right_antenna: 0.095
   right_hip_pitch: 0.095
   right_hip_roll: 0.095
   right_hip_yaw: 0.095
   right_knee: 0.095
+  right_ankle: 0.095
 stiffness:
-  left_ankle: 2.54
-  left_antenna: 2.54
-  left_hip_pitch: 2.54
-  left_hip_roll: 2.54
-  left_hip_yaw: 2.54
-  left_knee: 2.54
-  neck_pitch: 2.54
-  head_pitch: 2.54
-  head_roll: 2.54
-  head_yaw: 2.54
-  right_ankle: 2.54
-  right_antenna: 2.54
-  right_hip_pitch: 2.54
-  right_hip_roll: 2.54
-  right_hip_yaw: 2.54
-  right_knee: 2.54
+  left_antenna: 5
+  left_hip_pitch: 5
+  left_hip_roll: 5
+  left_hip_yaw: 5
+  left_knee: 5
+  left_ankle: 5
+  neck_pitch: 5
+  head_pitch: 5
+  head_yaw: 5
+  right_antenna: 5
+  right_hip_pitch: 5
+  right_hip_roll: 5
+  right_hip_yaw: 5
+  right_knee: 5
+  right_ankle: 5
+init_pos:
+  left_hip_yaw: -0.002853397830292128
+  left_hip_roll: 0.01626303761810685
+  left_hip_pitch: 1.0105624704499077
+  left_knee: -1.4865015965817336
+  left_ankle": 0.6504953719748071
+  neck_pitch: -0.17453292519943295
+  head_pitch: -0.17453292519943295
+  head_yaw: 0
+  left_antenna: 0
+  right_antenna: 0
+  right_hip_yaw: 0.001171696610228082
+  right_hip_roll: 0.006726989242258406
+  right_hip_pitch: 1.0129772861831692
+  right_knee: -1.4829304760981399
+  right_ankle: 0.6444901047812701
