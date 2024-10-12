@@ -187,12 +187,7 @@ def quaternion_slerp(q0, q1, fraction, spin=0, shortestpath=True):
     out[final_mask] = q0[final_mask]
     return out
 
-def quaternion_slerp(q1, q2, t, epsilon=1e-6):
-    # Ensure the input is CUDA tensors
-    q1 = q1.to('cuda')
-    q2 = q2.to('cuda')
-    t = t.to('cuda')
-    
+def quaternion_slerp(q1, q2, t, epsilon=1e-6):    
     # Normalize the quaternions
     q1 = q1 / q1.norm(p=2, dim=-1, keepdim=True)
     q2 = q2 / q2.norm(p=2, dim=-1, keepdim=True)
