@@ -8,9 +8,9 @@ env:
   
   pdControl: True
   powerScale: 1.0
-  controlFrequencyInv: 2 # 30 Hz
+  controlFrequencyInv: 1 # 30 Hz
   stateInit: "Hybrid"
-  hybridInitProb: 0.5
+  hybridInitProb: 1.0
   numAMPObsSteps: 5
   
   localRootObs: True
@@ -22,7 +22,7 @@ env:
   tarSpeedMin: 0.0
   tarSpeedMax: 0.5
   headingChangeStepsMin: 100
-  headingChangeStepsMax: 150
+  headingChangeStepsMax: 200
   enableRandHeading: True
   enableTaskObs: True
 

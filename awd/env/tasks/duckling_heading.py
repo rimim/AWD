@@ -155,7 +155,7 @@ class DucklingHeading(duckling_amp_task.DucklingAMPTask):
         n = len(env_ids)
         if (self._enable_rand_heading):
             rand_theta = 2 * np.pi * torch.rand(n, device=self.device) - np.pi
-            rand_face_theta = 2 * np.pi * torch.rand(n, device=self.device) - np.pi
+            rand_face_theta = torch.zeros(n, device=self.device)
         else:
             rand_theta = torch.zeros(n, device=self.device)
             rand_face_theta = torch.zeros(n, device=self.device)
@@ -191,9 +191,23 @@ class DucklingHeading(duckling_amp_task.DucklingAMPTask):
     def _compute_reward(self, actions):
         root_pos = self._duckling_root_states[..., 0:3]
         root_rot = self._duckling_root_states[..., 3:7]
+
+        # contact = self._contact_forces[:, self._key_body_ids, 2] > 1.
+        # contact_filt = torch.logical_or(contact, self.last_contacts) 
+        # self.last_contacts = contact
+        # first_contact = (self.feet_air_time > 0.) * contact_filt
+        # self.feet_air_time += self.dt
+        # rew_airTime = torch.sum((self.feet_air_time - 0.5) * first_contact, dim=1) # reward only on first contact with the ground
+        # self.feet_air_time *= ~contact_filt
+
+        # contact_reward = torch.sum((torch.norm(self._contact_forces[:, self._key_body_ids, :], dim=-1) -  100.).clip(min=0.), dim=1)
+
+        # print(contact_reward)
+
         self.rew_buf[:] = compute_heading_reward(root_pos, self._prev_root_pos,  root_rot,
                                                  self._tar_dir, self._tar_speed,
                                                  self._tar_facing_dir, self.dt)
+        
         return
 
     def _draw_task(self):

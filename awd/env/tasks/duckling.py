@@ -125,6 +125,8 @@ class Duckling(BaseTask):
 
         contact_force_tensor = gymtorch.wrap_tensor(contact_force_tensor)
         self._contact_forces = contact_force_tensor.view(self.num_envs, bodies_per_env, 3)[..., :self.num_bodies, :]
+        self.last_contacts = torch.zeros(self.num_envs, len(self.feet_indices), dtype=torch.bool, device=self.device, requires_grad=False)
+        self.feet_air_time = torch.zeros(self.num_envs, self.feet_indices.shape[0], dtype=torch.float, device=self.device, requires_grad=False)
         
         self._terminate_buf = torch.ones(self.num_envs, device=self.device, dtype=torch.long)
         
@@ -194,6 +196,7 @@ class Duckling(BaseTask):
         self.progress_buf[env_ids] = 0
         self.reset_buf[env_ids] = 0
         self._terminate_buf[env_ids] = 0
+        self.feet_air_time[env_ids] = 0
         return
 
     def _create_ground_plane(self):
@@ -506,18 +509,34 @@ class Duckling(BaseTask):
 
     def _compute_duckling_obs(self, env_ids=None):
         if (env_ids is None):
-            body_pos = self._rigid_body_pos
-            body_rot = self._rigid_body_rot
-            body_vel = self._rigid_body_vel
-            body_ang_vel = self._rigid_body_ang_vel
+            key_body_pos = self._rigid_body_pos[:, self._key_body_ids, :]
+            obs = compute_duckling_observations(self._rigid_body_pos[:, 0, :],
+                                                self._rigid_body_rot[:, 0, :],
+                                                self._rigid_body_vel[:, 0, :],
+                                                self._rigid_body_ang_vel[:, 0, :],
+                                                self._dof_pos, self._dof_vel, key_body_pos,
+                                                self._local_root_obs, self._root_height_obs, 
+                                                self._dof_obs_size, self._dof_offsets, self._dof_axis_array)
         else:
-            body_pos = self._rigid_body_pos[env_ids]
-            body_rot = self._rigid_body_rot[env_ids]
-            body_vel = self._rigid_body_vel[env_ids]
-            body_ang_vel = self._rigid_body_ang_vel[env_ids]
-        
-        obs = compute_duckling_observations_max(body_pos, body_rot, body_vel, body_ang_vel, self._local_root_obs,
-                                                self._root_height_obs)
+            key_body_pos = self._rigid_body_pos[:, self._key_body_ids, :]
+            obs = compute_duckling_observations(self._rigid_body_pos[env_ids][:, 0, :],
+                                                self._rigid_body_rot[env_ids][:, 0, :],
+                                                self._rigid_body_vel[env_ids][:, 0, :],
+                                                self._rigid_body_ang_vel[env_ids][:, 0, :],
+                                                self._dof_pos[env_ids], self._dof_vel[env_ids], key_body_pos[env_ids],
+                                                self._local_root_obs, self._root_height_obs, 
+                                                self._dof_obs_size, self._dof_offsets, self._dof_axis_array)        
+        # obs = compute_duckling_observations_max(body_pos, body_rot, body_vel, body_ang_vel, self._local_root_obs,
+        #                                         self._root_height_obs)
+
+        # key_body_pos = self._rigid_body_pos[:, self._key_body_ids, :]
+        # obs = compute_duckling_observations(self._rigid_body_pos[env_ids][:, 0, :],
+        #                                     self._rigid_body_rot[env_ids][:, 0, :],
+        #                                     self._rigid_body_vel[env_ids][:, 0, :],
+        #                                     self._rigid_body_ang_vel[env_ids][:, 0, :],
+        #                                     self._dof_pos[env_ids], self._dof_vel[env_ids], key_body_pos[env_ids],
+        #                                     self._local_root_obs, self._root_height_obs, 
+        #                                     self._dof_obs_size, self._dof_offsets, self._dof_axis_array)
         return obs
 
     def _reset_actors(self, env_ids):
