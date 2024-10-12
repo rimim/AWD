@@ -2,16 +2,16 @@
 env: 
   numEnvs: 4096
   envSpacing: 1
-  episodeLength: 300
+  episodeLength: 600
   isFlagrun: False
   enableDebugVis: False
   
   pdControl: True
   powerScale: 1.0
-  controlFrequencyInv: 1 # 30 Hz
+  controlFrequencyInv: 2 # 30 Hz
   stateInit: "Hybrid"
-  hybridInitProb: 1.0
-  numAMPObsSteps: 5
+  hybridInitProb: 0.0
+  numAMPObsSteps: 10
   
   localRootObs: True
   keyBodies: ["left_foot", "right_foot"]
@@ -21,8 +21,8 @@ env:
   
   tarSpeedMin: 0.0
   tarSpeedMax: 0.5
-  headingChangeStepsMin: 100
-  headingChangeStepsMax: 200
+  headingChangeStepsMin: 250
+  headingChangeStepsMax: 300
   enableRandHeading: True
   enableTaskObs: True
 

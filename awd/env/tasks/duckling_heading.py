@@ -200,9 +200,9 @@ class DucklingHeading(duckling_amp_task.DucklingAMPTask):
         # rew_airTime = torch.sum((self.feet_air_time - 0.5) * first_contact, dim=1) # reward only on first contact with the ground
         # self.feet_air_time *= ~contact_filt
 
-        # contact_reward = torch.sum((torch.norm(self._contact_forces[:, self._key_body_ids, :], dim=-1) -  100.).clip(min=0.), dim=1)
+        # contact_reward = torch.sum((torch.norm(self.vec_sensor_tensor, dim=-1) -  1.).clip(min=0.), dim=1)
 
-        # print(contact_reward)
+        # print(torch(self.vec_sensor_tensor[:, :, 2]))
 
         self.rew_buf[:] = compute_heading_reward(root_pos, self._prev_root_pos,  root_rot,
                                                  self._tar_dir, self._tar_speed,

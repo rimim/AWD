@@ -85,7 +85,7 @@ class Duckling(BaseTask):
         contact_force_tensor = self.gym.acquire_net_contact_force_tensor(self.sim)
 
         sensors_per_env = 2
-        self.vec_sensor_tensor = gymtorch.wrap_tensor(sensor_tensor).view(self.num_envs, sensors_per_env * 6)
+        self.vec_sensor_tensor = gymtorch.wrap_tensor(sensor_tensor).view(self.num_envs, sensors_per_env, 6)[..., :3]
 
         dof_force_tensor = self.gym.acquire_dof_force_tensor(self.sim)
         self.dof_force_tensor = gymtorch.wrap_tensor(dof_force_tensor).view(self.num_envs, self.num_dof)
@@ -125,8 +125,6 @@ class Duckling(BaseTask):
 
         contact_force_tensor = gymtorch.wrap_tensor(contact_force_tensor)
         self._contact_forces = contact_force_tensor.view(self.num_envs, bodies_per_env, 3)[..., :self.num_bodies, :]
-        self.last_contacts = torch.zeros(self.num_envs, len(self.feet_indices), dtype=torch.bool, device=self.device, requires_grad=False)
-        self.feet_air_time = torch.zeros(self.num_envs, self.feet_indices.shape[0], dtype=torch.float, device=self.device, requires_grad=False)
         
         self._terminate_buf = torch.ones(self.num_envs, device=self.device, dtype=torch.long)
         
@@ -135,6 +133,9 @@ class Duckling(BaseTask):
         contact_bodies = self.cfg["env"]["contactBodies"]
         self._key_body_ids = self._build_key_body_ids_tensor(key_bodies)
         self._contact_body_ids = self._build_contact_body_ids_tensor(contact_bodies)
+
+        self.last_contacts = torch.zeros(self.num_envs, len(self._key_body_ids), dtype=torch.bool, device=self.device, requires_grad=False)
+        self.feet_air_time = torch.zeros(self.num_envs, self._key_body_ids.shape[0], dtype=torch.float, device=self.device, requires_grad=False)
         
         if self.viewer != None:
             self._init_camera()
@@ -335,7 +336,7 @@ class Duckling(BaseTask):
 
         self.gym.create_asset_force_sensor(duckling_asset, right_foot_idx, sensor_pose)
         self.gym.create_asset_force_sensor(duckling_asset, left_foot_idx, sensor_pose)
-
+        
         self.motor_efforts = to_torch(motor_efforts, device=self.device)
 
         self.torso_index = 0
