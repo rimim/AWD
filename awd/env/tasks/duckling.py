@@ -308,6 +308,7 @@ class Duckling(BaseTask):
         self._damping = props["damping"]
         self._friction = props["friction"]
         self._armature = props["armature"]
+        self._velocity = props["max_velocity"]
         return
 
     def _build_termination_heights(self):
@@ -522,6 +523,7 @@ class Duckling(BaseTask):
             for i, dof_name in enumerate(dof_names):
                 dof_prop["friction"][i] = self._friction
                 dof_prop["armature"][i] = self._armature
+                dof_prop["velocity"][i] = self._velocity
             pass
         else:
             print(f"Unknown PD control type {self._pd_control}. Exiting.")

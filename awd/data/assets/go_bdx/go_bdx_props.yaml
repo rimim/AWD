@@ -30,7 +30,14 @@ num_amp_obs_per_step: 131
 friction: 0.0
 angular_damping: 0.0
 armature: 0.0
-# thickness: 0.001
+thickness: 0.001
+
+# TODO make lists to differentiate motors ?
+# used for custom pd control
+p_gains: 25
+d_gains: 0.6
+max_effort: 23.7
+max_velocity: 30
 
 damping:
   left_ankle: 1.5
