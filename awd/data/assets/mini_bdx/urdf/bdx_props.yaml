@@ -50,21 +50,21 @@ damping:
   right_knee: 0.095
   right_ankle: 0.095
 stiffness:
-  left_antenna: 5
-  left_hip_pitch: 5
-  left_hip_roll: 5
-  left_hip_yaw: 5
-  left_knee: 5
-  left_ankle: 5
-  neck_pitch: 5
-  head_pitch: 5
-  head_yaw: 5
-  right_antenna: 5
-  right_hip_pitch: 5
-  right_hip_roll: 5
-  right_hip_yaw: 5
-  right_knee: 5
-  right_ankle: 5
+  left_antenna: 10
+  left_hip_pitch: 10
+  left_hip_roll: 10
+  left_hip_yaw: 10
+  left_knee: 10
+  left_ankle: 10
+  neck_pitch: 10
+  head_pitch: 10
+  head_yaw: 10
+  right_antenna: 10
+  right_hip_pitch: 10
+  right_hip_roll: 10
+  right_hip_yaw: 10
+  right_knee: 10
+  right_ankle: 10
 init_pos:
   left_hip_yaw: -0.002853397830292128
   left_hip_roll: 0.01626303761810685
