@@ -97,6 +97,14 @@ class Duckling(BaseTask):
             self.num_envs, self.num_dof
         )
 
+        # self.gym.set_light_parameters(
+        #     self.sim,
+        #     0,
+        #     gymapi.Vec3(0.8, 0.8, 0.8),
+        #     gymapi.Vec3(0.8, 0.8, 0.8),
+        #     gymapi.Vec3(1, 2, 3),
+        # )
+
         self.gym.refresh_dof_state_tensor(self.sim)
         self.gym.refresh_actor_root_state_tensor(self.sim)
         self.gym.refresh_rigid_body_state_tensor(self.sim)
@@ -192,6 +200,13 @@ class Duckling(BaseTask):
             dtype=torch.float,
             device=self.device,
             requires_grad=False,
+        )
+        self.gravity_vec = to_torch(
+            get_axis_params(-1.0, self.up_axis_idx), device=self.device
+        ).repeat((self.num_envs, 1))
+
+        self.projected_gravity = quat_rotate_inverse(
+            self._root_states[: self.num_envs, 3:7], self.gravity_vec
         )
 
         if self.viewer != None:
@@ -641,6 +656,7 @@ class Duckling(BaseTask):
                 self._dof_obs_size,
                 self._dof_offsets,
                 self._dof_axis_array,
+                self.projected_gravity,
             )
         else:
             key_body_pos = self._rigid_body_pos[:, self._key_body_ids, :]
@@ -657,6 +673,7 @@ class Duckling(BaseTask):
                 self._dof_obs_size,
                 self._dof_offsets,
                 self._dof_axis_array,
+                self.projected_gravity[env_ids],
             )
         # obs = compute_duckling_observations_max(body_pos, body_rot, body_vel, body_ang_vel, self._local_root_obs,
         #                                         self._root_height_obs)
@@ -732,6 +749,9 @@ class Duckling(BaseTask):
     def post_physics_step(self):
         self.progress_buf += 1
 
+        self.projected_gravity[:] = quat_rotate_inverse(
+            self._root_states[: self.num_envs, 3:7], self.gravity_vec
+        )
         self._refresh_sim_tensors()
         self._compute_observations()
         self._compute_reward(self.actions)
@@ -878,8 +898,9 @@ def compute_duckling_observations(
     dof_obs_size,
     dof_offsets,
     dof_axis,
+    projected_gravity,
 ):
-    # type: (Tensor, Tensor, Tensor, Tensor, Tensor, Tensor, Tensor, bool, bool, int, List[int], List[int]) -> Tensor
+    # type: (Tensor, Tensor, Tensor, Tensor, Tensor, Tensor, Tensor, bool, bool, int, List[int], List[int], Tensor) -> Tensor
     root_h = root_pos[:, 2:3]
     heading_rot = torch_utils.calc_heading_quat_inv(root_rot)
 
@@ -918,15 +939,29 @@ def compute_duckling_observations(
 
     dof_obs = dof_to_obs(dof_pos, dof_obs_size, dof_offsets, dof_axis)
 
+    # obs = torch.cat(
+    #     (
+    #         root_h_obs,
+    #         root_rot_obs,
+    #         local_root_vel,
+    #         local_root_ang_vel,
+    #         dof_obs,
+    #         dof_vel,
+    #         flat_local_key_pos,
+    #     ),
+    #     dim=-1,
+    # )
+
     obs = torch.cat(
         (
-            root_h_obs,
-            root_rot_obs,
-            local_root_vel,
-            local_root_ang_vel,
+            # root_h_obs,
+            # root_rot_obs,
+            # local_root_vel,
+            # local_root_ang_vel,
+            projected_gravity,
             dof_obs,
             dof_vel,
-            flat_local_key_pos,
+            # flat_local_key_pos,
         ),
         dim=-1,
     )
