@@ -6,9 +6,9 @@ env:
   isFlagrun: False
   enableDebugVis: False
 
-  pdControl: True
+  pdControl: "custom" # or isaac custom
   powerScale: 1.0
-  controlFrequencyInv: 2 # 30 Hz
+  controlFrequencyInv: 2 # 30 Hz # decimation
   stateInit: "Hybrid"
   hybridInitProb: 0.0
   numAMPObsSteps: 10

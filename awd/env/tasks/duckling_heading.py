@@ -211,7 +211,8 @@ class DucklingHeading(duckling_amp_task.DucklingAMPTask):
         n = len(env_ids)
         if self._enable_rand_heading:
             rand_theta = 2 * np.pi * torch.rand(n, device=self.device) - np.pi
-            rand_face_theta = torch.zeros(n, device=self.device)
+            rand_face_theta = 2 * np.pi * torch.rand(n, device=self.device) - np.pi
+            # rand_face_theta = torch.zeros(n, device=self.device)
         else:
             rand_theta = torch.zeros(n, device=self.device)
             rand_face_theta = torch.zeros(n, device=self.device)
