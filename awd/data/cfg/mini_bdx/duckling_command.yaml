@@ -1,0 +1,135 @@
+# if given, will override the device setting in gym.
+env:
+  numEnvs: 4096
+  envSpacing: 1
+  episodeLength: 500
+  isFlagrun: False
+  enableDebugVis: False
+
+  pdControl: "custom" # or isaac custom
+  powerScale: 1.0
+  controlFrequencyInv: 2 # 30 Hz
+  stateInit: "Hybrid"
+  hybridInitProb: 0.0
+  numAMPObsSteps: 10
+
+  localRootObs: True
+  keyBodies: ["left_foot", "right_foot"]
+  contactBodies: ["left_foot", "right_foot"]
+  terminationHeight: 0.03
+  headTerminationHeight: 0.2
+  initHeight: 0.18
+  initQuat: [0, -0.08, 0, 1]
+  enableEarlyTermination: True
+  enableTaskObs: True
+
+  asset:
+    assetRoot: "awd/data/assets"
+    assetFileName: "mini_bdx/urdf/bdx.urdf"
+
+  plane:
+    staticFriction: 1.0
+    dynamicFriction: 1.0
+    restitution: 0.0
+
+  learn:
+    # rewards
+    linearVelocityXYRewardScale: 0.5
+    angularVelocityZRewardScale: 0.25
+    torqueRewardScale: -0.000025
+
+    # normalization
+    linearVelocityScale: 0.5
+    angularVelocityScale: 0.25
+
+  randomCommandVelocityRanges:
+    linear_x: [-0.3, 0.3] # min max [m/s]
+    linear_y: [-0.3, 0.3] # min max [m/s]
+    yaw: [-0.2, 0.2] # min max [rad/s]
+
+sim:
+  substeps: 2
+  physx:
+    num_threads: 4
+    solver_type: 1 # 0: pgs, 1: tgs
+    num_position_iterations: 4
+    num_velocity_iterations: 0
+    contact_offset: 0.02
+    rest_offset: 0.0
+    bounce_threshold_velocity: 0.2
+    max_depenetration_velocity: 10.0
+    default_buffer_size_multiplier: 10.0
+
+  flex:
+    num_inner_iterations: 10
+    warm_start: 0.25
+
+task:
+  randomize: False
+  randomization_params:
+    frequency: 600 # Define how many environment steps between generating new randomizations
+    observations:
+      range: [0, .002] # range for the white noise
+      operation: "additive"
+      distribution: "gaussian"
+    actions:
+      range: [0., .02]
+      operation: "additive"
+      distribution: "gaussian"
+    sim_params:
+      gravity:
+        range: [0, 0.4]
+        operation: "additive"
+        distribution: "gaussian"
+        schedule: "linear" # "linear" will linearly interpolate between no rand and max rand
+        schedule_steps: 3000
+    actor_params:
+      anymal:
+        color: True
+        rigid_body_properties:
+          mass:
+            range: [0.5, 1.5]
+            operation: "scaling"
+            distribution: "uniform"
+            setup_only: True # Property will only be randomized once before simulation is started. See Domain Randomization Documentation for more info.
+            schedule: "linear" # "linear" will linearly interpolate between no rand and max rand
+            schedule_steps: 3000
+        rigid_shape_properties:
+          friction:
+            num_buckets: 500
+            range: [0.7, 1.3]
+            operation: "scaling"
+            distribution: "uniform"
+            schedule: "linear" # "linear" will scale the current random sample by `min(current num steps, schedule_steps) / schedule_steps`
+            schedule_steps: 3000
+          restitution:
+            range: [0., 0.7]
+            operation: "scaling"
+            distribution: "uniform"
+            schedule: "linear" # "linear" will scale the current random sample by `min(current num steps, schedule_steps) / schedule_steps`
+            schedule_steps: 3000
+        dof_properties:
+          damping:
+            range: [0.5, 1.5]
+            operation: "scaling"
+            distribution: "uniform"
+            schedule: "linear" # "linear" will scale the current random sample by `min(current num steps, schedule_steps) / schedule_steps`
+            schedule_steps: 3000
+          stiffness:
+            range: [0.5, 1.5]
+            operation: "scaling"
+            distribution: "uniform"
+            schedule: "linear" # "linear" will scale the current random sample by `min(current num steps, schedule_steps) / schedule_steps`
+            schedule_steps: 3000
+          lower:
+            range: [0, 0.01]
+            operation: "additive"
+            distribution: "gaussian"
+            schedule: "linear" # "linear" will scale the current random sample by `min(current num steps, schedule_steps) / schedule_steps`
+            schedule_steps: 3000
+          upper:
+            range: [0, 0.01]
+            operation: "additive"
+            distribution: "gaussian"
+            schedule: "linear" # "linear" will scale the current random sample by `min(current num steps, schedule_steps) / schedule_steps`
+            schedule_steps: 3000
