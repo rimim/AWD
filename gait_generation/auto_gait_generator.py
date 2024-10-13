@@ -315,12 +315,18 @@ if __name__ == "__main__":
     )
     parser.add_argument("--mini", action="store_true", default=False)
     parser.add_argument("--preset", type=str, default="")
+    parser.add_argument("--min_dx", type=float, default=-0.04)
+    parser.add_argument("--max_dx", type=float, default=0.04)
+    parser.add_argument("--min_dy", type=float, default=-0.05)
+    parser.add_argument("--max_dy", type=float, default=0.05)
+    parser.add_argument("--min_dtheta", type=float, default=-0.15)
+    parser.add_argument("--max_dtheta", type=float, default=0.15)
     args = parser.parse_args()
 
     # for mini_bdx
-    dx_range = [-0.04, 0.04]
-    dy_range = [-0.05, 0.05]
-    dtheta_range = [-0.15, 0.15]
+    dx_range = [args.min_dx, args.max_dx]
+    dy_range = [args.min_dy, args.max_dy]
+    dtheta_range = [args.min_dtheta, args.max_dtheta]
 
     if args.mini:
         robot = "mini_bdx"
