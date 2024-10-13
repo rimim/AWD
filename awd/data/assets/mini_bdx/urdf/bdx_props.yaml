@@ -17,11 +17,11 @@ dof_body_ids: [1, 2, 3, 4, 6, 7, 9, 10, 11, 12, 13, 14]
 dof_offsets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
 
 # 15*6 # if using 6 dof per joint dof_to_obs in compute_duckling_observations
-dof_obs_size: 90
-num_obs: 108
+# dof_obs_size: 90
+# num_obs: 108
 
-# dof_obs_size: 15
-# num_obs: 33 # + 5 ???
+dof_obs_size: 15
+num_obs: 33 # + 5 ???
 
 num_actions: 15
 
