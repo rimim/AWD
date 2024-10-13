@@ -853,7 +853,7 @@ def dof_to_obs(pose, dof_obs_size, dof_offsets, dof_axis):
     joint_obs_size = 6
     num_joints = len(dof_offsets) - 1
 
-    dof_obs_size *= joint_obs_size  # Added
+    # dof_obs_size *= joint_obs_size  # Added
     dof_obs_shape = pose.shape[:-1] + (dof_obs_size,)
     dof_obs = torch.zeros(dof_obs_shape, device=pose.device)
     dof_obs_offset = 0
@@ -903,10 +903,13 @@ def compute_duckling_observations(
 ):
     # type: (Tensor, Tensor, Tensor, Tensor, Tensor, Tensor, Tensor, bool, bool, int, List[int], List[int], Tensor) -> Tensor
 
+    dof_obs = dof_to_obs(dof_pos, dof_obs_size, dof_offsets, dof_axis)
+
     obs = torch.cat(
         (
             projected_gravity,
-            dof_pos,
+            dof_obs,
+            # dof_pos,
             dof_vel,
         ),
         dim=-1,
