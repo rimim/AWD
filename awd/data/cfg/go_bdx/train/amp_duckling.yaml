@@ -53,22 +53,22 @@ params:
     reward_shaper:
       scale_value: 1
     normalize_advantage: True
-    gamma: 0.99
+    gamma: 0.95
     tau: 0.95
     learning_rate: 2e-5
     lr_schedule: constant
     score_to_win: 20000
-    max_epochs: 10000
+    max_epochs: 1000000
     save_best_after: 50
     save_frequency: 50
     print_stats: True
     grad_norm: 1.0
-    entropy_coef: 0.0
+    entropy_coef: 0.01
     truncate_grads: False
     ppo: True
     e_clip: 0.2
     horizon_length: 32
-    # minibatch_size: 16384
+    minibatch_size: 16384
     mini_epochs: 6
     critic_coef: 5
     clip_value: False
@@ -77,12 +77,12 @@ params:
     amp_obs_demo_buffer_size: 200000
     amp_replay_buffer_size: 200000
     amp_replay_keep_prob: 0.01
-    # amp_batch_size: 512
-    # amp_minibatch_size: 4096
+    amp_batch_size: 512
+    amp_minibatch_size: 4096
     disc_coef: 5
     disc_logit_reg: 0.01
-    disc_grad_penalty: 5
-    disc_reward_scale: 2
+    disc_grad_penalty: 0.01
+    disc_reward_scale: 5
     disc_weight_decay: 0.0001
     normalize_amp_input: True
     enable_eps_greedy: False

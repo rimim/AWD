@@ -82,18 +82,18 @@ params:
     clip_value: False
     seq_len: 4
     bounds_loss_coef: 10
-    amp_obs_demo_buffer_size: 200000
-    amp_replay_buffer_size: 200000
+    amp_obs_demo_buffer_size: 80000
+    amp_replay_buffer_size: 80000
     amp_replay_keep_prob: 0.01
     amp_batch_size: 512
     amp_minibatch_size: 4096
     disc_coef: 5
     disc_logit_reg: 0.01
-    disc_grad_penalty: 5
+    disc_grad_penalty: 10
     disc_reward_scale: 2
     disc_weight_decay: 0.0001
     normalize_amp_input: True
-    enable_eps_greedy: True
+    enable_eps_greedy: False
 
     latent_dim: 64
     latent_steps_min: 1

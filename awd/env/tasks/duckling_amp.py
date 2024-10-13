@@ -29,6 +29,7 @@
 from enum import Enum
 import numpy as np
 import torch
+import os
 
 from isaacgym import gymapi
 from isaacgym import gymtorch
@@ -66,7 +67,11 @@ class DucklingAMP(Duckling):
                          headless=headless)
 
         motion_file = cfg['env']['motion_file']
-        self._load_motion(motion_file)
+        if os.path.isdir(motion_file):
+            motion_files = [os.path.join(motion_file, file) for file in os.listdir(motion_file) if file.endswith(".json") or file.endswith(".txt")]
+        else:
+            motion_files = [motion_file]
+        self._load_motion(motion_files)
 
         self._amp_obs_buf = torch.zeros((self.num_envs, self._num_amp_obs_steps, self._num_amp_obs_per_step), device=self.device, dtype=torch.float)
         self._curr_amp_obs_buf = self._amp_obs_buf[:, 0]
@@ -141,12 +146,12 @@ class DucklingAMP(Duckling):
 
         return
 
-    def _load_motion(self, motion_file):
+    def _load_motion(self, motion_files):
         print(f"self.num_dof: {self.num_dof}")
         print(f"self._dof_offsets[-1]: {self._dof_offsets[-1]}")
         assert(self._dof_offsets[-1] == self.num_dof)
         self._motion_lib = AMPLoader(
-            motion_files=[motion_file],
+            motion_files=motion_files,
             device=self.device,
             time_between_frames=self.dt,
             key_body_ids=self._key_body_ids.cpu().numpy(), 
@@ -208,6 +213,9 @@ class DucklingAMP(Duckling):
         self._reset_ref_motion_ids = motion_ids
         self._reset_ref_motion_times = motion_times
         return
+
+    def _get_duckling_collision_filter(self):
+        return 1 # disable self collisions
 
     def _reset_hybrid_state_init(self, env_ids):
         num_envs = env_ids.shape[0]
@@ -280,6 +288,14 @@ class DucklingAMP(Duckling):
     
     def _compute_amp_observations(self, env_ids=None):
         key_body_pos = self._rigid_body_pos[:, self._key_body_ids, :]
+
+        # print(torch.isnan(self._rigid_body_pos).sum(), "### self._rigid_body_pos 2")
+        # print(torch.isnan(self._rigid_body_rot).sum(), "### self._rigid_body_rot")
+        # print(torch.isnan(self._rigid_body_vel).sum(), "### self._rigid_body_vel")
+        # print(torch.isnan(self._dof_pos).sum(), "### self._dof_pos")
+        # print(torch.isnan(self._dof_vel).sum(), "### self._dof_vel")
+        # print(torch.isnan(key_body_pos).sum(), "### self.key_body_pos")
+
         if (env_ids is None):
             self._curr_amp_obs_buf[:] = build_amp_observations(self._rigid_body_pos[:, 0, :],
                                                                self._rigid_body_rot[:, 0, :],
@@ -324,23 +340,18 @@ def build_amp_observations(root_pos, root_rot, root_vel, root_ang_vel, dof_pos, 
     local_root_vel = quat_rotate(heading_rot, root_vel)
     local_root_ang_vel = quat_rotate(heading_rot, root_ang_vel)
 
-    # if key_body_pos is None or key_body_pos.numel() == 0:
     dof_obs = dof_to_obs(dof_pos, dof_obs_size, dof_offsets, dof_axis)
-    obs = torch.cat((root_h_obs, root_rot_obs, local_root_vel, local_root_ang_vel, dof_obs, dof_vel), dim=-1)
-    # else:
-    #     print("WTF2")
-    #     root_pos_expand = root_pos.unsqueeze(-2)
-    #     local_key_body_pos = key_body_pos - root_pos_expand
     
-    #     heading_rot_expand = heading_rot.unsqueeze(-2)
-    #     heading_rot_expand = heading_rot_expand.repeat((1, local_key_body_pos.shape[1], 1))
-    #     flat_end_pos = local_key_body_pos.view(local_key_body_pos.shape[0] * local_key_body_pos.shape[1], local_key_body_pos.shape[2])
-    #     flat_heading_rot = heading_rot_expand.view(heading_rot_expand.shape[0] * heading_rot_expand.shape[1], 
-    #                                                heading_rot_expand.shape[2])
-    #     local_end_pos = quat_rotate(flat_heading_rot, flat_end_pos)
-    #     flat_local_key_pos = local_end_pos.view(local_key_body_pos.shape[0], local_key_body_pos.shape[1] * local_key_body_pos.shape[2])
+    root_pos_expand = root_pos.unsqueeze(-2)
+    local_key_body_pos = key_body_pos - root_pos_expand
 
-    #     dof_obs = dof_to_obs(dof_pos, dof_obs_size, dof_offsets)
-    #     obs = torch.cat((root_h_obs, root_rot_obs, local_root_vel, local_root_ang_vel, dof_obs, dof_vel, flat_local_key_pos), dim=-1)
+    heading_rot_expand = heading_rot.unsqueeze(-2)
+    heading_rot_expand = heading_rot_expand.repeat((1, local_key_body_pos.shape[1], 1))
+    flat_end_pos = local_key_body_pos.view(local_key_body_pos.shape[0] * local_key_body_pos.shape[1], local_key_body_pos.shape[2])
+    flat_heading_rot = heading_rot_expand.view(heading_rot_expand.shape[0] * heading_rot_expand.shape[1], 
+                                                heading_rot_expand.shape[2])
+    local_end_pos = quat_rotate(flat_heading_rot, flat_end_pos)
+    flat_local_key_pos = local_end_pos.view(local_key_body_pos.shape[0], local_key_body_pos.shape[1] * local_key_body_pos.shape[2])
 
+    obs = torch.cat((root_h_obs, root_rot_obs, local_root_vel, local_root_ang_vel, dof_obs, dof_vel, flat_local_key_pos), dim=-1)
     return obs

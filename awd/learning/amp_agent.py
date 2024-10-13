@@ -432,8 +432,8 @@ class AMPAgent(common_agent.CommonAgent):
         self._disc_reward_w = config['disc_reward_w']
 
         self._amp_observation_space = self.env_info['amp_observation_space']
-        self._amp_batch_size = int(config.get('amp_batch_size', self.vec_env.env.task.num_envs/8))
-        self._amp_minibatch_size = int(config.get('amp_minibatch_size', self.vec_env.env.task.num_envs))
+        self._amp_batch_size = int(config['amp_batch_size'])
+        self._amp_minibatch_size = int(config['amp_minibatch_size'])
         assert(self._amp_minibatch_size <= self.minibatch_size)
 
         self._disc_coef = config['disc_coef']

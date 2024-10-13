@@ -1,7 +1,7 @@
 # if given, will override the device setting in gym. 
 env: 
   numEnvs: 4096
-  envSpacing: 1
+  envSpacing: 3
   episodeLength: 300
   isFlagrun: False
   enableDebugVis: False
@@ -11,12 +11,12 @@ env:
   controlFrequencyInv: 2 # 30 Hz
   stateInit: "Hybrid"
   hybridInitProb: 0.5
-  numAMPObsSteps: 10
+  numAMPObsSteps: 5
   
-  localRootObs: True
-  keyBodies: ["right_foot", "left_foot"]
-  contactBodies: ["right_foot", "left_foot"]
-  terminationHeight: 0.15
+  localRootObs: False
+  keyBodies: ["left_foot", "right_foot"]
+  contactBodies: ["left_foot", "right_foot"]
+  terminationHeight: -0.1
   enableEarlyTermination: True
 
   asset:

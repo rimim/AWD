@@ -9,6 +9,57 @@
                 <color rgba="0.64705882352941179736 0.64705882352941179736 0.64705882352941179736 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-0.049872899514971674728 -0.1141428912905502191 0.01507892295095538196" rpy="-6.2367202746833250932e-14 -1.5074919608395581653e-14 1.5707963267948974462" />
+            <geometry>
+                <mesh filename="../meshes/cage_bottom.stl"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="-0.0423728995149717097 0.028396103569423458701 0.013578922950958013938" rpy="-1.570796326794881459 -6.250077645448205144e-14 8.881784197007373884e-16" />
+            <geometry>
+                <mesh filename="../meshes/power_switch.stl"/>
+            </geometry>
+            <material name="power_switch_material">
+                <color rgba="0.90196078431372550543 0.90196078431372550543 0.90196078431372550543 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="-0.0423728995149717097 0.028396103569423458701 0.013578922950958013938" rpy="-1.570796326794881459 -6.250077645448205144e-14 8.881784197007373884e-16" />
+            <geometry>
+                <mesh filename="../meshes/power_switch.stl"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="-0.026822899514971677154 -0.11414289129055016359 0.015078922950957383831" rpy="-6.3477211383748394106e-14 -1.5130430759629774043e-14 1.5707963267948974462" />
+            <geometry>
+                <mesh filename="../meshes/rasp_spacer.stl"/>
+            </geometry>
+            <material name="rasp_spacer_material">
+                <color rgba="0.76862745098039220171 0.88627450980392152857 0.95294117647058818044 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="-0.026822899514971677154 -0.11414289129055016359 0.015078922950957383831" rpy="-6.3477211383748394106e-14 -1.5130430759629774043e-14 1.5707963267948974462" />
+            <geometry>
+                <mesh filename="../meshes/rasp_spacer.stl"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="-0.049872899514971702484 -0.1141428912905502191 0.01507892295095519114" rpy="-6.3144144476363674421e-14 -1.5463497667014358043e-14 1.5707963267948976682" />
+            <geometry>
+                <mesh filename="../meshes/rasp_spacer.stl"/>
+            </geometry>
+            <material name="rasp_spacer_material">
+                <color rgba="0.76862745098039220171 0.88627450980392152857 0.95294117647058818044 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="-0.049872899514971702484 -0.1141428912905502191 0.01507892295095519114" rpy="-6.3144144476363674421e-14 -1.5463497667014358043e-14 1.5707963267948976682" />
+            <geometry>
+                <mesh filename="../meshes/rasp_spacer.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="-0.049872899514971757995 -0.11414289129055026073 0.015078922950955218896" rpy="-6.2367202746832013998e-14 -1.5074919608395587964e-14 1.5707963267948974462" />
             <geometry>
@@ -18,6 +69,42 @@
                 <color rgba="0.64705882352941179736 0.64705882352941179736 0.64705882352941179736 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-0.049872899514971757995 -0.11414289129055026073 0.015078922950955218896" rpy="-6.2367202746832013998e-14 -1.5074919608395587964e-14 1.5707963267948974462" />
+            <geometry>
+                <mesh filename="../meshes/cage_top.stl"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="0.040377100485030542609 -0.034103896430575909859 -0.020971077049037202544" rpy="-1.570796326794881681 -6.1207776584054055418e-14 1.6001680655052159878e-15" />
+            <geometry>
+                <mesh filename="../meshes/usb_c_charger.stl"/>
+            </geometry>
+            <material name="usb_c_charger_material">
+                <color rgba="0.61568627450980395466 0.81176470588235294379 0.92941176470588238168 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0.040377100485030542609 -0.034103896430575909859 -0.020971077049037202544" rpy="-1.570796326794881681 -6.1207776584054055418e-14 1.6001680655052159878e-15" />
+            <geometry>
+                <mesh filename="../meshes/usb_c_charger.stl"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="-0.034372899514973721813 -0.0056038964305771717112 0.030078922950957640015" rpy="3.1415926535897775729 6.3144144476363674421e-14 -3.1415926535897922278" />
+            <geometry>
+                <mesh filename="../meshes/bno055.stl"/>
+            </geometry>
+            <material name="bno055_material">
+                <color rgba="0.61568627450980395466 0.81176470588235294379 0.92941176470588238168 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="-0.034372899514973721813 -0.0056038964305771717112 0.030078922950957640015" rpy="3.1415926535897775729 6.3144144476363674421e-14 -3.1415926535897922278" />
+            <geometry>
+                <mesh filename="../meshes/bno055.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="-0.049872899514971653911 -0.11414289129055023297 0.015078922950955361143" rpy="-6.2089646990676974419e-14 -1.5074919608395581653e-14 1.5707963267948974462" />
             <geometry>
@@ -27,6 +114,12 @@
                 <color rgba="0.64705882352941179736 0.64705882352941179736 0.64705882352941179736 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-0.049872899514971653911 -0.11414289129055023297 0.015078922950955361143" rpy="-6.2089646990676974419e-14 -1.5074919608395581653e-14 1.5707963267948974462" />
+            <geometry>
+                <mesh filename="../meshes/front_cover.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="0.00012710048502939663706 -0.0066038964305761768681 -0.0049210770490394940835" rpy="-6.2367202746833263554e-14 -1.5074919608395581653e-14 1.5707963267948974462" />
             <geometry>
@@ -36,6 +129,57 @@
                 <color rgba="0.30196078431372547213 0.29019607843137257275 0.26274509803921569651 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="0.00012710048502939663706 -0.0066038964305761768681 -0.0049210770490394940835" rpy="-6.2367202746833263554e-14 -1.5074919608395581653e-14 1.5707963267948974462" />
+            <geometry>
+                <mesh filename="../meshes/body_part.stl"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="-0.049872899514971640034 -0.11414289129055014971 0.015078922950956266669" rpy="-6.159026101730031571e-14 -1.5074919608395572187e-14 1.5707963267948974462" />
+            <geometry>
+                <mesh filename="../meshes/cage_bottom_battery_hold.stl"/>
+            </geometry>
+            <material name="cage_bottom_battery_hold_material">
+                <color rgba="0.64705882352941179736 0.64705882352941179736 0.64705882352941179736 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="-0.049872899514971640034 -0.11414289129055014971 0.015078922950956266669" rpy="-6.159026101730031571e-14 -1.5074919608395572187e-14 1.5707963267948974462" />
+            <geometry>
+                <mesh filename="../meshes/cage_bottom_battery_hold.stl"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="0.00012710048502939663706 -0.0066038964305761777354 -0.0049210770490394958182" rpy="-6.2367202746833364528e-14 -1.5074919608395578498e-14 1.5707963267948976682" />
+            <geometry>
+                <mesh filename="../meshes/spacer.stl"/>
+            </geometry>
+            <material name="spacer_material">
+                <color rgba="0.91764705882352937127 0.91764705882352937127 0.91764705882352937127 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0.00012710048502939663706 -0.0066038964305761777354 -0.0049210770490394958182" rpy="-6.2367202746833364528e-14 -1.5074919608395578498e-14 1.5707963267948976682" />
+            <geometry>
+                <mesh filename="../meshes/spacer.stl"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="0.0073591609532240691294 -0.034103896430576687016 0.031251164398389409682" rpy="1.5707963267948821251 6.2939567726915221061e-14 -3.1415926535897926719" />
+            <geometry>
+                <mesh filename="../meshes/bms.stl"/>
+            </geometry>
+            <material name="bms_material">
+                <color rgba="0.2313725490196078538 0.38039215686274507888 0.7058823529411765163 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0.0073591609532240691294 -0.034103896430576687016 0.031251164398389409682" rpy="1.5707963267948821251 6.2939567726915221061e-14 -3.1415926535897926719" />
+            <geometry>
+                <mesh filename="../meshes/bms.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="-0.049872899514971674728 -0.1141428912905502191 0.015078922950955399307" rpy="-6.2367202746833263554e-14 -1.5074919608395581653e-14 1.5707963267948974462" />
             <geometry>
@@ -45,6 +189,462 @@
                 <color rgba="0.64705882352941179736 0.64705882352941179736 0.64705882352941179736 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-0.049872899514971674728 -0.1141428912905502191 0.015078922950955399307" rpy="-6.2367202746833263554e-14 -1.5074919608395581653e-14 1.5707963267948974462" />
+            <geometry>
+                <mesh filename="../meshes/cage_back.stl"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="0.00012710048502949378157 -0.006603896430576145643 -0.0059210770490396615051" rpy="-6.3144144476364621054e-14 -1.5463497667014348577e-14 1.5707963267948978903" />
+            <geometry>
+                <mesh filename="../meshes/holder_u2d2_power_hub.stl"/>
+            </geometry>
+            <material name="holder_u2d2_power_hub_material">
+                <color rgba="0.30196078431372547213 0.30196078431372547213 0.30196078431372547213 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0.00012710048502949378157 -0.006603896430576145643 -0.0059210770490396615051" rpy="-6.3144144476364621054e-14 -1.5463497667014348577e-14 1.5707963267948978903" />
+            <geometry>
+                <mesh filename="../meshes/holder_u2d2_power_hub.stl"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="-0.049872899514968108137 -0.11414289129054938643 -0.042971077049042571971" rpy="-6.2922314259144567025e-14 -1.5519008818240349435e-14 1.5707963267948978903" />
+            <geometry>
+                <mesh filename="../meshes/rasp_spacer.stl"/>
+            </geometry>
+            <material name="rasp_spacer_material">
+                <color rgba="0.76862745098039220171 0.88627450980392152857 0.95294117647058818044 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="-0.049872899514968108137 -0.11414289129054938643 -0.042971077049042571971" rpy="-6.2922314259144567025e-14 -1.5519008818240349435e-14 1.5707963267948978903" />
+            <geometry>
+                <mesh filename="../meshes/rasp_spacer.stl"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="0.00012710048502787528457 -0.031603896430576552956 0.019578922950959622151" rpy="-1.5074919608395890887e-14 6.2367202746832013998e-14 -3.1415926535897922278" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_case_f_dummy.stl"/>
+            </geometry>
+            <material name="dc15_a01_case_f_dummy_material">
+                <color rgba="0.28235294117647058432 0.25490196078431370807 0.25490196078431370807 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0.00012710048502787528457 -0.031603896430576552956 0.019578922950959622151" rpy="-1.5074919608395890887e-14 6.2367202746832013998e-14 -3.1415926535897922278" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_case_f_dummy.stl"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="0.00012710048502787181512 -0.031603896430576552956 0.019578922950959622151" rpy="-1.507491960839588142e-14 6.2367202746832013998e-14 -3.1415926535897922278" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_case_m_dummy.stl"/>
+            </geometry>
+            <material name="dc15_a01_case_m_dummy_material">
+                <color rgba="0.28235294117647058432 0.25490196078431370807 0.25490196078431370807 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0.00012710048502787181512 -0.031603896430576552956 0.019578922950959622151" rpy="-1.507491960839588142e-14 6.2367202746832013998e-14 -3.1415926535897922278" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_case_m_dummy.stl"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="0.000127100485029089591 -0.031603896430576247645 7.8922950960027236922e-05" rpy="-1.5074919608395890887e-14 6.2367202746832013998e-14 -3.1415926535897922278" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_case_b_dummy.stl"/>
+            </geometry>
+            <material name="dc15_a01_case_b_dummy_material">
+                <color rgba="0.28235294117647058432 0.25490196078431370807 0.25490196078431370807 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0.000127100485029089591 -0.031603896430576247645 7.8922950960027236922e-05" rpy="-1.5074919608395890887e-14 6.2367202746832013998e-14 -3.1415926535897922278" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_case_b_dummy.stl"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="0.00012710048502783018176 0.018396103569423449819 0.019578922950960368082" rpy="1.5074919608395890887e-14 -6.2367202746832013998e-14 9.4368957093184552907e-16" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_case_f_dummy.stl"/>
+            </geometry>
+            <material name="dc15_a01_case_f_dummy_material">
+                <color rgba="0.28235294117647058432 0.25490196078431370807 0.25490196078431370807 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0.00012710048502783018176 0.018396103569423449819 0.019578922950960368082" rpy="1.5074919608395890887e-14 -6.2367202746832013998e-14 9.4368957093184552907e-16" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_case_f_dummy.stl"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="0.00012710048502782844704 0.018396103569423449819 0.019578922950960364613" rpy="1.5074919608395887731e-14 -6.2367202746832013998e-14 9.2165518404232636261e-16" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_case_m_dummy.stl"/>
+            </geometry>
+            <material name="dc15_a01_case_m_dummy_material">
+                <color rgba="0.28235294117647058432 0.25490196078431370807 0.25490196078431370807 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0.00012710048502782844704 0.018396103569423449819 0.019578922950960364613" rpy="1.5074919608395887731e-14 -6.2367202746832013998e-14 9.2165518404232636261e-16" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_case_m_dummy.stl"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="0.00012710048502904622292 0.018396103569423741253 7.8922950960772300655e-05" rpy="1.5074919608395890887e-14 -6.2367202746832013998e-14 9.4368957093184552907e-16" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_case_b_dummy.stl"/>
+            </geometry>
+            <material name="dc15_a01_case_b_dummy_material">
+                <color rgba="0.28235294117647058432 0.25490196078431370807 0.25490196078431370807 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0.00012710048502904622292 0.018396103569423741253 7.8922950960772300655e-05" rpy="1.5074919608395890887e-14 -6.2367202746832013998e-14 9.4368957093184552907e-16" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_case_b_dummy.stl"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="0.030627100485025753052 -0.014603896430577117255 0.055078922950960867988" rpy="1.5707963267948956698 1.5707963267948321651 0" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_case_f_dummy.stl"/>
+            </geometry>
+            <material name="dc15_a01_case_f_dummy_material">
+                <color rgba="0.28235294117647058432 0.25490196078431370807 0.25490196078431370807 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0.030627100485025753052 -0.014603896430577117255 0.055078922950960867988" rpy="1.5707963267948956698 1.5707963267948321651 0" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_case_f_dummy.stl"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="0.030627100485025753052 -0.014603896430577117255 0.055078922950960861049" rpy="1.5707963267948956698 1.5707963267948323871 0" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_case_m_dummy.stl"/>
+            </geometry>
+            <material name="dc15_a01_case_m_dummy_material">
+                <color rgba="0.28235294117647058432 0.25490196078431370807 0.25490196078431370807 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0.030627100485025753052 -0.014603896430577117255 0.055078922950960861049" rpy="1.5707963267948956698 1.5707963267948323871 0" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_case_m_dummy.stl"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="0.030627100485025739174 0.0048961035694229330245 0.055078922950961152483" rpy="1.5707963267948956698 1.5707963267948323871 0" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_case_b_dummy.stl"/>
+            </geometry>
+            <material name="dc15_a01_case_b_dummy_material">
+                <color rgba="0.28235294117647058432 0.25490196078431370807 0.25490196078431370807 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0.030627100485025739174 0.0048961035694229330245 0.055078922950961152483" rpy="1.5707963267948956698 1.5707963267948323871 0" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_case_b_dummy.stl"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="-0.034872899514969260548 -0.017103896430575932924 -0.02492107704904125004" rpy="1.5707963267948190644 0.62050967106611187862 1.5707963267948525932" />
+            <geometry>
+                <mesh filename="../meshes/cell.stl"/>
+            </geometry>
+            <material name="cell_material">
+                <color rgba="0.61568627450980395466 0.81176470588235294379 0.92941176470588238168 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="-0.034872899514969260548 -0.017103896430575932924 -0.02492107704904125004" rpy="1.5707963267948190644 0.62050967106611187862 1.5707963267948525932" />
+            <geometry>
+                <mesh filename="../meshes/cell.stl"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="-0.0013144211052831464293 -0.070128354987943064547 -0.034921077049039919715" rpy="1.4843623144945517932e-14 -6.2367202746866143276e-14 8.8817841970261507457e-16" />
+            <geometry>
+                <mesh filename="../meshes/holder.stl"/>
+            </geometry>
+            <material name="holder_material">
+                <color rgba="0.64705882352941179736 0.64705882352941179736 0.64705882352941179736 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="-0.0013144211052831464293 -0.070128354987943064547 -0.034921077049039919715" rpy="1.4843623144945517932e-14 -6.2367202746866143276e-14 8.8817841970261507457e-16" />
+            <geometry>
+                <mesh filename="../meshes/holder.stl"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="0.030127100485030720856 0.003896103569424154249 -0.024921077049036836903" rpy="-1.5707963267949891506 -0.82053085802352232481 1.5707963267949656139" />
+            <geometry>
+                <mesh filename="../meshes/cell.stl"/>
+            </geometry>
+            <material name="cell_material">
+                <color rgba="0.61568627450980395466 0.81176470588235294379 0.92941176470588238168 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0.030127100485030720856 0.003896103569424154249 -0.024921077049036836903" rpy="-1.5707963267949891506 -0.82053085802352232481 1.5707963267949656139" />
+            <geometry>
+                <mesh filename="../meshes/cell.stl"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="-0.036872899514972523605 -0.039603896430576671084 0.027578922950957693305" rpy="2.2204460491569067728e-16 -1.5707963267948328312 0" />
+            <geometry>
+                <mesh filename="../meshes/raspberrypizerow.stl"/>
+            </geometry>
+            <material name="raspberrypizerow_material">
+                <color rgba="0.64705882352941179736 0.64705882352941179736 0.64705882352941179736 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="-0.036872899514972523605 -0.039603896430576671084 0.027578922950957693305" rpy="2.2204460491569067728e-16 -1.5707963267948328312 0" />
+            <geometry>
+                <mesh filename="../meshes/raspberrypizerow.stl"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="-0.036872899514972523605 -0.039603896430576671084 0.027578922950957693305" rpy="2.2204460491569067728e-16 -1.5707963267948328312 0" />
+            <geometry>
+                <mesh filename="../meshes/raspberrypizerow.stl"/>
+            </geometry>
+            <material name="raspberrypizerow_material">
+                <color rgba="0.2313725490196078538 0.38039215686274507888 0.7058823529411765163 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="-0.036872899514972523605 -0.039603896430576671084 0.027578922950957693305" rpy="2.2204460491569067728e-16 -1.5707963267948328312 0" />
+            <geometry>
+                <mesh filename="../meshes/raspberrypizerow.stl"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="-0.028872899514992861336 -0.012353896430585816629 0.046778922950959013483" rpy="1.5707963267950224573 -6.4032322896069201773e-14 1.1257661469699141594e-13" />
+            <geometry>
+                <mesh filename="../meshes/jst-b3b-eh-a.prt.1.stl"/>
+            </geometry>
+            <material name="jst-b3b-eh-a.prt.1_material">
+                <color rgba="0.75294117647058822484 0.75294117647058822484 0.75294117647058822484 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="-0.028872899514992861336 -0.012353896430585816629 0.046778922950959013483" rpy="1.5707963267950224573 -6.4032322896069201773e-14 1.1257661469699141594e-13" />
+            <geometry>
+                <mesh filename="../meshes/jst-b3b-eh-a.prt.1.stl"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="-0.016922899514992786191 -0.012353896430584484362 0.046778922950959776761" rpy="1.5707963267950224573 -6.4032322896069201773e-14 1.1257661469699141594e-13" />
+            <geometry>
+                <mesh filename="../meshes/jst-b4b-eh-a.prt.1.stl"/>
+            </geometry>
+            <material name="jst-b4b-eh-a.prt.1_material">
+                <color rgba="0.75294117647058822484 0.75294117647058822484 0.75294117647058822484 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="-0.016922899514992786191 -0.012353896430584484362 0.046778922950959776761" rpy="1.5707963267950224573 -6.4032322896069201773e-14 1.1257661469699141594e-13" />
+            <geometry>
+                <mesh filename="../meshes/jst-b4b-eh-a.prt.1.stl"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="0.051560600485445980123 -0.18184389304755696481 0.051797851409400325062" rpy="-6.3171900051979404309e-14 -1.5102675184011226344e-14 1.5707963267948974462" />
+            <geometry>
+                <mesh filename="../meshes/board.stl"/>
+            </geometry>
+            <material name="board_material">
+                <color rgba="0 0 0 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0.051560600485445980123 -0.18184389304755696481 0.051797851409400325062" rpy="-6.3171900051979404309e-14 -1.5102675184011226344e-14 1.5707963267948974462" />
+            <geometry>
+                <mesh filename="../meshes/board.stl"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="-0.01692289951499417397 -0.00045389643058443493451 0.046778922950959957172" rpy="1.5707963267950224573 -6.4032322896069201773e-14 1.1257661469699141594e-13" />
+            <geometry>
+                <mesh filename="../meshes/jst-b4b-eh-a.prt.1.stl"/>
+            </geometry>
+            <material name="jst-b4b-eh-a.prt.1_material">
+                <color rgba="0.75294117647058822484 0.75294117647058822484 0.75294117647058822484 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="-0.01692289951499417397 -0.00045389643058443493451 0.046778922950959957172" rpy="1.5707963267950224573 -6.4032322896069201773e-14 1.1257661469699141594e-13" />
+            <geometry>
+                <mesh filename="../meshes/jst-b4b-eh-a.prt.1.stl"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="-0.028872899514994193604 -0.00045389643058578107992 0.046778922950959193894" rpy="1.5707963267950224573 -6.4032322896069201773e-14 1.1257661469699141594e-13" />
+            <geometry>
+                <mesh filename="../meshes/jst-b3b-eh-a.prt.1.stl"/>
+            </geometry>
+            <material name="jst-b3b-eh-a.prt.1_material">
+                <color rgba="0.75294117647058822484 0.75294117647058822484 0.75294117647058822484 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="-0.028872899514994193604 -0.00045389643058578107992 0.046778922950959193894" rpy="1.5707963267950224573 -6.4032322896069201773e-14 1.1257661469699141594e-13" />
+            <geometry>
+                <mesh filename="../meshes/jst-b3b-eh-a.prt.1.stl"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="-0.016922899514993507836 -0.0063538964305844790326 0.046778922950959866967" rpy="1.5707963267950224573 -6.4032322896069201773e-14 1.1257661469699141594e-13" />
+            <geometry>
+                <mesh filename="../meshes/jst-b4b-eh-a.prt.1.stl"/>
+            </geometry>
+            <material name="jst-b4b-eh-a.prt.1_material">
+                <color rgba="0.75294117647058822484 0.75294117647058822484 0.75294117647058822484 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="-0.016922899514993507836 -0.0063538964305844790326 0.046778922950959866967" rpy="1.5707963267950224573 -6.4032322896069201773e-14 1.1257661469699141594e-13" />
+            <geometry>
+                <mesh filename="../meshes/jst-b4b-eh-a.prt.1.stl"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="-0.02887289951499352747 -0.006353896430585825178 0.046778922950959096749" rpy="1.5707963267950224573 -6.4032322896069201773e-14 1.1257661469699141594e-13" />
+            <geometry>
+                <mesh filename="../meshes/jst-b3b-eh-a.prt.1.stl"/>
+            </geometry>
+            <material name="jst-b3b-eh-a.prt.1_material">
+                <color rgba="0.75294117647058822484 0.75294117647058822484 0.75294117647058822484 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="-0.02887289951499352747 -0.006353896430585825178 0.046778922950959096749" rpy="1.5707963267950224573 -6.4032322896069201773e-14 1.1257661469699141594e-13" />
+            <geometry>
+                <mesh filename="../meshes/jst-b3b-eh-a.prt.1.stl"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="-0.057837899514994489669 0.0028436473125530749295 0.04677892295095739672" rpy="1.5707963267950224573 -6.4032322896069201773e-14 1.1257661469699141594e-13" />
+            <geometry>
+                <mesh filename="../meshes/u2d2_casing.prt.stl"/>
+            </geometry>
+            <material name="u2d2_casing.prt_material">
+                <color rgba="0.79607843137254896693 0.82352941176470584317 0.9372549019607843146 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="-0.057837899514994489669 0.0028436473125530749295 0.04677892295095739672" rpy="1.5707963267950224573 -6.4032322896069201773e-14 1.1257661469699141594e-13" />
+            <geometry>
+                <mesh filename="../meshes/u2d2_casing.prt.stl"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="-0.019937899514996120648 0.013643647312557228429 0.05477892295095819486" rpy="1.5707963267950224573 -6.4032322896069201773e-14 1.1257661469699141594e-13" />
+            <geometry>
+                <mesh filename="../meshes/jst-b3b-eh-a.prt.stl"/>
+            </geometry>
+            <material name="jst-b3b-eh-a.prt_material">
+                <color rgba="0.75294117647058822484 0.75294117647058822484 0.75294117647058822484 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="-0.019937899514996120648 0.013643647312557228429 0.05477892295095819486" rpy="1.5707963267950224573 -6.4032322896069201773e-14 1.1257661469699141594e-13" />
+            <geometry>
+                <mesh filename="../meshes/jst-b3b-eh-a.prt.stl"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="-0.010037899514994882977 0.0049436473125585335409 0.054778922950958701399" rpy="1.5707963267947711028 6.3573688731349088676e-14 -3.141592653589673656" />
+            <geometry>
+                <mesh filename="../meshes/jst-b4b-ph-k-s.prt.stl"/>
+            </geometry>
+            <material name="jst-b4b-ph-k-s.prt_material">
+                <color rgba="0.75294117647058822484 0.75294117647058822484 0.75294117647058822484 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="-0.010037899514994882977 0.0049436473125585335409 0.054778922950958701399" rpy="1.5707963267947711028 6.3573688731349088676e-14 -3.141592653589673656" />
+            <geometry>
+                <mesh filename="../meshes/jst-b4b-ph-k-s.prt.stl"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="-0.021187899514996593603 0.017493647312557109724 0.05477892295095819486" rpy="1.5707963267950224573 -6.4032322896069201773e-14 1.1257661469699141594e-13" />
+            <geometry>
+                <mesh filename="../meshes/jst-b4b-eh-a.prt.stl"/>
+            </geometry>
+            <material name="jst-b4b-eh-a.prt_material">
+                <color rgba="0.75294117647058822484 0.75294117647058822484 0.75294117647058822484 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="-0.021187899514996593603 0.017493647312557109724 0.05477892295095819486" rpy="1.5707963267950224573 -6.4032322896069201773e-14 1.1257661469699141594e-13" />
+            <geometry>
+                <mesh filename="../meshes/jst-b4b-eh-a.prt.stl"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="-0.04604147405186335279 0.050591474436928254854 0.054778922950957119331" rpy="3.141592653589778017 6.4032322896068520197e-14 -3.1415926535896807614" />
+            <geometry>
+                <mesh filename="../meshes/pcb_u2d2.prt.stl"/>
+            </geometry>
+            <material name="pcb_u2d2.prt_material">
+                <color rgba="0 0.29411764705882353921 0.65490196078431373028 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="-0.04604147405186335279 0.050591474436928254854 0.054778922950957119331" rpy="3.141592653589778017 6.4032322896068520197e-14 -3.1415926535896807614" />
+            <geometry>
+                <mesh filename="../meshes/pcb_u2d2.prt.stl"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="-0.055737814613989480894 0.011843647312554005796 0.056940372525141912108" rpy="1.5707963267950224573 -6.4032322896069201773e-14 1.1257661469699141594e-13" />
+            <geometry>
+                <mesh filename="../meshes/micro_usb_2_0_connector__ab_rec.prt.stl"/>
+            </geometry>
+            <material name="micro_usb_2_0_connector__ab_rec.prt_material">
+                <color rgba="0.5999999999999999778 0.5999999999999999778 0.5999999999999999778 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="-0.055737814613989480894 0.011843647312554005796 0.056940372525141912108" rpy="1.5707963267950224573 -6.4032322896069201773e-14 1.1257661469699141594e-13" />
+            <geometry>
+                <mesh filename="../meshes/micro_usb_2_0_connector__ab_rec.prt.stl"/>
+            </geometry>
+        </collision>
+        <visual>
+            <origin xyz="-0.051389399514572123295 -0.0011438930475683416199 0.046578922950957800386" rpy="1.5707963267947220309 -4.9949124345402063664e-14 1.5707963267949700548" />
+            <geometry>
+                <mesh filename="../meshes/39281023.prt.stl"/>
+            </geometry>
+            <material name="39281023.prt_material">
+                <color rgba="0.5999999999999999778 0.5999999999999999778 0.5999999999999999778 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="-0.051389399514572123295 -0.0011438930475683416199 0.046578922950957800386" rpy="1.5707963267947220309 -4.9949124345402063664e-14 1.5707963267949700548" />
+            <geometry>
+                <mesh filename="../meshes/39281023.prt.stl"/>
+            </geometry>
+        </collision>
         <inertial>
             <origin xyz="-0.00675679511969270747 -0.006637466546945220737 0.0078705246973564610413" rpy="0 0 0"/>
             <mass value="0.50186117579999178773" />
@@ -66,6 +666,21 @@
     </joint>
     <link name="double_u_module">
         <visual>
+            <origin xyz="2.0816681711721685133e-17 -4.2012834183813296818e-18 0.022999999999999951039" rpy="1.570796326794896558 9.7144514654699410024e-17 4.996003610813283318e-16" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_horn_dummy.stl"/>
+            </geometry>
+            <material name="dc15_a01_horn_dummy_material">
+                <color rgba="0.49803921568627451677 0.49803921568627451677 0.49803921568627451677 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="2.0816681711721685133e-17 -4.2012834183813296818e-18 0.022999999999999951039" rpy="1.570796326794896558 9.7144514654699410024e-17 4.996003610813283318e-16" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_horn_dummy.stl"/>
+            </geometry>
+        </collision>
+        <visual>
             <origin xyz="-0.14608752727508525493 -1.306463617845032843e-17 0.027999999999999993644" rpy="1.57079632679489678 2.0816681711737678055e-17 -3.141592653589793116" />
             <geometry>
                 <mesh filename="../meshes/double_u.stl"/>
@@ -74,6 +689,12 @@
                 <color rgba="0.28235294117647058432 0.25490196078431370807 0.25490196078431370807 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-0.14608752727508525493 -1.306463617845032843e-17 0.027999999999999993644" rpy="1.57079632679489678 2.0816681711737678055e-17 -3.141592653589793116" />
+            <geometry>
+                <mesh filename="../meshes/double_u.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="-0.033999999999999919176 -0.011500225429056536164 0.011499999999999900926" rpy="3.141592653589793116 -8.6736173798778897526e-17 4.4408920985005285402e-16" />
             <geometry>
@@ -83,6 +704,12 @@
                 <color rgba="0.49803921568627451677 0.49803921568627451677 0.49803921568627451677 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-0.033999999999999919176 -0.011500225429056536164 0.011499999999999900926" rpy="3.141592653589793116 -8.6736173798778897526e-17 4.4408920985005285402e-16" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_horn_dummy.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="0 0 0" rpy="-3.141592653589793116 -3.3480749407005644071e-30 9.2593440517554546076e-32" />
             <geometry>
@@ -92,6 +719,12 @@
                 <color rgba="0.2313725490196078538 0.38039215686274507888 0.7058823529411765163 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="-3.141592653589793116 -3.3480749407005644071e-30 9.2593440517554546076e-32" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_horn_idle2_dummy.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="-0.033999999999999905298 0.011499999999999989397 0.011499999999999895722" rpy="-1.57079632679489678 -4.1633363423422181955e-17 4.996003610813140337e-16" />
             <geometry>
@@ -101,6 +734,12 @@
                 <color rgba="0.2313725490196078538 0.38039215686274507888 0.7058823529411765163 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-0.033999999999999905298 0.011499999999999989397 0.011499999999999895722" rpy="-1.57079632679489678 -4.1633363423422181955e-17 4.996003610813140337e-16" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_horn_idle2_dummy.stl"/>
+            </geometry>
+        </collision>
         <inertial>
             <origin xyz="-0.017000000000027194746 -8.4248510725113835815e-05 0.01158451252812944636" rpy="0 0 0"/>
             <mass value="0.018818301231819770797" />
@@ -117,6 +756,12 @@
                 <color rgba="0.28235294117647058432 0.25490196078431370807 0.25490196078431370807 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-0.067053147256377121366 -0.024500000000000993206 0.0090000000000002959577" rpy="-8.6112219883604645945e-16 1.6243577932283069901e-15 6.1062266354327107561e-16" />
+            <geometry>
+                <mesh filename="../meshes/hip_right_roll_to_pitch.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="-2.9837243786801082024e-16 -2.7755575615628913511e-16 -0.0035000000000000204559" rpy="2.4577307349438227031e-30 4.2931254331535647929e-16 1.6653345369332757744e-16" />
             <geometry>
@@ -126,6 +771,12 @@
                 <color rgba="0.28235294117647058432 0.25490196078431370807 0.25490196078431370807 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-2.9837243786801082024e-16 -2.7755575615628913511e-16 -0.0035000000000000204559" rpy="2.4577307349438227031e-30 4.2931254331535647929e-16 1.6653345369332757744e-16" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_case_f_dummy.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="-1.7347234759768070944e-18 0 -0.0034999999999999996392" rpy="-1.2966173603205519582e-33 -3.8396316524368764545e-30 3.6977854936784594168e-31" />
             <geometry>
@@ -135,6 +786,12 @@
                 <color rgba="0.28235294117647058432 0.25490196078431370807 0.25490196078431370807 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-1.7347234759768070944e-18 0 -0.0034999999999999996392" rpy="-1.2966173603205519582e-33 -3.8396316524368764545e-30 3.6977854936784594168e-31" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_case_m_dummy.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="-1.7173762412170390235e-16 -2.498001805406602216e-16 -0.022999999999999999611" rpy="-8.7266099301611075154e-16 -3.6913114184781534669e-16 -4.3892713804560277112e-28" />
             <geometry>
@@ -144,6 +801,12 @@
                 <color rgba="0.28235294117647058432 0.25490196078431370807 0.25490196078431370807 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-1.7173762412170390235e-16 -2.498001805406602216e-16 -0.022999999999999999611" rpy="-8.7266099301611075154e-16 -3.6913114184781534669e-16 -4.3892713804560277112e-28" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_case_b_dummy.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="0.025000000000000646705 -0.02100000000000065703 -0.013499999999999789946" rpy="-1.5707963267948956698 3.4371750726708999825e-16 -3.141592653589793116" />
             <geometry>
@@ -153,6 +816,12 @@
                 <color rgba="0.28235294117647058432 0.25490196078431370807 0.25490196078431370807 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="0.025000000000000646705 -0.02100000000000065703 -0.013499999999999789946" rpy="-1.5707963267948956698 3.4371750726708999825e-16 -3.141592653589793116" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_case_f_dummy.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="0.025000000000000646705 -0.02100000000000065703 -0.013499999999999786476" rpy="-1.5707963267948956698 3.4371750726708999825e-16 -3.141592653589793116" />
             <geometry>
@@ -162,6 +831,12 @@
                 <color rgba="0.28235294117647058432 0.25490196078431370807 0.25490196078431370807 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="0.025000000000000646705 -0.02100000000000065703 -0.013499999999999786476" rpy="-1.5707963267948956698 3.4371750726708999825e-16 -3.141592653589793116" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_case_m_dummy.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="0.02500000000000067446 -0.0015000000000001401101 -0.013499999999999783007" rpy="-1.5707963267948956698 -4.6595274827713735404e-17 -3.141592653589793116" />
             <geometry>
@@ -171,6 +846,12 @@
                 <color rgba="0.28235294117647058432 0.25490196078431370807 0.25490196078431370807 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="0.02500000000000067446 -0.0015000000000001401101 -0.013499999999999783007" rpy="-1.5707963267948956698 -4.6595274827713735404e-17 -3.141592653589793116" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_case_b_dummy.stl"/>
+            </geometry>
+        </collision>
         <inertial>
             <origin xyz="0.011912825164996051694 -0.011752076745460894591 -0.0064503420228230780309" rpy="0 0 0"/>
             <mass value="0.050685765935093662904" />
@@ -187,6 +868,12 @@
                 <color rgba="0.81568627450980391025 0.44313725490196076429 0.0039215686274509803377 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-0.042500000000000662248 -0.047130780071020859923 0.023000000000000159206" rpy="-1.5707963267949038855 -5.5511151230215458268e-17 -1.5707963267949074382" />
+            <geometry>
+                <mesh filename="../meshes/block_to_axis.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="-0.042499999999999565903 0.047130780071019701127 -1.3877787807814456755e-17" rpy="1.570796326794896558 -2.3473126974043363983e-16 1.57079632679489678" />
             <geometry>
@@ -196,6 +883,12 @@
                 <color rgba="0.81568627450980391025 0.44313725490196076429 0.0039215686274509803377 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-0.042499999999999565903 0.047130780071019701127 -1.3877787807814456755e-17" rpy="1.570796326794896558 -2.3473126974043363983e-16 1.57079632679489678" />
+            <geometry>
+                <mesh filename="../meshes/block_to_axis.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="-0.042499999999999579781 0.04713078007102119299 2.7755575615628913511e-16" rpy="1.5707963267949118791 3.3306690738537049489e-16 1.5707963267948736874" />
             <geometry>
@@ -205,6 +898,12 @@
                 <color rgba="0.28235294117647058432 0.25490196078431370807 0.25490196078431370807 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-0.042499999999999579781 0.04713078007102119299 2.7755575615628913511e-16" rpy="1.5707963267949118791 3.3306690738537049489e-16 1.5707963267948736874" />
+            <geometry>
+                <mesh filename="../meshes/renfort_leg.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="-1.7347234759768070944e-18 0 -1.3877787807814456755e-17" rpy="-3.141592653589793116 -9.2444637330599932633e-31 2.2255358868987422752e-30" />
             <geometry>
@@ -214,6 +913,12 @@
                 <color rgba="0.2313725490196078538 0.38039215686274507888 0.7058823529411765163 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-1.7347234759768070944e-18 0 -1.3877787807814456755e-17" rpy="-3.141592653589793116 -9.2444637330599932633e-31 2.2255358868987422752e-30" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_horn_idle2_dummy.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="6.6266436782314031007e-16 -1.3791051634015616401e-16 0.022999999999999853895" rpy="1.5707963267948970021 -5.5511151231634039717e-17 1.5707963267948983344" />
             <geometry>
@@ -223,6 +928,12 @@
                 <color rgba="0.49803921568627451677 0.49803921568627451677 0.49803921568627451677 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="6.6266436782314031007e-16 -1.3791051634015616401e-16 0.022999999999999853895" rpy="1.5707963267948970021 -5.5511151231634039717e-17 1.5707963267948983344" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_horn_dummy.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="-0.06500000000000094591 -9.9312918999672206155e-17 0.00350000000000030842" rpy="3.1415926535897784611 2.3091742877810055989e-27 -1.5707963267948954478" />
             <geometry>
@@ -232,6 +943,12 @@
                 <color rgba="0.28235294117647058432 0.25490196078431370807 0.25490196078431370807 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-0.06500000000000094591 -9.9312918999672206155e-17 0.00350000000000030842" rpy="3.1415926535897784611 2.3091742877810055989e-27 -1.5707963267948954478" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_case_f_dummy.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="-0.065000000000000834888 -1.8366384801904445112e-16 0.0035000000000002529088" rpy="3.1415926535897860106 3.3306690738918626439e-16 -1.5707963267949078823" />
             <geometry>
@@ -241,6 +958,12 @@
                 <color rgba="0.28235294117647058432 0.25490196078431370807 0.25490196078431370807 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-0.065000000000000834888 -1.8366384801904445112e-16 0.0035000000000002529088" rpy="3.1415926535897860106 3.3306690738918626439e-16 -1.5707963267949078823" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_case_m_dummy.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="-0.065000000000000501821 -1.8453120975703285467e-16 0.023000000000000561662" rpy="3.1415926535897860106 1.1420607414823103591e-27 -1.5707963267949076602" />
             <geometry>
@@ -250,6 +973,12 @@
                 <color rgba="0.28235294117647058432 0.25490196078431370807 0.25490196078431370807 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-0.065000000000000501821 -1.8453120975703285467e-16 0.023000000000000561662" rpy="3.1415926535897860106 1.1420607414823103591e-27 -1.5707963267949076602" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_case_b_dummy.stl"/>
+            </geometry>
+        </collision>
         <inertial>
             <origin xyz="-0.039901628351739881762 -7.7113301695330656099e-06 0.011400440323216621402" rpy="0 0 0"/>
             <mass value="0.034530807353386039349" />
@@ -266,6 +995,12 @@
                 <color rgba="0.81568627450980391025 0.44313725490196076429 0.0039215686274509803377 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-0.042500000000001203482 -0.047130780071021352584 0.022999999999999895528" rpy="-1.5707963267949038855 -3.8857805861780845782e-16 -1.5707963267948961139" />
+            <geometry>
+                <mesh filename="../meshes/block_to_axis.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="-0.042500000000001453282 0.04713078007102081135 -2.6367796834847467835e-16" rpy="1.5707963267948894526 -4.4408920984797962895e-16 1.57079632679489678" />
             <geometry>
@@ -275,6 +1010,12 @@
                 <color rgba="0.81568627450980391025 0.44313725490196076429 0.0039215686274509803377 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-0.042500000000001453282 0.04713078007102081135 -2.6367796834847467835e-16" rpy="1.5707963267948894526 -4.4408920984797962895e-16 1.57079632679489678" />
+            <geometry>
+                <mesh filename="../meshes/block_to_axis.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="-0.042500000000001258993 0.047130780071020290933 -8.3266726846886740532e-17" rpy="1.5707963267949041075 1.6653345369281405364e-16 1.5707963267948972241" />
             <geometry>
@@ -284,6 +1025,12 @@
                 <color rgba="0.28235294117647058432 0.25490196078431370807 0.25490196078431370807 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-0.042500000000001258993 0.047130780071020290933 -8.3266726846886740532e-17" rpy="1.5707963267949041075 1.6653345369281405364e-16 1.5707963267948972241" />
+            <geometry>
+                <mesh filename="../meshes/renfort_leg.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="0 0 0" rpy="3.141592653589793116 -2.7301982891614793661e-30 1.5434930030403632722e-29" />
             <geometry>
@@ -293,6 +1040,12 @@
                 <color rgba="0.2313725490196078538 0.38039215686274507888 0.7058823529411765163 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="3.141592653589793116 -2.7301982891614793661e-30 1.5434930030403632722e-29" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_horn_idle2_dummy.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="-2.7755575615628913511e-16 1.0625181290357943453e-17 0.022999999999999576339" rpy="1.57079632679489678 -1.6653345369398920987e-16 1.5707963267949092145" />
             <geometry>
@@ -302,6 +1055,12 @@
                 <color rgba="0.49803921568627451677 0.49803921568627451677 0.49803921568627451677 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-2.7755575615628913511e-16 1.0625181290357943453e-17 0.022999999999999576339" rpy="1.57079632679489678 -1.6653345369398920987e-16 1.5707963267949092145" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_horn_dummy.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="-0.065000000000002181033 -8.0968218241217471132e-16 0.0035000000000002667866" rpy="3.1415926535897713556 -2.2204460492243435333e-16 -1.5707963267948847896" />
             <geometry>
@@ -311,6 +1070,12 @@
                 <color rgba="0.28235294117647058432 0.25490196078431370807 0.25490196078431370807 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-0.065000000000002181033 -8.0968218241217471132e-16 0.0035000000000002667866" rpy="3.1415926535897713556 -2.2204460492243435333e-16 -1.5707963267948847896" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_case_f_dummy.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="-0.065000000000001958989 -9.053088140253962024e-16 0.0035000000000001557643" rpy="3.1415926535897860106 1.1102230246306415889e-16 -1.5707963267949085484" />
             <geometry>
@@ -320,6 +1085,12 @@
                 <color rgba="0.28235294117647058432 0.25490196078431370807 0.25490196078431370807 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-0.065000000000001958989 -9.053088140253962024e-16 0.0035000000000001557643" rpy="3.1415926535897860106 1.1102230246306415889e-16 -1.5707963267949085484" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_case_m_dummy.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="-0.065000000000001625922 -7.7412035115465016588e-16 0.023000000000000658806" rpy="3.1415926535897860106 -1.1102230246204062419e-16 -1.5707963267948961139" />
             <geometry>
@@ -329,6 +1100,12 @@
                 <color rgba="0.28235294117647058432 0.25490196078431370807 0.25490196078431370807 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-0.065000000000001625922 -7.7412035115465016588e-16 0.023000000000000658806" rpy="3.1415926535897860106 -1.1102230246204062419e-16 -1.5707963267948961139" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_case_b_dummy.stl"/>
+            </geometry>
+        </collision>
         <inertial>
             <origin xyz="-0.039901628351740887901 -7.7113301699271358301e-06 0.011400440323216496502" rpy="0 0 0"/>
             <mass value="0.034530807353386039349" />
@@ -345,6 +1122,12 @@
                 <color rgba="0.2313725490196078538 0.38039215686274507888 0.7058823529411765163 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="-3.141592653589793116 9.3677232494488722628e-31 1.835705703429412461e-30" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_horn_idle2_dummy.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="2.2204460492503130808e-16 -5.8763757748714340323e-17 -0.0051999999999998852696" rpy="-3.141592653589793116 -1.570796326794896558 0" />
             <geometry>
@@ -354,6 +1137,12 @@
                 <color rgba="0.81568627450980391025 0.44313725490196076429 0.0039215686274509803377 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="2.2204460492503130808e-16 -5.8763757748714340323e-17 -0.0051999999999998852696" rpy="-3.141592653589793116 -1.570796326794896558 0" />
+            <geometry>
+                <mesh filename="../meshes/foot.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="2.2204460492503130808e-16 -5.8763757748714340323e-17 -0.0051999999999998852696" rpy="-3.141592653589793116 -1.570796326794896558 0" />
             <geometry>
@@ -363,6 +1152,12 @@
                 <color rgba="0 0 0 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="2.2204460492503130808e-16 -5.8763757748714340323e-17 -0.0051999999999998852696" rpy="-3.141592653589793116 -1.570796326794896558 0" />
+            <geometry>
+                <mesh filename="../meshes/foot_contact.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="2.7755575615628913511e-17 -6.917209860457518289e-17 0.022999999999999867772" rpy="1.5707963267948961139 -1.7486012637846347646e-15 1.5707963267948981123" />
             <geometry>
@@ -372,6 +1167,12 @@
                 <color rgba="0.49803921568627451677 0.49803921568627451677 0.49803921568627451677 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="2.7755575615628913511e-17 -6.917209860457518289e-17 0.022999999999999867772" rpy="1.5707963267948961139 -1.7486012637846347646e-15 1.5707963267948981123" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_horn_dummy.stl"/>
+            </geometry>
+        </collision>
         <inertial>
             <origin xyz="-0.026873167661377921067 0.0076028406460558663887 0.011556240850102265233" rpy="0 0 0"/>
             <mass value="0.028234070013912770242" />
@@ -396,7 +1197,7 @@
         <parent link="leg_module_2" />
         <child link="foot_module" />
         <axis xyz="0 0 1"/>
-        <limit effort="0.93" velocity="8.48" lower="-1.570796326794896558" upper="1.570796326794896558"/>
+        <limit effort="0.80" velocity="8.48" lower="-1.570796326794896558" upper="1.570796326794896558"/>
         <joint_properties friction="0.1"/>
     </joint>
     <joint name="right_knee" type="revolute">
@@ -404,7 +1205,7 @@
         <parent link="leg_module" />
         <child link="leg_module_2" />
         <axis xyz="0 0 1"/>
-        <limit effort="0.93" velocity="8.48" lower="-2.0943951023931952626" upper="2.0943951023931952626"/>
+        <limit effort="0.80" velocity="8.48" lower="-2.0943951023931952626" upper="2.0943951023931952626"/>
         <joint_properties friction="0.1"/>
     </joint>
     <joint name="right_hip_pitch" type="revolute">
@@ -412,7 +1213,7 @@
         <parent link="right_hip_pitch_roll_module" />
         <child link="leg_module" />
         <axis xyz="0 0 1"/>
-        <limit effort="0.93" velocity="8.48" lower="-0.52359877559829881566" upper="1.570796326794896558"/>
+        <limit effort="0.80" velocity="8.48" lower="-0.52359877559829881566" upper="1.570796326794896558"/>
         <joint_properties friction="0.1"/>
     </joint>
     <joint name="right_hip_roll" type="revolute">
@@ -420,7 +1221,7 @@
         <parent link="double_u_module" />
         <child link="right_hip_pitch_roll_module" />
         <axis xyz="0 0 1"/>
-        <limit effort="0.93" velocity="8.48" lower="-1.570796326794896558" upper="0.43633231299858238339"/>
+        <limit effort="0.80" velocity="8.48" lower="-1.570796326794896558" upper="0.43633231299858238339"/>
         <joint_properties friction="0.1"/>
     </joint>
     <joint name="right_hip_yaw" type="revolute">
@@ -428,7 +1229,7 @@
         <parent link="body_module" />
         <child link="double_u_module" />
         <axis xyz="0 0 1"/>
-        <limit effort="0.93" velocity="8.48" lower="-0.69813170079773179122" upper="0.69813170079773179122"/>
+        <limit effort="0.80" velocity="8.48" lower="-0.69813170079773179122" upper="0.69813170079773179122"/>
         <joint_properties friction="0.1"/>
     </joint>
     <link name="double_u_module_2">
@@ -441,6 +1242,12 @@
                 <color rgba="0.49803921568627451677 0.49803921568627451677 0.49803921568627451677 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="0.034000000000001154299 0.011500000000000549713 0.011500000000000006745" rpy="3.1051550219981292186e-16 -4.1406029711123635988e-29 1.6653345369381314598e-16" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_horn_dummy.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="-0.1120875272750893048 0.016500000000000694667 0.011499999999999999806" rpy="3.1415926535897926719 3.989863994768643966e-17 -3.1415926535897926719" />
             <geometry>
@@ -450,6 +1257,12 @@
                 <color rgba="0.28235294117647058432 0.25490196078431370807 0.25490196078431370807 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-0.1120875272750893048 0.016500000000000694667 0.011499999999999999806" rpy="3.1415926535897926719 3.989863994768643966e-17 -3.1415926535897926719" />
+            <geometry>
+                <mesh filename="../meshes/double_u.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="-3.4694469519536141888e-18 9.2157184661267876891e-17 0.0230002254290565325" rpy="1.570796326794896558 -1.7347234759806010223e-17 2.2204460492504915606e-16" />
             <geometry>
@@ -459,6 +1272,12 @@
                 <color rgba="0.49803921568627451677 0.49803921568627451677 0.49803921568627451677 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-3.4694469519536141888e-18 9.2157184661267876891e-17 0.0230002254290565325" rpy="1.570796326794896558 -1.7347234759806010223e-17 2.2204460492504915606e-16" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_horn_dummy.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="0.034000000000001168177 -0.0115000000000000345 0.011499999999999996336" rpy="1.5707963267948970021 6.9388939039125947888e-18 2.2204460492508805677e-16" />
             <geometry>
@@ -468,6 +1287,12 @@
                 <color rgba="0.2313725490196078538 0.38039215686274507888 0.7058823529411765163 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="0.034000000000001168177 -0.0115000000000000345 0.011499999999999996336" rpy="1.5707963267948970021 6.9388939039125947888e-18 2.2204460492508805677e-16" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_horn_idle2_dummy.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="0 0 0" rpy="-3.141592653589793116 -3.8526263963279615011e-31 6.4358684515981144592e-32" />
             <geometry>
@@ -477,6 +1302,12 @@
                 <color rgba="0.2313725490196078538 0.38039215686274507888 0.7058823529411765163 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="-3.141592653589793116 -3.8526263963279615011e-31 6.4358684515981144592e-32" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_horn_idle2_dummy.stl"/>
+            </geometry>
+        </collision>
         <inertial>
             <origin xyz="0.016999999999973376685 8.4512528129653690951e-05 0.011584248510725111622" rpy="0 0 0"/>
             <mass value="0.018818301231819770797" />
@@ -493,6 +1324,12 @@
                 <color rgba="0.28235294117647058432 0.25490196078431370807 0.25490196078431370807 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-0.067053147256375608687 -0.024500000000000042577 -0.032000000000000465572" rpy="3.141592653589793116 1.6028126974030637996e-15 -3.141592653589793116" />
+            <geometry>
+                <mesh filename="../meshes/hip_left_roll_to_pitch.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="0.025000000000000466294 -0.0050000000000000113798 -0.0095000000000003397699" rpy="1.570796326794896558 -1.6826817716976283598e-16 3.141592653589793116" />
             <geometry>
@@ -502,6 +1339,12 @@
                 <color rgba="0.28235294117647058432 0.25490196078431370807 0.25490196078431370807 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="0.025000000000000466294 -0.0050000000000000113798 -0.0095000000000003397699" rpy="1.570796326794896558 -1.6826817716976283598e-16 3.141592653589793116" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_case_f_dummy.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="0.025000000000000462824 -0.0050000000000000044409 -0.0095000000000003380352" rpy="1.570796326794896558 -1.6826817716976283598e-16 3.141592653589793116" />
             <geometry>
@@ -511,6 +1354,12 @@
                 <color rgba="0.28235294117647058432 0.25490196078431370807 0.25490196078431370807 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="0.025000000000000462824 -0.0050000000000000044409 -0.0095000000000003380352" rpy="1.570796326794896558 -1.6826817716976283598e-16 3.141592653589793116" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_case_m_dummy.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="0.025000000000000466294 -0.024500000000000000944 -0.0095000000000003363004" rpy="1.5707963267948970021 -1.6653345369377957008e-16 3.141592653589793116" />
             <geometry>
@@ -520,6 +1369,12 @@
                 <color rgba="0.28235294117647058432 0.25490196078431370807 0.25490196078431370807 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="0.025000000000000466294 -0.024500000000000000944 -0.0095000000000003363004" rpy="1.5707963267948970021 -1.6653345369377957008e-16 3.141592653589793116" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_case_b_dummy.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="-5.2041704279304212832e-18 0 -0.0035000000000000013739" rpy="-1.1857032050430350995e-30 1.7347234760260427231e-18 1.0116605681612819211e-28" />
             <geometry>
@@ -529,6 +1384,12 @@
                 <color rgba="0.28235294117647058432 0.25490196078431370807 0.25490196078431370807 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-5.2041704279304212832e-18 0 -0.0035000000000000013739" rpy="-1.1857032050430350995e-30 1.7347234760260427231e-18 1.0116605681612819211e-28" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_case_f_dummy.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="1.7347234759768070944e-18 0 -0.0035000000000000013739" rpy="1.1297491197668111264e-31 -4.43527532880738304e-30 1.2899303886838966395e-30" />
             <geometry>
@@ -538,6 +1399,12 @@
                 <color rgba="0.28235294117647058432 0.25490196078431370807 0.25490196078431370807 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="1.7347234759768070944e-18 0 -0.0035000000000000013739" rpy="1.1297491197668111264e-31 -4.43527532880738304e-30 1.2899303886838966395e-30" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_case_m_dummy.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="-2.2551405187698492227e-17 6.9388939039072283776e-18 -0.023000000000000003081" rpy="-3.3306690738754597605e-16 5.0133508455734103207e-16 -5.5511151231207611094e-17" />
             <geometry>
@@ -547,6 +1414,12 @@
                 <color rgba="0.28235294117647058432 0.25490196078431370807 0.25490196078431370807 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-2.2551405187698492227e-17 6.9388939039072283776e-18 -0.023000000000000003081" rpy="-3.3306690738754597605e-16 5.0133508455734103207e-16 -5.5511151231207611094e-17" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_case_b_dummy.stl"/>
+            </geometry>
+        </collision>
         <inertial>
             <origin xyz="0.011923026842605558007 -0.011606470860263534695 -0.016315085728328005549" rpy="0 0 0"/>
             <mass value="0.050936078435093665173" />
@@ -563,6 +1436,12 @@
                 <color rgba="0.81568627450980391025 0.44313725490196076429 0.0039215686274509803377 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-0.042499999999998483435 -0.047130780071017910893 0.022999999999999860834" rpy="-1.570796326794896336 -4.966572119182832965e-16 -1.5707963267948912289" />
+            <geometry>
+                <mesh filename="../meshes/block_to_axis.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="-0.042499999999999413247 0.047130780071019444388 0" rpy="1.570796326794896336 -5.5322230588507908191e-16 1.570796326794896558" />
             <geometry>
@@ -572,6 +1451,12 @@
                 <color rgba="0.81568627450980391025 0.44313725490196076429 0.0039215686274509803377 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-0.042499999999999413247 0.047130780071019444388 0" rpy="1.570796326794896336 -5.5322230588507908191e-16 1.570796326794896558" />
+            <geometry>
+                <mesh filename="../meshes/block_to_axis.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="-0.042499999999998844258 0.047130780071017980282 -3.4694469519536141888e-17" rpy="1.5707963267948961139 1.75748440760723845e-16 1.5707963267949018871" />
             <geometry>
@@ -581,6 +1466,12 @@
                 <color rgba="0.28235294117647058432 0.25490196078431370807 0.25490196078431370807 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-0.042499999999998844258 0.047130780071017980282 -3.4694469519536141888e-17" rpy="1.5707963267948961139 1.75748440760723845e-16 1.5707963267949018871" />
+            <geometry>
+                <mesh filename="../meshes/renfort_leg.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="1.7347234759768070944e-18 0 0" rpy="-3.141592653589793116 -2.0668332250037141152e-30 -6.4869956006508584081e-24" />
             <geometry>
@@ -590,6 +1481,12 @@
                 <color rgba="0.2313725490196078538 0.38039215686274507888 0.7058823529411765163 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="1.7347234759768070944e-18 0 0" rpy="-3.141592653589793116 -2.0668332250037141152e-30 -6.4869956006508584081e-24" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_horn_idle2_dummy.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="-6.9909356081865325905e-16 2.1792463666958639124e-16 0.022999999999999833078" rpy="1.57079632679489678 -9.441717580708686317e-17 1.5707963267948974462" />
             <geometry>
@@ -599,6 +1496,12 @@
                 <color rgba="0.49803921568627451677 0.49803921568627451677 0.49803921568627451677 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-6.9909356081865325905e-16 2.1792463666958639124e-16 0.022999999999999833078" rpy="1.57079632679489678 -9.441717580708686317e-17 1.5707963267948974462" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_horn_dummy.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="-0.064999999999998420153 -1.1882855810441128597e-16 0.0034999999999999822919" rpy="3.1415926535897922278 5.3850638565700636271e-16 -1.5707963267948883423" />
             <geometry>
@@ -608,6 +1511,12 @@
                 <color rgba="0.28235294117647058432 0.25490196078431370807 0.25490196078431370807 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-0.064999999999998420153 -1.1882855810441128597e-16 0.0034999999999999822919" rpy="3.1415926535897922278 5.3850638565700636271e-16 -1.5707963267948883423" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_case_f_dummy.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="-0.064999999999998267497 -5.9847959921199844757e-17 0.0034999999999999822919" rpy="3.1415926535897922278 4.2748408319437760574e-16 -1.5707963267948930053" />
             <geometry>
@@ -617,6 +1526,12 @@
                 <color rgba="0.28235294117647058432 0.25490196078431370807 0.25490196078431370807 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-0.064999999999998267497 -5.9847959921199844757e-17 0.0034999999999999822919" rpy="3.1415926535897922278 4.2748408319437760574e-16 -1.5707963267948930053" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_case_m_dummy.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="-0.064999999999998239741 -6.7220534694101274908e-17 0.022999999999999874711" rpy="-3.141592653589793116 -1.6605126655691724991e-17 -1.5707963267948930053" />
             <geometry>
@@ -626,6 +1541,12 @@
                 <color rgba="0.28235294117647058432 0.25490196078431370807 0.25490196078431370807 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-0.064999999999998239741 -6.7220534694101274908e-17 0.022999999999999874711" rpy="-3.141592653589793116 -1.6605126655691724991e-17 -1.5707963267948930053" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_case_b_dummy.stl"/>
+            </geometry>
+        </collision>
         <inertial>
             <origin xyz="-0.039901628351738722966 -7.7113301693715381209e-06 0.011400440323216406296" rpy="0 0 0"/>
             <mass value="0.034530807353386039349" />
@@ -642,6 +1563,12 @@
                 <color rgba="0.81568627450980391025 0.44313725490196076429 0.0039215686274509803377 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-0.042500000000000315303 -0.047130780071021033395 0.02300000000000051309" rpy="-1.5707963267949101027 -1.3877787807783265195e-15 -1.5707963267948956698" />
+            <geometry>
+                <mesh filename="../meshes/block_to_axis.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="-0.042499999999999593658 0.047130780071021199928 4.9960036108132044319e-16" rpy="1.5707963267949105468 1.6098233857064517401e-15 1.5707963267948970021" />
             <geometry>
@@ -651,6 +1578,12 @@
                 <color rgba="0.81568627450980391025 0.44313725490196076429 0.0039215686274509803377 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-0.042499999999999593658 0.047130780071021199928 4.9960036108132044319e-16" rpy="1.5707963267949105468 1.6098233857064517401e-15 1.5707963267948970021" />
+            <geometry>
+                <mesh filename="../meshes/block_to_axis.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="-0.042499999999999579781 0.047130780071021179112 5.0653925498522767157e-16" rpy="1.5707963267949101027 1.2212453270876577978e-15 1.570796326794896558" />
             <geometry>
@@ -660,6 +1593,12 @@
                 <color rgba="0.28235294117647058432 0.25490196078431370807 0.25490196078431370807 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-0.042499999999999579781 0.047130780071021179112 5.0653925498522767157e-16" rpy="1.5707963267949101027 1.2212453270876577978e-15 1.570796326794896558" />
+            <geometry>
+                <mesh filename="../meshes/renfort_leg.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="1.3877787807814456755e-17 0 6.9388939039072283776e-18" rpy="3.141592653589793116 -1.1355857537972441971e-32 2.3665827156018266993e-30" />
             <geometry>
@@ -669,6 +1608,12 @@
                 <color rgba="0.2313725490196078538 0.38039215686274507888 0.7058823529411765163 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="1.3877787807814456755e-17 0 6.9388939039072283776e-18" rpy="3.141592653589793116 -1.1355857537972441971e-32 2.3665827156018266993e-30" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_horn_idle2_dummy.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="1.0408340855860842566e-15 -9.2374025095764977777e-17 0.022999999999999874711" rpy="1.5707963267949101027 9.9920072216262885625e-16 1.570796326794896558" />
             <geometry>
@@ -678,6 +1623,12 @@
                 <color rgba="0.49803921568627451677 0.49803921568627451677 0.49803921568627451677 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="1.0408340855860842566e-15 -9.2374025095764977777e-17 0.022999999999999874711" rpy="1.5707963267949101027 9.9920072216262885625e-16 1.570796326794896558" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_horn_dummy.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="-0.065000000000000085487 1.6154612370034016067e-15 0.0035000000000008565926" rpy="3.1415926535897797933 -1.1102230246251936169e-15 -1.5707963267948961139" />
             <geometry>
@@ -687,6 +1638,12 @@
                 <color rgba="0.28235294117647058432 0.25490196078431370807 0.25490196078431370807 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-0.065000000000000085487 1.6154612370034016067e-15 0.0035000000000008565926" rpy="3.1415926535897797933 -1.1102230246251936169e-15 -1.5707963267948961139" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_case_f_dummy.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="-0.065000000000000140998 1.6137265135274247996e-15 0.0035000000000008565926" rpy="3.1415926535897797933 -1.1102230246251936169e-15 -1.5707963267948961139" />
             <geometry>
@@ -696,6 +1653,12 @@
                 <color rgba="0.28235294117647058432 0.25490196078431370807 0.25490196078431370807 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-0.065000000000000140998 1.6137265135274247996e-15 0.0035000000000008565926" rpy="3.1415926535897797933 -1.1102230246251936169e-15 -1.5707963267948961139" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_case_m_dummy.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="-0.065000000000000168754 1.6239180139487885413e-15 0.023000000000000735134" rpy="3.1415926535897797933 -1.1102230246251936169e-15 -1.5707963267948961139" />
             <geometry>
@@ -705,6 +1668,12 @@
                 <color rgba="0.28235294117647058432 0.25490196078431370807 0.25490196078431370807 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-0.065000000000000168754 1.6239180139487885413e-15 0.023000000000000735134" rpy="3.1415926535897797933 -1.1102230246251936169e-15 -1.5707963267948961139" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_case_b_dummy.stl"/>
+            </geometry>
+        </collision>
         <inertial>
             <origin xyz="-0.039901628351739659717 -7.7113301683934352954e-06 0.011400440323216956204" rpy="0 0 0"/>
             <mass value="0.034530807353386039349" />
@@ -721,6 +1690,12 @@
                 <color rgba="0.2313725490196078538 0.38039215686274507888 0.7058823529411765163 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="3.141592653589793116 -4.8276505048317026277e-31 5.0037344593007477894e-30" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_horn_idle2_dummy.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="0 -4.9439619065339002191e-17 -0.0051999999999999754752" rpy="-3.141592653589793116 -1.570796326794896558 0" />
             <geometry>
@@ -730,6 +1705,12 @@
                 <color rgba="0.81568627450980391025 0.44313725490196076429 0.0039215686274509803377 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="0 -4.9439619065339002191e-17 -0.0051999999999999754752" rpy="-3.141592653589793116 -1.570796326794896558 0" />
+            <geometry>
+                <mesh filename="../meshes/foot.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="0 -4.9439619065339002191e-17 -0.0051999999999999754752" rpy="-3.141592653589793116 -1.570796326794896558 0" />
             <geometry>
@@ -739,6 +1720,12 @@
                 <color rgba="0 0 0 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="0 -4.9439619065339002191e-17 -0.0051999999999999754752" rpy="-3.141592653589793116 -1.570796326794896558 0" />
+            <geometry>
+                <mesh filename="../meshes/foot_contact.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="-8.3266726846886740532e-17 -3.1441863002079628586e-17 0.0229999999999998192" rpy="1.5707963267948958919 -1.7486012637846381172e-15 1.5707963267948981123" />
             <geometry>
@@ -748,6 +1735,12 @@
                 <color rgba="0.49803921568627451677 0.49803921568627451677 0.49803921568627451677 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-8.3266726846886740532e-17 -3.1441863002079628586e-17 0.0229999999999998192" rpy="1.5707963267948958919 -1.7486012637846381172e-15 1.5707963267948981123" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_horn_dummy.stl"/>
+            </geometry>
+        </collision>
         <inertial>
             <origin xyz="-0.026873167661378146581 0.0076028406460558776644 0.011556240850102180232" rpy="0 0 0"/>
             <mass value="0.028234070013912770242" />
@@ -772,7 +1765,7 @@
         <parent link="leg_module_4" />
         <child link="foot_module_2" />
         <axis xyz="0 0 1"/>
-        <limit effort="0.93" velocity="8.48" lower="-1.570796326794896558" upper="1.570796326794896558"/>
+        <limit effort="0.80" velocity="8.48" lower="-1.570796326794896558" upper="1.570796326794896558"/>
         <joint_properties friction="0.1"/>
     </joint>
     <joint name="left_knee" type="revolute">
@@ -780,7 +1773,7 @@
         <parent link="leg_module_3" />
         <child link="leg_module_4" />
         <axis xyz="0 0 1"/>
-        <limit effort="0.93" velocity="8.48" lower="-2.0943951023931952626" upper="2.0943951023931952626"/>
+        <limit effort="0.80" velocity="8.48" lower="-2.0943951023931952626" upper="2.0943951023931952626"/>
         <joint_properties friction="0.1"/>
     </joint>
     <joint name="left_hip_pitch" type="revolute">
@@ -788,7 +1781,7 @@
         <parent link="left_hip_pitch_roll_module" />
         <child link="leg_module_3" />
         <axis xyz="0 0 1"/>
-        <limit effort="0.93" velocity="8.48" lower="-0.52359877559829881566" upper="1.570796326794896558"/>
+        <limit effort="0.80" velocity="8.48" lower="-0.52359877559829881566" upper="1.570796326794896558"/>
         <joint_properties friction="0.1"/>
     </joint>
     <joint name="left_hip_roll" type="revolute">
@@ -796,7 +1789,7 @@
         <parent link="double_u_module_2" />
         <child link="left_hip_pitch_roll_module" />
         <axis xyz="0 0 1"/>
-        <limit effort="0.93" velocity="8.48" lower="-1.570796326794896558" upper="0.43633231299858238339"/>
+        <limit effort="0.80" velocity="8.48" lower="-1.570796326794896558" upper="0.43633231299858238339"/>
         <joint_properties friction="0.1"/>
     </joint>
     <joint name="left_hip_yaw" type="revolute">
@@ -804,7 +1797,7 @@
         <parent link="body_module" />
         <child link="double_u_module_2" />
         <axis xyz="0 0 1"/>
-        <limit effort="0.93" velocity="8.48" lower="-0.69813170079773179122" upper="0.69813170079773179122"/>
+        <limit effort="0.80" velocity="8.48" lower="-0.69813170079773179122" upper="0.69813170079773179122"/>
         <joint_properties friction="0.1"/>
     </joint>
     <link name="head_link">
@@ -817,6 +1810,12 @@
                 <color rgba="0.28235294117647058432 0.25490196078431370807 0.25490196078431370807 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-2.2551405187698492227e-16 -1.0408340855860842566e-16 0.022999999999999996142" rpy="-1.570796326794896558 -2.2021623822161954679e-28 -3.141592653589793116" />
+            <geometry>
+                <mesh filename="../meshes/axis_to_axis.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="-2.3245294578089215065e-16 -0.064999999999999100164 0.022999999999999999611" rpy="1.570796326794896558 2.0543045052719165412e-28 -1.1102230246246678164e-16" />
             <geometry>
@@ -826,6 +1825,12 @@
                 <color rgba="0.49803921568627451677 0.49803921568627451677 0.49803921568627451677 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-2.3245294578089215065e-16 -0.064999999999999100164 0.022999999999999999611" rpy="1.570796326794896558 2.0543045052719165412e-28 -1.1102230246246678164e-16" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_horn_dummy.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="-1.0755285551056203985e-16 4.0939474033052647428e-16 0" rpy="1.570796326794896558 3.3807740382092691183e-30 0" />
             <geometry>
@@ -835,6 +1840,12 @@
                 <color rgba="0.28235294117647058432 0.25490196078431370807 0.25490196078431370807 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-1.0755285551056203985e-16 4.0939474033052647428e-16 0" rpy="1.570796326794896558 3.3807740382092691183e-30 0" />
+            <geometry>
+                <mesh filename="../meshes/renfort_head_link.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="-2.2551405187698492227e-16 -9.7144514654701197287e-17 0.022999999999999996142" rpy="1.570796326794896558 2.0543045052719165412e-28 -1.1102230246246678164e-16" />
             <geometry>
@@ -844,6 +1855,12 @@
                 <color rgba="0.49803921568627451677 0.49803921568627451677 0.49803921568627451677 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-2.2551405187698492227e-16 -9.7144514654701197287e-17 0.022999999999999996142" rpy="1.570796326794896558 2.0543045052719165412e-28 -1.1102230246246678164e-16" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_horn_dummy.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="3.4694469519536141888e-18 -0.064999999999999114042 3.4694469519536141888e-18" rpy="-3.141592653589793116 -2.9383826821945038949e-16 -2.2204460492499677077e-16" />
             <geometry>
@@ -853,6 +1870,12 @@
                 <color rgba="0.2313725490196078538 0.38039215686274507888 0.7058823529411765163 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="3.4694469519536141888e-18 -0.064999999999999114042 3.4694469519536141888e-18" rpy="-3.141592653589793116 -2.9383826821945038949e-16 -2.2204460492499677077e-16" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_horn_idle2_dummy.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="0 0 0" rpy="3.141592653589793116 2.8115191019968956248e-32 0" />
             <geometry>
@@ -862,6 +1885,12 @@
                 <color rgba="0.2313725490196078538 0.38039215686274507888 0.7058823529411765163 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="3.141592653589793116 2.8115191019968956248e-32 0" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_horn_idle2_dummy.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="0 -9.0205620750793968909e-17 0" rpy="1.570796326794896558 2.1124562256396357684e-28 1.2621774483536382266e-29" />
             <geometry>
@@ -871,6 +1900,12 @@
                 <color rgba="0.28235294117647058432 0.25490196078431370807 0.25490196078431370807 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="0 -9.0205620750793968909e-17 0" rpy="1.570796326794896558 2.1124562256396357684e-28 1.2621774483536382266e-29" />
+            <geometry>
+                <mesh filename="../meshes/axis_to_axis.stl"/>
+            </geometry>
+        </collision>
         <inertial>
             <origin xyz="-2.4653117442934320988e-14 -0.032499754096266771086 0.011652192306627144266" rpy="0 0 0"/>
             <mass value="0.020865926048949733074" />
@@ -887,6 +1922,12 @@
                 <color rgba="0.64705882352941179736 0.64705882352941179736 0.64705882352941179736 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="0.043000000000002480682 0.0001000000000004851175 -0.011500000000000454303" rpy="1.5707963267948972241 1.7877175507189012539e-16 -1.570796326794896558" />
+            <geometry>
+                <mesh filename="../meshes/head_roll_pitch.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="0.034499999999999420019 3.4694469519536141888e-17 -0.011500000000000006745" rpy="-1.0384614260316070598e-30 1.570796326794896558 0" />
             <geometry>
@@ -896,6 +1937,12 @@
                 <color rgba="0.28235294117647058432 0.25490196078431370807 0.25490196078431370807 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="0.034499999999999420019 3.4694469519536141888e-17 -0.011500000000000006745" rpy="-1.0384614260316070598e-30 1.570796326794896558 0" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_case_f_dummy.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="0.034499999999999420019 3.4694469519536141888e-17 -0.011500000000000006745" rpy="-1.0384614260316070598e-30 1.5707963267948961139 0" />
             <geometry>
@@ -905,6 +1952,12 @@
                 <color rgba="0.28235294117647058432 0.25490196078431370807 0.25490196078431370807 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="0.034499999999999420019 3.4694469519536141888e-17 -0.011500000000000006745" rpy="-1.0384614260316070598e-30 1.5707963267948961139 0" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_case_m_dummy.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="0.014999999999999735767 7.2858385991025897965e-17 -0.011500000000000003275" rpy="-1.0384614260316070598e-30 1.570796326794896558 0" />
             <geometry>
@@ -914,6 +1967,12 @@
                 <color rgba="0.28235294117647058432 0.25490196078431370807 0.25490196078431370807 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="0.014999999999999735767 7.2858385991025897965e-17 -0.011500000000000003275" rpy="-1.0384614260316070598e-30 1.570796326794896558 0" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_case_b_dummy.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="-1.3877787807814456755e-17 3.4694469519536141888e-18 -0.0035000000000000083128" rpy="3.8285686989269395741e-16 -1.8369701987209951748e-16 1.0384614260316070598e-30" />
             <geometry>
@@ -923,6 +1982,12 @@
                 <color rgba="0.28235294117647058432 0.25490196078431370807 0.25490196078431370807 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-1.3877787807814456755e-17 3.4694469519536141888e-18 -0.0035000000000000083128" rpy="3.8285686989269395741e-16 -1.8369701987209951748e-16 1.0384614260316070598e-30" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_case_f_dummy.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="-1.3877787807814456755e-17 3.4694469519536141888e-18 -0.0034999999999999996392" rpy="1.4442762621570761677e-32 1.6187678482638252831e-30 1.0384614260316070598e-30" />
             <geometry>
@@ -932,6 +1997,12 @@
                 <color rgba="0.28235294117647058432 0.25490196078431370807 0.25490196078431370807 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-1.3877787807814456755e-17 3.4694469519536141888e-18 -0.0034999999999999996392" rpy="1.4442762621570761677e-32 1.6187678482638252831e-30 1.0384614260316070598e-30" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_case_m_dummy.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="5.5511151231257827021e-17 1.0408340855860842566e-17 -0.023000000000000003081" rpy="3.8285686989269395741e-16 -1.8369701987209951748e-16 1.0384614260316070598e-30" />
             <geometry>
@@ -941,6 +2012,12 @@
                 <color rgba="0.28235294117647058432 0.25490196078431370807 0.25490196078431370807 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="5.5511151231257827021e-17 1.0408340855860842566e-17 -0.023000000000000003081" rpy="3.8285686989269395741e-16 -1.8369701987209951748e-16 1.0384614260316070598e-30" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_case_b_dummy.stl"/>
+            </geometry>
+        </collision>
         <inertial>
             <origin xyz="0.0098462389769370297493 -0.0074913907846173907051 -0.011414627018494629546" rpy="0 0 0"/>
             <mass value="0.055748483731440375" />
@@ -957,6 +2034,12 @@
                 <color rgba="0.49803921568627451677 0.49803921568627451677 0.49803921568627451677 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-0.030306635053896472526 -0.030306635053896077009 -0.0052000000000000656808" rpy="-1.1974744221538533602e-16 -5.3543852478561909751e-17 -1.570796326794896558" />
+            <geometry>
+                <mesh filename="../meshes/antenna_motor_holder.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="-5.2041704279304212832e-17 -8.6736173798840354721e-19 -0.0052000000000000656808" rpy="-5.3543852478561281127e-17 1.1974744221538536067e-16 5.5511151224368353446e-17" />
             <geometry>
@@ -966,6 +2049,12 @@
                 <color rgba="0.91764705882352937127 0.91764705882352937127 0.91764705882352937127 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-5.2041704279304212832e-17 -8.6736173798840354721e-19 -0.0052000000000000656808" rpy="-5.3543852478561281127e-17 1.1974744221538536067e-16 5.5511151224368353446e-17" />
+            <geometry>
+                <mesh filename="../meshes/head.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="-5.2041704279304212832e-17 -2.6020852139652106416e-18 -0.0052000000000000656808" rpy="-5.3543852478559691079e-17 1.1974744221538533602e-16 5.551115122436834112e-17" />
             <geometry>
@@ -975,6 +2064,12 @@
                 <color rgba="0.49803921568627451677 0.49803921568627451677 0.49803921568627451677 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-5.2041704279304212832e-17 -2.6020852139652106416e-18 -0.0052000000000000656808" rpy="-5.3543852478559691079e-17 1.1974744221538533602e-16 5.551115122436834112e-17" />
+            <geometry>
+                <mesh filename="../meshes/antenna_motor_holder.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="-0.046325000000000629563 -0.0045183649461039507994 0.0098000000000001419309" rpy="-1.570796326794896558 -1.1974744221542320134e-16 -3.141592653589793116" />
             <geometry>
@@ -984,6 +2079,12 @@
                 <color rgba="0.43529411764705883137 0.67058823529411759612 0.97647058823529409022 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-0.046325000000000629563 -0.0045183649461039507994 0.0098000000000001419309" rpy="-1.570796326794896558 -1.1974744221542320134e-16 -3.141592653589793116" />
+            <geometry>
+                <mesh filename="../meshes/sg90.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="-0.046325000000000629563 0.0045183649461039672793 0.0098000000000001141753" rpy="1.57079632679489678 -1.1974744221538533602e-16 -3.141592653589793116" />
             <geometry>
@@ -993,6 +2094,12 @@
                 <color rgba="0.43529411764705883137 0.67058823529411759612 0.97647058823529409022 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="-0.046325000000000629563 0.0045183649461039672793 0.0098000000000001141753" rpy="1.57079632679489678 -1.1974744221538533602e-16 -3.141592653589793116" />
+            <geometry>
+                <mesh filename="../meshes/sg90.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="0 0 -2.7755575615628913511e-17" rpy="-3.141592653589793116 1.170965406157900027e-31 -6.0461138453115030516e-32" />
             <geometry>
@@ -1002,6 +2109,12 @@
                 <color rgba="0.2313725490196078538 0.38039215686274507888 0.7058823529411765163 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="0 0 -2.7755575615628913511e-17" rpy="-3.141592653589793116 1.170965406157900027e-31 -6.0461138453115030516e-32" />
+            <geometry>
+                <mesh filename="../meshes/dc15_a01_horn_idle2_dummy.stl"/>
+            </geometry>
+        </collision>
         <inertial>
             <origin xyz="-0.0049904936490059326887 -5.722476872872976015e-05 0.0071270976823235568029" rpy="0 0 0"/>
             <mass value="0.11182196316230799682" />
@@ -1031,6 +2144,12 @@
                 <color rgba="0.30196078431372547213 0.30196078431372547213 0.30196078431372547213 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="0.047829704883305929064 0.0099105372641234146247 -0.080676288527250283877" rpy="1.570796326794896558 -2.1420200727859114585e-31 1.3723147159839140706e-30" />
+            <geometry>
+                <mesh filename="../meshes/antenna_tip.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="0.05020544527131384771 -0.016818394108500916984 0.027300000000000001349" rpy="1.570796326794896558 -2.1420200727859114585e-31 1.3723147159839140706e-30" />
             <geometry>
@@ -1040,6 +2159,12 @@
                 <color rgba="0.80000000000000004441 0.80000000000000004441 0.80000000000000004441 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="0.05020544527131384771 -0.016818394108500916984 0.027300000000000001349" rpy="1.570796326794896558 -2.1420200727859114585e-31 1.3723147159839140706e-30" />
+            <geometry>
+                <mesh filename="../meshes/antenna_holder_left.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="0.047829704883305929064 0.0099105372641234146247 -0.080676288527250283877" rpy="1.570796326794896558 -2.1420200727859114585e-31 1.3723147159839140706e-30" />
             <geometry>
@@ -1049,6 +2174,12 @@
                 <color rgba="0.5999999999999999778 0.5999999999999999778 0.5999999999999999778 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="0.047829704883305929064 0.0099105372641234146247 -0.080676288527250283877" rpy="1.570796326794896558 -2.1420200727859114585e-31 1.3723147159839140706e-30" />
+            <geometry>
+                <mesh filename="../meshes/antenna.stl"/>
+            </geometry>
+        </collision>
         <inertial>
             <origin xyz="-0.001251488185066463709 0.013520387889189855457 -0.013569433206048696003" rpy="0 0 0"/>
             <mass value="0.0021739976315290274189" />
@@ -1073,6 +2204,12 @@
                 <color rgba="0.80000000000000004441 0.80000000000000004441 0.80000000000000004441 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="0.050205445271313833833 0.016818394108500916984 -0.020699999999999996181" rpy="-1.570796326794896558 1.0007936238654886908e-31 4.9997598966897878144e-30" />
+            <geometry>
+                <mesh filename="../meshes/antenna_holder_right.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="0.047829704883307760932 -0.010215450772524892198 0.044276288527250289018" rpy="-1.570796326794896558 1.0007936235382055815e-31 4.9997598966917671484e-30" />
             <geometry>
@@ -1082,6 +2219,12 @@
                 <color rgba="0.30196078431372547213 0.30196078431372547213 0.30196078431372547213 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="0.047829704883307760932 -0.010215450772524892198 0.044276288527250289018" rpy="-1.570796326794896558 1.0007936235382055815e-31 4.9997598966917671484e-30" />
+            <geometry>
+                <mesh filename="../meshes/antenna_tip.stl"/>
+            </geometry>
+        </collision>
         <visual>
             <origin xyz="0.047829704883306373153 -0.010215450772527223666 0.044276288527250289018" rpy="-1.570796326794896558 -2.9435109023205088977e-31 1.7621534380226343841e-29" />
             <geometry>
@@ -1091,6 +2234,12 @@
                 <color rgba="0.5999999999999999778 0.5999999999999999778 0.5999999999999999778 1.0"/>
             </material>
         </visual>
+        <collision>
+            <origin xyz="0.047829704883306373153 -0.010215450772527223666 0.044276288527250289018" rpy="-1.570796326794896558 -2.9435109023205088977e-31 1.7621534380226343841e-29" />
+            <geometry>
+                <mesh filename="../meshes/antenna.stl"/>
+            </geometry>
+        </collision>
         <inertial>
             <origin xyz="-0.001251488547137645773 -0.013579477794938069751 -0.013569434366070358064" rpy="0 0 0"/>
             <mass value="0.0021739987496008348657" />
@@ -1110,7 +2259,7 @@
         <parent link="head_pitch_yaw" />
         <child link="head_assembly" />
         <axis xyz="0 0 1"/>
-        <limit effort="0.52" velocity="10.7" lower="-2.0943951023931952626" upper="2.0943951023931952626"/>
+        <limit effort="0.4" velocity="10.7" lower="-2.0943951023931952626" upper="2.0943951023931952626"/>
         <joint_properties friction="0.1"/>
     </joint>
     <joint name="head_pitch" type="revolute">
@@ -1118,7 +2267,7 @@
         <parent link="head_link" />
         <child link="head_pitch_yaw" />
         <axis xyz="0 0 1"/>
-        <limit effort="0.52" velocity="10.7" lower="-0.69813170079773179122" upper="0.69813170079773179122"/>
+        <limit effort="0.4" velocity="10.7" lower="-0.69813170079773179122" upper="0.69813170079773179122"/>
         <joint_properties friction="0.1"/>
     </joint>
     <joint name="neck_pitch" type="revolute">
@@ -1126,7 +2275,7 @@
         <parent link="body_module" />
         <child link="head_link" />
         <axis xyz="0 0 1"/>
-        <limit effort="0.52" velocity="10.7" lower="-1.3089969389957472057" upper="0.1745329251994329478"/>
+        <limit effort="0.4" velocity="10.7" lower="-1.3089969389957472057" upper="0.1745329251994329478"/>
         <joint_properties friction="0.1"/>
     </joint>
 </robot>

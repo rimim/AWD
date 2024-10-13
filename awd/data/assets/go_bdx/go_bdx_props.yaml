@@ -21,27 +21,34 @@ dof_offsets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
 dof_obs_size: 96
 num_actions: 16
 # 1 + 15 * (3 + 6 + 3 + 3) - 3
-num_obs: 54
-motor_efforts: [100, 100, 100, 100, 100, 50, 50, 50, 50, 10, 10, 100, 100, 100, 100, 100]
+num_obs: 131
+motor_efforts:
+  [100, 100, 100, 100, 100, 50, 50, 50, 50, 10, 10, 100, 100, 100, 100, 100]
 #13 + dof_obs_size + 28 + 3 * num_key_bodies # [root_h, root_rot, root_vel, root_ang_vel, dof_pos, dof_vel, key_body_pos]
-num_amp_obs_per_step: 125
+num_amp_obs_per_step: 131
+
+friction: 0.0
+angular_damping: 0.0
+armature: 0.0
+# thickness: 0.001
+
 damping:
-  left_ankle: 1.6
-  left_antenna: 0.2
-  left_hip_pitch: 1.3
-  left_hip_roll: 1.3
-  left_hip_yaw: 1.3
-  left_knee: 1.3
-  neck_pitch: 1.3
-  head_pitch: 1.0
-  head_roll: 1.0
-  head_yaw: 1.0
-  right_ankle: 1.6
-  right_antenna: 0.2
-  right_hip_pitch: 1.3
-  right_hip_roll: 1.3
-  right_hip_yaw: 1.3
-  right_knee: 1.3
+  left_ankle: 1.5
+  left_antenna: 1.5
+  left_hip_pitch: 1.5
+  left_hip_roll: 1.5
+  left_hip_yaw: 1.5
+  left_knee: 1.5
+  neck_pitch: 1.5
+  head_pitch: 1.5
+  head_roll: 1.5
+  head_yaw: 1.5
+  right_ankle: 1.5
+  right_antenna: 1.5
+  right_hip_pitch: 1.5
+  right_hip_roll: 1.5
+  right_hip_yaw: 1.5
+  right_knee: 1.5
 stiffness:
   left_ankle: 30
   left_antenna: 3
@@ -49,13 +56,30 @@ stiffness:
   left_hip_roll: 40
   left_hip_yaw: 40
   left_knee: 35
-  neck_pitch: 40
-  head_pitch: 15
-  head_roll: 15
-  head_yaw: 15
+  neck_pitch: 10
+  head_pitch: 5
+  head_roll: 5
+  head_yaw: 5
   right_ankle: 30
   right_antenna: 3
   right_hip_pitch: 40
   right_hip_roll: 40
   right_hip_yaw: 40
   right_knee: 35
+init_pos:
+  left_ankle: 0
+  left_antenna: 0
+  left_hip_pitch: 0
+  left_hip_roll: 0
+  left_hip_yaw: 0
+  left_knee: 0
+  neck_pitch: 0
+  head_pitch: 0
+  head_roll: 0
+  head_yaw: 0
+  right_ankle: 0
+  right_antenna: 0
+  right_hip_pitch: 0
+  right_hip_roll: 0
+  right_hip_yaw: 0
+  right_knee: 0

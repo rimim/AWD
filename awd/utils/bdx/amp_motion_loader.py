@@ -11,8 +11,8 @@ from . import pose3d
 from . import motion_util
 from . import utils
 
-class AMPLoader:
 
+class AMPLoader:
     def __init__(
         self,
         device,
@@ -48,10 +48,12 @@ class AMPLoader:
             self.trajectory_names.append(motion_file.split(".")[0])
             with open(motion_file, "r") as f:
                 motion_json = json.load(f)
-                motion_data = np.array(motion_json["Frames"])
+                motion_data = np.array(motion_json["Frames"])[: -120 * 1]
                 # motion_data = self.reorder_from_pybullet_to_isaac(motion_data)
 
-                self.init_field_offsets(motion_json["Frame_offset"], motion_json["Frame_size"])
+                self.init_field_offsets(
+                    motion_json["Frame_offset"], motion_json["Frame_size"]
+                )
 
                 # Normalize and standardize quaternions.
                 for f_i in range(motion_data.shape[0]):
@@ -66,9 +68,7 @@ class AMPLoader:
                 # Remove first 7 observation dimensions (root_pos and root_orn).
                 self.trajectories.append(
                     torch.tensor(
-                        motion_data[
-                            :, self.ROOT_ROT_END_IDX : self.JOINT_VEL_END_IDX
-                        ],
+                        motion_data[:, self.ROOT_ROT_END_IDX : self.JOINT_VEL_END_IDX],
                         dtype=torch.float32,
                         device=device,
                     )
@@ -99,10 +99,18 @@ class AMPLoader:
         self.trajectory_lens = np.array(self.trajectory_lens)
         self.trajectory_num_frames = np.array(self.trajectory_num_frames)
 
-        self._motion_num_frames = torch.tensor(self.trajectory_num_frames, device=self.device)
-        self._motion_lengths = torch.tensor(self.trajectory_lens, device=self.device, dtype=torch.float32)
-        self._motion_dt = torch.tensor(self.trajectory_frame_durations, device=self.device, dtype=torch.float32)
-        self._motion_weights = torch.tensor(self.trajectory_weights, dtype=torch.float32, device=self.device)
+        self._motion_num_frames = torch.tensor(
+            self.trajectory_num_frames, device=self.device
+        )
+        self._motion_lengths = torch.tensor(
+            self.trajectory_lens, device=self.device, dtype=torch.float32
+        )
+        self._motion_dt = torch.tensor(
+            self.trajectory_frame_durations, device=self.device, dtype=torch.float32
+        )
+        self._motion_weights = torch.tensor(
+            self.trajectory_weights, dtype=torch.float32, device=self.device
+        )
         self._motion_weights /= self._motion_weights.sum()
 
         # Preload transitions.
@@ -132,7 +140,9 @@ class AMPLoader:
             else:
                 raise ValueError("Frame_offset array contains more than one item")
         if not isinstance(frame_offset, dict):
-            raise TypeError("Frame_offset must be either an object or a single-item array of objects")
+            raise TypeError(
+                "Frame_offset must be either an object or a single-item array of objects"
+            )
         if frame_size is None:
             raise ValueError("Frame_size field is missing in motion_json")
         if isinstance(frame_size, list):
@@ -141,51 +151,61 @@ class AMPLoader:
             else:
                 raise ValueError("frame_offset array contains more than one item")
         if not isinstance(frame_size, dict):
-            raise TypeError("frame_offset must be either an object or a single-item array of objects")
+            raise TypeError(
+                "frame_offset must be either an object or a single-item array of objects"
+            )
 
         print(f"frame_offset: {frame_offset}")
         print(f"frame_size:   {frame_size}")
-        print(frame_size['root_pos'])
-        self.POS_SIZE = int(frame_size['root_pos'])
-        self.ROT_SIZE = int(frame_size['root_quat'])
-        self.JOINT_POS_SIZE = int(frame_size['joints_pos'])
-        self.LEFT_TOE_POS_LOCAL_SIZE = int(frame_size['left_toe_pos'])
-        self.RIGHT_TOE_POS_LOCAL_SIZE = int(frame_size['right_toe_pos'])
-        self.LINEAR_VEL_SIZE = int(frame_size['world_linear_vel'])
-        self.ANGULAR_VEL_SIZE = int(frame_size['world_angular_vel'])
-        self.JOINT_VEL_SIZE = int(frame_size['joints_vel'])
-        self.LEFT_TOE_VEL_LOCAL_SIZE = int(frame_size['left_toe_vel'])
-        self.RIGHT_TOE_VEL_LOCAL_SIZE = int(frame_size['right_toe_vel'])
+        print(frame_size["root_pos"])
+        self.POS_SIZE = int(frame_size["root_pos"])
+        self.ROT_SIZE = int(frame_size["root_quat"])
+        self.JOINT_POS_SIZE = int(frame_size["joints_pos"])
+        self.LEFT_TOE_POS_LOCAL_SIZE = int(frame_size["left_toe_pos"])
+        self.RIGHT_TOE_POS_LOCAL_SIZE = int(frame_size["right_toe_pos"])
+        self.LINEAR_VEL_SIZE = int(frame_size["world_linear_vel"])
+        self.ANGULAR_VEL_SIZE = int(frame_size["world_angular_vel"])
+        self.JOINT_VEL_SIZE = int(frame_size["joints_vel"])
+        self.LEFT_TOE_VEL_LOCAL_SIZE = int(frame_size["left_toe_vel"])
+        self.RIGHT_TOE_VEL_LOCAL_SIZE = int(frame_size["right_toe_vel"])
 
-        self.ROOT_POS_START_IDX = int(frame_offset['root_pos'])
+        self.ROOT_POS_START_IDX = int(frame_offset["root_pos"])
         self.ROOT_POS_END_IDX = self.ROOT_POS_START_IDX + self.POS_SIZE
 
-        self.ROOT_ROT_START_IDX = int(frame_offset['root_quat'])
+        self.ROOT_ROT_START_IDX = int(frame_offset["root_quat"])
         self.ROOT_ROT_END_IDX = self.ROOT_ROT_START_IDX + self.ROT_SIZE
 
-        self.JOINT_POSE_START_IDX = int(frame_offset['joints_pos'])
+        self.JOINT_POSE_START_IDX = int(frame_offset["joints_pos"])
         self.JOINT_POSE_END_IDX = self.JOINT_POSE_START_IDX + self.JOINT_POS_SIZE
 
-        self.LEFT_TOE_POS_LOCAL_START_IDX = int(frame_offset['left_toe_pos'])
-        self.LEFT_TOE_POS_LOCAL_END_IDX = self.LEFT_TOE_POS_LOCAL_START_IDX + self.LEFT_TOE_POS_LOCAL_SIZE
+        self.LEFT_TOE_POS_LOCAL_START_IDX = int(frame_offset["left_toe_pos"])
+        self.LEFT_TOE_POS_LOCAL_END_IDX = (
+            self.LEFT_TOE_POS_LOCAL_START_IDX + self.LEFT_TOE_POS_LOCAL_SIZE
+        )
 
-        self.RIGHT_TOE_POS_LOCAL_START_IDX = int(frame_offset['right_toe_pos'])
-        self.RIGHT_TOE_POS_LOCAL_END_IDX = self.RIGHT_TOE_POS_LOCAL_START_IDX + self.RIGHT_TOE_POS_LOCAL_SIZE
+        self.RIGHT_TOE_POS_LOCAL_START_IDX = int(frame_offset["right_toe_pos"])
+        self.RIGHT_TOE_POS_LOCAL_END_IDX = (
+            self.RIGHT_TOE_POS_LOCAL_START_IDX + self.RIGHT_TOE_POS_LOCAL_SIZE
+        )
 
-        self.LINEAR_VEL_START_IDX = int(frame_offset['world_linear_vel'])
+        self.LINEAR_VEL_START_IDX = int(frame_offset["world_linear_vel"])
         self.LINEAR_VEL_END_IDX = self.LINEAR_VEL_START_IDX + self.LINEAR_VEL_SIZE
 
-        self.ANGULAR_VEL_START_IDX = int(frame_offset['world_angular_vel'])
+        self.ANGULAR_VEL_START_IDX = int(frame_offset["world_angular_vel"])
         self.ANGULAR_VEL_END_IDX = self.ANGULAR_VEL_START_IDX + self.ANGULAR_VEL_SIZE
 
-        self.JOINT_VEL_START_IDX = int(frame_offset['joints_vel'])
+        self.JOINT_VEL_START_IDX = int(frame_offset["joints_vel"])
         self.JOINT_VEL_END_IDX = self.JOINT_VEL_START_IDX + self.JOINT_VEL_SIZE
 
-        self.LEFT_TOE_VEL_LOCAL_START_IDX = int(frame_offset['left_toe_vel'])
-        self.LEFT_TOE_VEL_LOCAL_END_IDX = self.LEFT_TOE_VEL_LOCAL_START_IDX + self.LEFT_TOE_VEL_LOCAL_SIZE
+        self.LEFT_TOE_VEL_LOCAL_START_IDX = int(frame_offset["left_toe_vel"])
+        self.LEFT_TOE_VEL_LOCAL_END_IDX = (
+            self.LEFT_TOE_VEL_LOCAL_START_IDX + self.LEFT_TOE_VEL_LOCAL_SIZE
+        )
 
-        self.RIGHT_TOE_VEL_LOCAL_START_IDX = int(frame_offset['right_toe_vel'])
-        self.RIGHT_TOE_VEL_LOCAL_END_IDX = self.RIGHT_TOE_VEL_LOCAL_START_IDX + self.RIGHT_TOE_VEL_LOCAL_SIZE
+        self.RIGHT_TOE_VEL_LOCAL_START_IDX = int(frame_offset["right_toe_vel"])
+        self.RIGHT_TOE_VEL_LOCAL_END_IDX = (
+            self.RIGHT_TOE_VEL_LOCAL_START_IDX + self.RIGHT_TOE_VEL_LOCAL_SIZE
+        )
 
     def reorder_from_pybullet_to_isaac(self, motion_data):
         """Convert from PyBullet ordering to Isaac ordering.
@@ -277,9 +297,7 @@ class AMPLoader:
         """Returns frame for the given trajectory at the specified time."""
         p = times / self.trajectory_lens[traj_idxs]
         n = self.trajectory_num_frames[traj_idxs]
-        idx_low, idx_high = np.floor(p * n).astype(int), np.ceil(p * n).astype(
-            int
-        )
+        idx_low, idx_high = np.floor(p * n).astype(int), np.ceil(p * n).astype(int)
         all_frame_starts = torch.zeros(
             len(traj_idxs), self.observation_dim, device=self.device
         )
@@ -309,9 +327,7 @@ class AMPLoader:
     def get_full_frame_at_time_batch(self, traj_idxs, times):
         p = times / self.trajectory_lens[traj_idxs]
         n = self.trajectory_num_frames[traj_idxs]
-        idx_low, idx_high = np.floor(p * n).astype(int), np.ceil(p * n).astype(
-            int
-        )
+        idx_low, idx_high = np.floor(p * n).astype(int), np.ceil(p * n).astype(int)
         idx_low = np.clip(idx_low, 0, n - 1)
         idx_high = np.clip(idx_high, 0, n - 1)
         all_frame_pos_starts = torch.zeros(
@@ -357,14 +373,17 @@ class AMPLoader:
             all_frame_amp_ends[traj_mask] = trajectory[idx_high[traj_mask]][
                 :, self.JOINT_POSE_START_IDX : self.JOINT_VEL_END_IDX
             ]
+
         blend = torch.tensor(
             p * n - idx_low, device=self.device, dtype=torch.float32
         ).unsqueeze(-1)
 
         pos_blend = self.slerp(all_frame_pos_starts, all_frame_pos_ends, blend)
+
         rot_blend = utils.quaternion_slerp(
             all_frame_rot_starts, all_frame_rot_ends, blend
         )
+
         amp_blend = self.slerp(all_frame_amp_starts, all_frame_amp_ends, blend)
         return torch.cat([pos_blend, rot_blend, amp_blend], dim=-1)
 
@@ -401,27 +420,21 @@ class AMPLoader:
             An interpolation of the two frames.
         """
 
-        root_pos0, root_pos1 = self.get_root_pos(frame0), self.get_root_pos(
-            frame1
-        )
-        root_rot0, root_rot1 = self.get_root_rot(frame0), self.get_root_rot(
-            frame1
-        )
-        joints0, joints1 = self.get_joint_pose(frame0), self.get_joint_pose(
-            frame1
-        )
+        root_pos0, root_pos1 = self.get_root_pos(frame0), self.get_root_pos(frame1)
+        root_rot0, root_rot1 = self.get_root_rot(frame0), self.get_root_rot(frame1)
+        joints0, joints1 = self.get_joint_pose(frame0), self.get_joint_pose(frame1)
         tar_toe_pos_0, tar_toe_pos_1 = self.get_tar_toe_pos_local(
             frame0
         ), self.get_tar_toe_pos_local(frame1)
-        linear_vel_0, linear_vel_1 = self.get_linear_vel(
-            frame0
-        ), self.get_linear_vel(frame1)
+        linear_vel_0, linear_vel_1 = self.get_linear_vel(frame0), self.get_linear_vel(
+            frame1
+        )
         angular_vel_0, angular_vel_1 = self.get_angular_vel(
             frame0
         ), self.get_angular_vel(frame1)
-        joint_vel_0, joint_vel_1 = self.get_joint_vel(
-            frame0
-        ), self.get_joint_vel(frame1)
+        joint_vel_0, joint_vel_1 = self.get_joint_vel(frame0), self.get_joint_vel(
+            frame1
+        )
 
         blend_root_pos = self.slerp(root_pos0, root_pos1, blend)
         blend_root_rot = transformations.quaternion_slerp(
@@ -463,9 +476,7 @@ class AMPLoader:
                         s,
                         self.preloaded_s[
                             idxs,
-                            self.ROOT_POS_START_IDX
-                            + 2 : self.ROOT_POS_START_IDX
-                            + 3,
+                            self.ROOT_POS_START_IDX + 2 : self.ROOT_POS_START_IDX + 3,
                         ],
                     ],
                     dim=-1,
@@ -478,9 +489,7 @@ class AMPLoader:
                         s_next,
                         self.preloaded_s_next[
                             idxs,
-                            self.ROOT_POS_START_IDX
-                            + 2 : self.ROOT_POS_START_IDX
-                            + 3,
+                            self.ROOT_POS_START_IDX + 2 : self.ROOT_POS_START_IDX + 3,
                         ],
                     ],
                     dim=-1,
@@ -505,16 +514,18 @@ class AMPLoader:
         return len(self.trajectory_num_frames)
 
     def sample_motions(self, n):
-        motion_ids = torch.multinomial(self._motion_weights, num_samples=n, replacement=True)
+        motion_ids = torch.multinomial(
+            self._motion_weights, num_samples=n, replacement=True
+        )
         return motion_ids
 
     def sample_time(self, motion_ids, truncate_time=None):
         n = len(motion_ids)
         phase = torch.rand(motion_ids.shape, device=self.device)
-        
+
         motion_len = self._motion_lengths[motion_ids]
-        if (truncate_time is not None):
-            assert(truncate_time >= 0.0)
+        if truncate_time is not None:
+            assert truncate_time >= 0.0
             motion_len -= truncate_time
 
         motion_time = phase * motion_len
@@ -528,7 +539,9 @@ class AMPLoader:
         motion_len = self._motion_lengths[motion_ids]
         num_frames = self._motion_num_frames[motion_ids]
         phase = motion_times % motion_len
-        frames = self.get_full_frame_at_time_batch(motion_ids.cpu().numpy(), phase.cpu().numpy())
+        frames = self.get_full_frame_at_time_batch(
+            motion_ids.cpu().numpy(), phase.cpu().numpy()
+        )
         root_pos = self.get_root_pos_batch(frames)
         root_rot = self.get_root_rot_batch(frames)
         dof_pos = self.get_joint_pose_batch(frames)
@@ -538,7 +551,18 @@ class AMPLoader:
         key_pos0 = self.get_left_toe_pos_local_batch(frames)
         key_pos1 = self.get_right_toe_pos_local_batch(frames)
 
-        return root_pos, root_rot, dof_pos, root_vel, root_ang_vel, dof_vel, key_pos0
+        # key_pos0[:, 2] += 0.01
+        # key_pos1[:, 2] += 0.01
+
+        return (
+            root_pos,
+            root_rot,
+            dof_pos,
+            root_vel,
+            root_ang_vel,
+            dof_vel,
+            torch.cat((key_pos0.unsqueeze(1), key_pos1.unsqueeze(1)), dim=1),
+        )
 
     @property
     def observation_dim(self):
@@ -564,9 +588,7 @@ class AMPLoader:
         return poses[:, self.JOINT_POSE_START_IDX : self.JOINT_POSE_END_IDX]
 
     def get_left_toe_pos_local(self, pose):
-        return pose[
-            self.LEFT_TOE_POS_LOCAL_START_IDX : self.LEFT_TOE_POS_LOCAL_END_IDX
-        ]
+        return pose[self.LEFT_TOE_POS_LOCAL_START_IDX : self.LEFT_TOE_POS_LOCAL_END_IDX]
 
     def get_left_toe_pos_local_batch(self, poses):
         return poses[
@@ -604,9 +626,7 @@ class AMPLoader:
         return poses[:, self.JOINT_VEL_START_IDX : self.JOINT_VEL_END_IDX]
 
     def get_left_toe_vel_local(self, pose):
-        return pose[
-            self.LEFT_TOE_VEL_LOCAL_START_IDX : self.LEFT_TOE_VEL_LOCAL_END_IDX
-        ]
+        return pose[self.LEFT_TOE_VEL_LOCAL_START_IDX : self.LEFT_TOE_VEL_LOCAL_END_IDX]
 
     def get_left_toe_vel_local_batch(self, poses):
         return poses[

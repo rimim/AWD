@@ -11,18 +11,23 @@ from scipy.spatial.transform import Rotation as R
 
 from gait.placo_walk_engine import PlacoWalkEngine
 
+
 def open_browser():
     try:
-        webbrowser.open_new('http://127.0.0.1:7000/static/')
+        webbrowser.open_new("http://127.0.0.1:7000/static/")
     except:
         print("Failed to open the default browser. Trying Google Chrome.")
         try:
-            webbrowser.get('google-chrome').open_new('http://127.0.0.1:7000/static/')
+            webbrowser.get("google-chrome").open_new("http://127.0.0.1:7000/static/")
         except:
-            print("Failed to open Google Chrome. Make sure it's installed and accessible.")
+            print(
+                "Failed to open Google Chrome. Make sure it's installed and accessible."
+            )
+
 
 class RoundingFloat(float):
-    __repr__ = staticmethod(lambda x: format(x, '.5f'))
+    __repr__ = staticmethod(lambda x: format(x, ".5f"))
+
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-n", "--name", type=str, required=True)
@@ -53,7 +58,7 @@ parser.add_argument("-l", "--length", type=int, default=10)
 parser.add_argument("-m", "--meshcat_viz", action="store_true", default=False)
 parser.add_argument("--mini", action="store_true", default=False)
 parser.add_argument("--debug", action="store_true", default=False)
-parser.add_argument("--presets", action="store_true", default=False)
+parser.add_argument("--preset", type=str, default="")
 parser.add_argument(
     "-s",
     "--skip_warmup",
@@ -102,62 +107,29 @@ if args.debug:
     episode["Debug_info"] = []
 
 if args.mini:
-    robot = 'mini_bdx'
+    robot = "mini_bdx"
     robot_urdf = "urdf/bdx.urdf"
     asset_path = "awd/data/assets/mini_bdx"
 else:
-    robot = 'go_bdx'
+    robot = "go_bdx"
     robot_urdf = "go_bdx.urdf"
     asset_path = "awd/data/assets/go_bdx"
 
-preset_filename = f"placo_{robot}_defaults.json"
+preset_filename = args.preset
 filename = os.path.join(asset_path, "placo_defaults.json")
-if args.presets:
+if preset_filename:
     if os.path.exists(preset_filename):
-        preset_filename = filename
+        filename = preset_filename
     else:
         print(f"No such file: {preset_filename}")
-with open(filename, 'r') as f:
+with open(filename, "r") as f:
     gait_parameters = json.load(f)
     print(f"gait_parameters {gait_parameters}")
-    if args.double_support_ratio is not None:
-        gait_parameters['double_support_ratio'] = args.double_support_ratio
-    if args.startend_double_support_ratio is not None:
-        gait_parameters['startend_double_support_ratio'] = args.startend_double_support_ratio
-    if args.planned_timesteps is not None:
-        gait_parameters['planned_timesteps'] = args.planned_timesteps
-    if args.replan_timesteps is not None:
-        gait_parameters['replan_timesteps'] = args.replan_timesteps
-    if args.walk_com_height is not None:
-        gait_parameters['walk_com_height'] = args.walk_com_height
-    if args.walk_foot_height is not None:
-        gait_parameters['walk_foot_height'] = args.walk_foot_height
-    if args.walk_trunk_pitch is not None:
-        gait_parameters['walk_trunk_pitch'] = np.deg2rad(args.walk_trunk_pitch)
-    if args.walk_foot_rise_ratio is not None:
-        gait_parameters['walk_foot_rise_ratio'] = args.walk_foot_rise_ratio
-    if args.single_support_duration is not None:
-        gait_parameters['single_support_duration'] = args.single_support_duration
-    if args.single_support_timesteps is not None:
-        gait_parameters['single_support_timesteps'] = args.single_support_timesteps
-    if args.foot_length is not None:
-        gait_parameters['foot_length'] = args.foot_length
-    if args.feet_spacing is not None:
-        gait_parameters['feet_spacing'] = args.feet_spacing
-    if args.zmp_margin is not None:
-        gait_parameters['zmp_margin'] = args.zmp_margin
-    if args.foot_zmp_target_x is not None:
-        gait_parameters['foot_zmp_target_x'] = args.foot_zmp_target_x
-    if args.foot_zmp_target_y is not None:
-        gait_parameters['foot_zmp_target_y'] = args.foot_zmp_target_y
-    if args.walk_max_dtheta is not None:
-        gait_parameters['walk_max_dtheta'] = args.walk_max_dtheta
-    if args.walk_max_dy is not None:
-        gait_parameters['walk_max_dy'] = args.walk_max_dy
-    if args.walk_max_dx_forward is not None:
-        gait_parameters['walk_max_dx_forward'] = args.walk_max_dx_forward
-    if args.walk_max_dx_backward is not None:
-        gait_parameters['walk_max_dx_backward'] = args.walk_max_dx_backward
+
+args.dx = gait_parameters["dx"]
+args.dy = gait_parameters["dy"]
+args.dtheta = gait_parameters["dtheta"]
+
 pwe = PlacoWalkEngine(asset_path, robot_urdf, gait_parameters)
 
 first_joints_positions = list(pwe.get_angles().values())
@@ -185,8 +157,8 @@ avg_x_lin_vel = []
 avg_y_lin_vel = []
 avg_yaw_vel = []
 added_frame_info = False
-#center_y_pos = None
-center_y_pos = -(pwe.parameters.feet_spacing/2)
+# center_y_pos = None
+center_y_pos = -(pwe.parameters.feet_spacing / 2)
 print(f"center_y_pos: {center_y_pos}")
 while True:
     pwe.tick(DT)
@@ -205,11 +177,15 @@ while True:
             T_world_fbase = pwe.robot.get_T_world_fbase()
         root_position = list(T_world_fbase[:3, 3])
         if not args.mini:
-            root_position[2] = round(root_position[2],1)
-        #if center_y_pos is None:
+            root_position[2] = round(root_position[2], 1)
+        # if center_y_pos is None:
         #    center_y_pos = root_position[1]
-        root_position[1] = root_position[1] - center_y_pos
-        if round(root_position[2],5) < 0:
+
+        # Why ?
+        # Commented this for mini bdx as it shifted the trunk frame
+        # root_position[1] = root_position[1] - center_y_pos
+
+        if round(root_position[2], 5) < 0:
             print(f"BAD root_position: {root_position[2]:.5f}")
         root_orientation_quat = list(R.from_matrix(T_world_fbase[:3, :3]).as_quat())
         joints_positions = list(pwe.get_angles().values())
@@ -223,8 +199,12 @@ while True:
             T_world_leftFoot = pwe.robot.get_T_world_left()
             T_world_rightFoot = pwe.robot.get_T_world_right()
 
-        T_body_leftFoot = np.linalg.inv(T_world_fbase) @ T_world_leftFoot
-        T_body_rightFoot = np.linalg.inv(T_world_fbase) @ T_world_rightFoot
+        T_body_leftFoot = (
+            T_world_leftFoot  # np.linalg.inv(T_world_fbase) @ T_world_leftFoot
+        )
+        T_body_rightFoot = (
+            T_world_rightFoot  # np.linalg.inv(T_world_fbase) @ T_world_rightFoot
+        )
 
         left_toe_pos = list(T_body_leftFoot[:3, 3])
         right_toe_pos = list(T_body_rightFoot[:3, 3])
@@ -371,7 +351,7 @@ while True:
         robot_frame_viz(pwe.robot, "left_foot")
         robot_frame_viz(pwe.robot, "right_foot")
 
-    #if pwe.t - start > args.length:
+    # if pwe.t - start > args.length:
     #    break
     if len(episode["Frames"]) == args.length * FPS:
         break
@@ -388,7 +368,7 @@ print(f"avg yaw {mean_yaw_vel}")
 episode["Vel_x"] = mean_avg_x_lin_vel
 episode["Vel_y"] = mean_avg_y_lin_vel
 episode["Yaw"] = mean_yaw_vel
-episode["Placo"] =  {
+episode["Placo"] = {
     "dx": args.dx,
     "dy": args.dy,
     "dtheta": args.dtheta,
