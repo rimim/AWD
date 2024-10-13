@@ -109,11 +109,11 @@ if args.debug:
 if args.mini:
     robot = "mini_bdx"
     robot_urdf = "urdf/bdx.urdf"
-    asset_path = "awd/data/assets/mini_bdx"
+    asset_path = "../awd/data/assets/mini_bdx"
 else:
     robot = "go_bdx"
     robot_urdf = "go_bdx.urdf"
-    asset_path = "awd/data/assets/go_bdx"
+    asset_path = "../awd/data/assets/go_bdx"
 
 preset_filename = args.preset
 filename = os.path.join(asset_path, "placo_defaults.json")
