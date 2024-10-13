@@ -903,10 +903,6 @@ def compute_duckling_observations(
 ):
     # type: (Tensor, Tensor, Tensor, Tensor, Tensor, Tensor, Tensor, bool, bool, int, List[int], List[int], Tensor) -> Tensor
 
-    print("projected gravity shape", projected_gravity.shape)
-    print("dof po shape", dof_pos.shape)
-    print("dof vel shape", dof_vel.shape)
-
     obs = torch.cat(
         (
             projected_gravity,
