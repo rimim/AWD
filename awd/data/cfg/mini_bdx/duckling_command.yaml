@@ -6,7 +6,7 @@ env:
   isFlagrun: False
   enableDebugVis: False
 
-  keyboard_input: True
+  keyboard_input: False
 
   pdControl: "custom" # or isaac custom
   powerScale: 1.0
