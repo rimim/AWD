@@ -16,14 +16,17 @@ joints:
   - right_ankle
 dof_body_ids: [1, 2, 3, 4, 6, 7, 9, 10, 11, 12, 13, 14]
 dof_offsets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+
 # 15*6
 dof_obs_size: 90
 num_actions: 15
+
 # 1 + 15 * (3 + 6 + 3 + 3) - 3 ???
 num_obs: 124
 # motor_efforts:
 #   [0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8]
 motor_efforts: [10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10]
+
 #13 + dof_obs_size + 28 + 3 * num_key_bodies # [root_h, root_rot, root_vel, root_ang_vel, dof_pos, dof_vel, key_body_pos]
 num_amp_obs_per_step: 124
 
@@ -34,6 +37,14 @@ angular_damping: 0.0
 armature: 0.0018
 thickness: 0.001
 
+# TODO make lists to differentiate motors ?
+# used for custom pd control
+p_gains: 2.5
+d_gains: 0.095
+max_effort: 0.8
+max_velocity: 8.7
+
+# Used for isaac pd control
 damping:
   left_antenna: 1
   left_hip_pitch: 1
@@ -66,6 +77,7 @@ stiffness:
   right_hip_yaw: 10
   right_knee: 10
   right_ankle: 10
+
 init_pos:
   left_hip_yaw: -0.002853397830292128
   left_hip_roll: 0.01626303761810685

@@ -138,6 +138,10 @@ class Duckling(BaseTask):
             angle = props["init_pos"][name]
             self._default_dof_pos[:, i] = angle
 
+        self.p_gains = props["p_gains"]
+        self.d_gains = props["d_gains"]
+        self.max_effort = props["max_effort"]
+
         self._initial_dof_pos = torch.zeros_like(
             self._dof_pos, device=self.device, dtype=torch.float
         )
@@ -304,6 +308,7 @@ class Duckling(BaseTask):
         self._damping = props["damping"]
         self._friction = props["friction"]
         self._armature = props["armature"]
+        self._velocity = props["max_velocity"]
         return
 
     def _build_termination_heights(self):
@@ -389,11 +394,12 @@ class Duckling(BaseTask):
         asset_root = os.path.dirname(asset_path)
         asset_file = os.path.basename(asset_path)
 
+        props = self._get_asset_properties()
         asset_options = gymapi.AssetOptions()
         # asset_options.density = 0.001
-        # asset_options.armature = 0.0
-        # asset_options.thickness = 0.01
-        asset_options.angular_damping = 0.01
+        # asset_options.armature = props["armature"]
+        # asset_options.thickness = props["thickness"]
+        # asset_options.angular_damping = props["angular_damping"]
         asset_options.max_angular_velocity = 100.0
         asset_options.max_linear_velocity = 100.0
         # see GymDofDriveModeFlags (0 is none, 1 is pos tgt, 2 is vel tgt, 3 effort)
@@ -404,7 +410,6 @@ class Duckling(BaseTask):
             self.sim, asset_root, asset_file, asset_options
         )
 
-        props = self._get_asset_properties()
         dof_axis = self.get_dof_axis()
         for key, value in dof_axis.items():
             print(f"DOF {key}: {value}")
@@ -464,7 +469,7 @@ class Duckling(BaseTask):
         self.dof_limits_lower = to_torch(self.dof_limits_lower, device=self.device)
         self.dof_limits_upper = to_torch(self.dof_limits_upper, device=self.device)
 
-        if self._pd_control:
+        if self._pd_control == "isaac":
             self._build_pd_action_offset_scale()
         return
 
@@ -495,9 +500,9 @@ class Duckling(BaseTask):
         # for j in range(self.num_bodies):
         #     self.gym.set_rigid_body_color(env_ptr, duckling_handle, j, gymapi.MESH_VISUAL, gymapi.Vec3(0.54, 0.85, 0.2))
 
-        if self._pd_control:
-            dof_names = self.gym.get_asset_dof_names(duckling_asset)
-            dof_prop = self.gym.get_asset_dof_properties(duckling_asset)
+        dof_names = self.gym.get_asset_dof_names(duckling_asset)
+        dof_prop = self.gym.get_asset_dof_properties(duckling_asset)
+        if self._pd_control == "isaac":
             dof_prop["driveMode"] = gymapi.DOF_MODE_POS
             for i, dof_name in enumerate(dof_names):
                 if dof_name in self._stiffness:
@@ -510,12 +515,20 @@ class Duckling(BaseTask):
                     print(f"WARNING: No damping values for {dof_name}")
                 # if dof_name in self._friction:
                 dof_prop["friction"][i] = self._friction
-
                 dof_prop["armature"][i] = self._armature
             # for key in dof_prop.dtype.names:
             #     print(f"{key}: {dof_prop[key]}")
-            self.gym.set_actor_dof_properties(env_ptr, duckling_handle, dof_prop)
-
+        elif self._pd_control == "custom":
+            dof_prop["driveMode"] = gymapi.DOF_MODE_EFFORT
+            for i, dof_name in enumerate(dof_names):
+                dof_prop["friction"][i] = self._friction
+                dof_prop["armature"][i] = self._armature
+                dof_prop["velocity"][i] = self._velocity
+            pass
+        else:
+            print(f"Unknown PD control type {self._pd_control}. Exiting.")
+            exit()
+        self.gym.set_actor_dof_properties(env_ptr, duckling_handle, dof_prop)
         self.duckling_handles.append(duckling_handle)
 
         return
@@ -675,22 +688,46 @@ class Duckling(BaseTask):
         #     requires_grad=False,
         # )
         self.actions = actions.to(self.device).clone()
-        if self._pd_control:
+        if self._pd_control == "isaac":
             # TODO WARNING broke (?) this for go_bdx
             # pd_tar = self._action_to_pd_targets(self.actions)
             # pd_tar_tensor = gymtorch.unwrap_tensor(pd_tar)
             # pd_tar_tensor = gymtorch.unwrap_tensor(pd_tar)
             # self.gym.set_dof_position_target_tensor(self.sim, pd_tar_tensor)
 
-            tar = self.actions + self._default_dof_pos
+            tar = self.actions * self.power_scale + self._default_dof_pos
             tar_tensor = gymtorch.unwrap_tensor(tar)
             self.gym.set_dof_position_target_tensor(self.sim, tar_tensor)
+        elif self._pd_control == "custom":
+            self.render()
+            for i in range(self.control_freq_inv):
+                self.torques = self.p_gains * (
+                    self.actions * self.power_scale
+                    + self._default_dof_pos
+                    - self._dof_pos
+                ) - (self.d_gains * self._dof_vel)
+                self.torques = torch.clip(
+                    self.torques, -self.max_effort, self.max_effort
+                )
+                self.gym.set_dof_actuation_force_tensor(
+                    self.sim, gymtorch.unwrap_tensor(self.torques)
+                )
+                self.gym.simulate(self.sim)
+                if self.device == "cpu":
+                    self.gym.fetch_results(self.sim, True)
+                self.gym.refresh_dof_state_tensor(self.sim)
         else:
-            forces = self.actions * self.motor_efforts.unsqueeze(0) * self.power_scale
-            force_tensor = gymtorch.unwrap_tensor(forces)
-            self.gym.set_dof_actuation_force_tensor(self.sim, force_tensor)
+            print(f"Unknown PD control type {self._pd_control}. Exiting.")
+            exit()
+            # forces = self.actions * self.motor_efforts.unsqueeze(0) * self.power_scale
+            # force_tensor = gymtorch.unwrap_tensor(forces)
+            # self.gym.set_dof_actuation_force_tensor(self.sim, force_tensor)
 
         return
+
+    def _physics_step(self):
+        if self._pd_control == "isaac":
+            super()._physics_step()
 
     def post_physics_step(self):
         self.progress_buf += 1
