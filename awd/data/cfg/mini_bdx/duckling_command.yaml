@@ -6,6 +6,8 @@ env:
   isFlagrun: False
   enableDebugVis: False
 
+  keyboard_input: False
+
   pdControl: "custom" # or isaac custom
   powerScale: 1.0
   controlFrequencyInv: 2 # 30 Hz
@@ -43,9 +45,9 @@ env:
     angularVelocityScale: 0.25
 
   randomCommandVelocityRanges:
-    linear_x: [-0.3, 0.3] # min max [m/s]
-    linear_y: [-0.3, 0.3] # min max [m/s]
-    yaw: [-0.2, 0.2] # min max [rad/s]
+    linear_x: [-0.14, 0.14] # min max [m/s]
+    linear_y: [-0.1, 0.1] # min max [m/s]
+    yaw: [-0.4, 0.4] # min max [rad/s]
 
 sim:
   substeps: 2
