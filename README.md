@@ -23,7 +23,7 @@ First, an AWD model can be trained to imitate a dataset of motions clips using t
 ```
 python awd/run.py --task DucklingAMP --cfg_env awd/data/cfg/go_bdx/duckling.yaml --cfg_train awd/data/cfg/go_bdx/train/awd_duckling.yaml --motion_file awd/data/motions/go_bdx/walk_forward.txt --headless
 ```
-`--motion_file` can be used to specify a dataset of motion clips that the model should imitate. 
+`--motion_file` can be used to specify a dataset of motion clips that the model should imitate.
 The task `GoBDX` will train a model to imitate a dataset of motion clips.
 Over the course of training, the latest checkpoint `Checkpoint.pth` will be regularly saved to `output/`,
 along with a Tensorboard log. `--headless` is used to disable visualizations. If you want to view the
@@ -67,6 +67,8 @@ python awd/run.py --test --task DucklingViewMotion --num_envs 2 --cfg_env awd/da
 
 
 ### Gait Generation
+
+See [this](gait_generation/README.md)
 
 #### Gait Playground
 

@@ -21,8 +21,9 @@ dof_obs_size: 90
 num_actions: 15
 # 1 + 15 * (3 + 6 + 3 + 3) - 3 ???
 num_obs: 124
-motor_efforts:
-  [0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8]
+# motor_efforts:
+#   [0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8]
+motor_efforts: [10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10]
 #13 + dof_obs_size + 28 + 3 * num_key_bodies # [root_h, root_rot, root_vel, root_ang_vel, dof_pos, dof_vel, key_body_pos]
 num_amp_obs_per_step: 124
 
@@ -34,21 +35,21 @@ armature: 0.0018
 thickness: 0.001
 
 damping:
-  left_antenna: 0.095
-  left_hip_pitch: 0.095
-  left_hip_roll: 0.095
-  left_hip_yaw: 0.095
-  left_knee: 0.095
-  left_ankle: 0.095
-  neck_pitch: 0.095
-  head_pitch: 0.095
-  head_yaw: 0.095
-  right_antenna: 0.095
-  right_hip_pitch: 0.095
-  right_hip_roll: 0.095
-  right_hip_yaw: 0.095
-  right_knee: 0.095
-  right_ankle: 0.095
+  left_antenna: 1
+  left_hip_pitch: 1
+  left_hip_roll: 1
+  left_hip_yaw: 1
+  left_knee: 1
+  left_ankle: 1
+  neck_pitch: 1
+  head_pitch: 1
+  head_yaw: 1
+  right_antenna: 1
+  right_hip_pitch: 1
+  right_hip_roll: 1
+  right_hip_yaw: 1
+  right_knee: 1
+  right_ankle: 1
 stiffness:
   left_antenna: 10
   left_hip_pitch: 10
