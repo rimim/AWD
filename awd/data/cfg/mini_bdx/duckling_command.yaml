@@ -30,8 +30,8 @@ env:
     assetFileName: "mini_bdx/urdf/bdx.urdf"
 
   plane:
-    staticFriction: 1.0
-    dynamicFriction: 1.0
+    staticFriction: 5.0
+    dynamicFriction: 5.0
     restitution: 0.0
 
   learn:
