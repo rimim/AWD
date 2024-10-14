@@ -285,6 +285,7 @@ def main():
 
     # Create default directories for weights and statistics
     cfg_train["params"]["config"]["train_dir"] = args.output_path
+    cfg_train["normalize_input"] = True
 
     vargs = vars(args)
 
@@ -339,6 +340,7 @@ def main():
             output_names=["actions"],
         )
         print("SAVE TO ONNX.onnx")
+        exit()
 
     runner.run(vargs)
     return

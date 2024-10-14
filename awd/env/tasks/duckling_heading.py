@@ -254,6 +254,7 @@ class DucklingHeading(duckling_amp_task.DucklingAMPTask):
         obs = compute_heading_observations(
             root_states, tar_dir, tar_speed, tar_face_dir
         )
+        # print(obs)
         return obs
 
     def _compute_reward(self, actions):
