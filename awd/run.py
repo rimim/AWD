@@ -304,6 +304,7 @@ def main():
 
             def forward(self, input_dict):
                 # TODO find how to do this with newer version of torch ?
+                # set cfg_train["normalize_input"] = True above, does this work ?
                 # input_dict["obs"] = self._model.norm_obs(
                 #     input_dict["obs"]
                 # )  # need this ? Seems like yes
