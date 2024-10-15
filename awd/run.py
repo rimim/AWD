@@ -285,7 +285,6 @@ def main():
 
     # Create default directories for weights and statistics
     cfg_train["params"]["config"]["train_dir"] = args.output_path
-    cfg_train["normalize_input"] = True
 
     vargs = vars(args)
 
@@ -295,19 +294,16 @@ def main():
     runner.load(cfg_train)
     runner.reset()
 
-    if False:
+    if cfg["env"]["export_onnx"]:
         # https://www.tylerbarkin.com/isaac-gym-to-onnx
         class ModelWrapper(torch.nn.Module):
-            def __init__(self, model):
+            def __init__(self, model, running_mean_std):
                 torch.nn.Module.__init__(self)
                 self._model = model
+                self.running_mean_std = running_mean_std
 
             def forward(self, input_dict):
-                # TODO find how to do this with newer version of torch ?
-                # set cfg_train["normalize_input"] = True above, does this work ?
-                # input_dict["obs"] = self._model.norm_obs(
-                #     input_dict["obs"]
-                # )  # need this ? Seems like yes
+                input_dict["obs"] = self.running_mean_std(input_dict["obs"])
 
                 x = self._model.a2c_network.actor_mlp(input_dict["obs"])
                 x = self._model.a2c_network.mu(x)
@@ -322,7 +318,9 @@ def main():
 
         with torch.no_grad():
             adapter = flatten.TracingAdapter(
-                ModelWrapper(player.model), inputs, allow_non_tensor=True
+                ModelWrapper(player.model, player.running_mean_std),
+                inputs,
+                allow_non_tensor=True,
             )
             traced = torch.jit.trace(
                 adapter, adapter.flattened_inputs, check_trace=False

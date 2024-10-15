@@ -31,6 +31,7 @@ import os
 import torch
 import yaml
 import xml.etree.ElementTree as ET
+import pickle
 
 from isaacgym import gymtorch
 from isaacgym import gymapi
@@ -219,6 +220,9 @@ class Duckling(BaseTask):
 
         if self.viewer != None:
             self._init_camera()
+
+        if self.cfg["env"]["debugSaveObs"]:
+            self.saved_actions = []
 
         return
 
@@ -714,6 +718,13 @@ class Duckling(BaseTask):
         #     device=self.device,
         #     requires_grad=False,
         # )
+        # if self.cfg["env"]["debugSaveObs"]:
+        #     self.saved_actions = []
+
+        if self.cfg["env"]["debugSaveObs"]:
+            self.saved_actions.append(actions[0].cpu().numpy())
+            pickle.dump(self.saved_actions, open("saved_actions.pkl", "wb"))
+
         self.actions = actions.to(self.device).clone()
         if self._pd_control == "isaac":
             # TODO WARNING broke (?) this for go_bdx

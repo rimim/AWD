@@ -5,8 +5,10 @@ env:
   episodeLength: 500
   isFlagrun: False
   enableDebugVis: False
+  debugSaveObs: False
 
   keyboard_input: False
+  export_onnx: False
 
   pdControl: "custom" # or isaac custom
   powerScale: 1.0
