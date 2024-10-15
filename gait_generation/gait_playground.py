@@ -19,7 +19,7 @@ from placo_utils.visualization import (
 )
 from scipy.spatial.transform import Rotation as R
 
-from gait.placo_walk_engine import PlacoWalkEngine
+from placo_walk_engine import PlacoWalkEngine
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--dx", type=float, default=0)

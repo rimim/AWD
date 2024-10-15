@@ -1,5 +1,7 @@
 # Gait generation
 
+Minimal installation for the gait generation in requirements.txt
+
 ## Generate one gait
 
 ```bash

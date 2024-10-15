@@ -9,7 +9,7 @@ import placo
 from placo_utils.visualization import footsteps_viz, robot_frame_viz, robot_viz
 from scipy.spatial.transform import Rotation as R
 
-from gait.placo_walk_engine import PlacoWalkEngine
+from placo_walk_engine import PlacoWalkEngine
 
 
 def open_browser():

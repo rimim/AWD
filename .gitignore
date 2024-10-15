@@ -7,3 +7,5 @@ output/
 log/
 nn/
 *.egg-info/
+*.onnx
+*.pkl
