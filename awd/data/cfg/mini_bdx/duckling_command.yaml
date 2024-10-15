@@ -47,9 +47,9 @@ env:
     angularVelocityScale: 0.25
 
   randomCommandVelocityRanges:
-    linear_x: [-0.14, 0.14] # min max [m/s]
-    linear_y: [-0.1, 0.1] # min max [m/s]
-    yaw: [-0.4, 0.4] # min max [rad/s]
+    linear_x: [0.0, 0.14] # min max [m/s]
+    linear_y: [0.0, 0.0] # min max [m/s]
+    yaw: [0.0, 0.0] # min max [rad/s]
 
 sim:
   substeps: 2
