@@ -209,6 +209,14 @@ class Duckling(BaseTask):
             self._root_states[: self.num_envs, 3:7], self.gravity_vec
         )
 
+        self.actions = torch.zeros(
+            self.num_envs,
+            self.num_actions,
+            dtype=torch.float,
+            device=self.device,
+            requires_grad=False,
+        )
+
         if self.viewer != None:
             self._init_camera()
 
@@ -657,6 +665,7 @@ class Duckling(BaseTask):
                 self._dof_offsets,
                 self._dof_axis_array,
                 self.projected_gravity,
+                self.actions,
             )
         else:
             key_body_pos = self._rigid_body_pos[:, self._key_body_ids, :]
@@ -674,6 +683,7 @@ class Duckling(BaseTask):
                 self._dof_offsets,
                 self._dof_axis_array,
                 self.projected_gravity[env_ids],
+                self.actions[env_ids],
             )
         # obs = compute_duckling_observations_max(body_pos, body_rot, body_vel, body_ang_vel, self._local_root_obs,
         #                                         self._root_height_obs)
@@ -900,8 +910,9 @@ def compute_duckling_observations(
     dof_offsets,
     dof_axis,
     projected_gravity,
+    actions,
 ):
-    # type: (Tensor, Tensor, Tensor, Tensor, Tensor, Tensor, Tensor, bool, bool, int, List[int], List[int], Tensor) -> Tensor
+    # type: (Tensor, Tensor, Tensor, Tensor, Tensor, Tensor, Tensor, bool, bool, int, List[int], List[int], Tensor, Tensor) -> Tensor
 
     # dof_obs = dof_to_obs(dof_pos, dof_obs_size, dof_offsets, dof_axis)
 
@@ -911,6 +922,7 @@ def compute_duckling_observations(
             # dof_obs,
             dof_pos,
             dof_vel,
+            actions,
         ),
         dim=-1,
     )
