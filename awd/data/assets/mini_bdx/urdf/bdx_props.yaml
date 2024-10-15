@@ -43,7 +43,7 @@ thickness: 0.001
 
 # TODO make lists to differentiate motors ?
 # used for custom pd control
-p_gains: 5
+p_gains: 2.5
 d_gains: 0.095
 max_effort: 0.8
 max_velocity: 8.7
