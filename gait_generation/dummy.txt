@@ -1,1 +1,0 @@
-{"LoopMode": "Wrap", "FrameDuration": 0.0167, "EnableCycleOffsetPosition": true, "EnableCycleOffsetRotation": false, "Debug_info": [], "Frames": [], "MotionWeight": 1}

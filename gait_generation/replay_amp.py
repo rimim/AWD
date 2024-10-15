@@ -34,6 +34,7 @@ if args.hardware:
     vels["linear_vel"] = []
     vels["angular_vel"] = []
     vels["joint_vels"] = []
+    root_z = []
 for i, frame in enumerate(frames):
     root_position = frame[:3]
     root_orientation_quat = frame[3:7]
@@ -54,6 +55,7 @@ for i, frame in enumerate(frames):
         vels["linear_vel"].append(frame[28:31])
         vels["angular_vel"].append(frame[31:34])
         vels["joint_vels"].append(frame[34:49])
+        root_z.append(R.from_matrix(pose[:3, :3]).as_euler("xyz")[2])
 
         left_toe_pos = frame[22:25]
         right_toe_pos = frame[25:28]
@@ -80,6 +82,8 @@ if args.hardware:
     plt.plot(angular_vel_x, label="angular_vel_x")
     plt.plot(angular_vel_y, label="angular_vel_y")
     plt.plot(angular_vel_z, label="angular_vel_z")
+
+    plt.plot(root_z, label="root_z")
 
     plt.legend()
     plt.show()

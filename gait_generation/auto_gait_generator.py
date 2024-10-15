@@ -18,6 +18,43 @@ from gait.placo_walk_engine import PlacoWalkEngine
 FPS = 60
 
 
+def quat_ang_vel(q1, q2, delta_t):
+    """
+    Calculates the angular velocity between two quaternions as Euler angles.
+
+    Parameters:
+    - q1: list or array-like, the initial quaternion in [w, x, y, z] format
+    - q2: list or array-like, the final quaternion in [w, x, y, z] format
+    - delta_t: float, the time interval between q1 and q2 in seconds
+
+    Returns:
+    - angular_velocity_euler: array, angular velocity in Euler angles (radians per second)
+    """
+
+    # Convert quaternions to Rotation objects
+    r1 = R.from_quat(q1)
+    r2 = R.from_quat(q2)
+
+    # Compute the relative rotation
+    relative_rotation = r2 * r1.inv()
+
+    # Calculate the angle and axis of rotation
+    angle = relative_rotation.magnitude()
+    axis = (
+        relative_rotation.as_rotvec() / angle if angle != 0 else np.array([0, 0, 0])
+    )  # Normalize the axis
+
+    # Angular velocity in vector form
+    angular_velocity_vector = (angle / delta_t) * axis
+
+    # Convert angular velocity to Euler angles
+    angular_velocity_euler = R.from_rotvec(angular_velocity_vector).as_euler(
+        "xyz", degrees=False
+    )
+
+    return angular_velocity_euler
+
+
 class RoundingFloat(float):
     __repr__ = staticmethod(lambda x: format(x, ".5f"))
 
@@ -55,6 +92,7 @@ def record(pwe, args_dict):
     last_record = 0
     prev_root_position = [0, 0, 0]
     prev_root_orientation_euler = [0, 0, 0]
+    prev_root_quat = [0, 0, 0, 0]
     prev_left_toe_pos = [0, 0, 0]
     prev_right_toe_pos = [0, 0, 0]
     prev_joints_positions = None
@@ -122,6 +160,7 @@ def record(pwe, args_dict):
                 prev_root_orientation_euler = (
                     R.from_quat(root_orientation_quat).as_euler("xyz").copy()
                 )
+                prev_root_quat = root_orientation_quat.copy()
                 prev_left_toe_pos = left_toe_pos.copy()
                 prev_right_toe_pos = right_toe_pos.copy()
                 prev_joints_positions = joints_positions.copy()
@@ -144,6 +183,14 @@ def record(pwe, args_dict):
                 )
                 / (1 / FPS)
             )
+            # print(np.around(world_angular_vel, 2))
+            # world_angular_vel = list(
+            #     quat_ang_vel(prev_root_quat, root_orientation_quat, 1 / FPS)
+            # )
+            # print(np.around(world_angular_vel, 2))
+            # print("==")
+
+            # exit()
             avg_yaw_vel.append(world_angular_vel[2])
             body_angular_vel = list(body_rot_mat.T @ world_angular_vel)
             # print("world angular vel", world_angular_vel)
@@ -245,6 +292,7 @@ def record(pwe, args_dict):
             prev_root_orientation_euler = (
                 R.from_quat(root_orientation_quat).as_euler("xyz").copy()
             )
+            prev_root_quat = root_orientation_quat.copy()
             prev_left_toe_pos = left_toe_pos.copy()
             prev_right_toe_pos = right_toe_pos.copy()
             prev_joints_positions = joints_positions.copy()
