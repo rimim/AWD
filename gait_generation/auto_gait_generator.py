@@ -410,6 +410,7 @@ if __name__ == "__main__":
     args_dict["output_dir"] = args.output_dir
     args_dict["debug"] = True
     args_dict["mini"] = args.mini
+    args_dict["period"] = pwe.period
 
     for i in range(args.num_recordings):
         args_dict["dx"] = round(np.random.uniform(dx_range[0], dx_range[1]), 2)
