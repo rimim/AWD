@@ -217,6 +217,13 @@ class Duckling(BaseTask):
             device=self.device,
             requires_grad=False,
         )
+        self.prev_actions = torch.zeros(
+            self.num_envs,
+            self.num_actions,
+            dtype=torch.float,
+            device=self.device,
+            requires_grad=False,
+        )
 
         if self.viewer != None:
             self._init_camera()
@@ -725,6 +732,7 @@ class Duckling(BaseTask):
             self.saved_actions.append(actions[0].cpu().numpy())
             pickle.dump(self.saved_actions, open("saved_actions.pkl", "wb"))
 
+        self.prev_actions = self.actions.clone()
         self.actions = actions.to(self.device).clone()
         if self._pd_control == "isaac":
             # TODO WARNING broke (?) this for go_bdx

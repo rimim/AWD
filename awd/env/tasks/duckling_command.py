@@ -40,6 +40,9 @@ class DucklingCommand(duckling_amp_task.DucklingAMPTask):
             "angularVelocityZRewardScale"
         ]
         self.rew_scales["torque"] = self.cfg["env"]["learn"]["torqueRewardScale"]
+        self.rew_scales["action_rate"] = self.cfg["env"]["learn"][
+            "actionRateRewardScale"
+        ]
 
         # randomization
         self.randomization_params = self.cfg["task"]["randomization_params"]
@@ -58,6 +61,7 @@ class DucklingCommand(duckling_amp_task.DucklingAMPTask):
         #     self.rew_scales[key] *= self.dt
 
         self.rew_scales["torque"] *= self.dt
+        self.rew_scales["action_rate"] *= self.dt
 
         # rename variables to maintain consistency with anymal env
         self.root_states = self._root_states
@@ -177,7 +181,12 @@ class DucklingCommand(duckling_amp_task.DucklingAMPTask):
 
     def _compute_reward(self, actions):
         self.rew_buf[:] = compute_task_reward(
-            self._duckling_root_states, self.commands, self.torques, self.rew_scales
+            self._duckling_root_states,
+            self.commands,
+            self.torques,
+            self.prev_actions,
+            self.actions,
+            self.rew_scales,
         )
         return
 
@@ -201,11 +210,13 @@ def compute_task_reward(
     root_states,
     commands,
     torques,
+    prev_actions,
+    actions,
     # Dict
     rew_scales,
 ):
     # (reward, reset, feet_in air, feet_air_time, episode sums)
-    # type: (Tensor, Tensor, Tensor, Dict[str, float]) -> Tensor
+    # type: (Tensor, Tensor, Tensor, Tensor, Tensor, Dict[str, float]) -> Tensor
 
     # prepare quantities (TODO: return from obs ?)
     base_quat = root_states[:, 3:7]
@@ -223,7 +234,12 @@ def compute_task_reward(
     # torque penalty
     rew_torque = torch.sum(torch.square(torques), dim=1) * rew_scales["torque"]
 
-    total_reward = rew_lin_vel_xy + rew_ang_vel_z + rew_torque
+    rew_action_rate = (
+        torch.sum(torch.square(prev_actions - actions), dim=1)
+        * rew_scales["action_rate"]
+    )
+
+    total_reward = rew_lin_vel_xy + rew_ang_vel_z + rew_torque + rew_action_rate
     total_reward = torch.clip(total_reward, 0.0, None)
 
     # print("task reward:", total_reward)

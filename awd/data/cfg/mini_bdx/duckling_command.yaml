@@ -41,6 +41,7 @@ env:
     linearVelocityXYRewardScale: 0.5
     angularVelocityZRewardScale: 0.25
     torqueRewardScale: -0.000025
+    actionRateRewardScale: -0.5
 
     # normalization
     linearVelocityScale: 0.5
