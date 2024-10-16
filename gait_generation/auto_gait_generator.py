@@ -15,7 +15,7 @@ from scipy.spatial.transform import Rotation as R
 
 from gait.placo_walk_engine import PlacoWalkEngine
 
-FPS = 60
+FPS = 30
 
 
 def quat_ang_vel(q1, q2, delta_t):
@@ -176,17 +176,17 @@ def record(pwe, args_dict):
             # print("world linear vel", world_linear_vel)
             # print("body linear vel", body_linear_vel)
 
-            world_angular_vel = list(
-                (
-                    R.from_quat(root_orientation_quat).as_euler("xyz")
-                    - prev_root_orientation_euler
-                )
-                / (1 / FPS)
-            )
-            # print(np.around(world_angular_vel, 2))
             # world_angular_vel = list(
-            #     quat_ang_vel(prev_root_quat, root_orientation_quat, 1 / FPS)
+            #     (
+            #         R.from_quat(root_orientation_quat).as_euler("xyz")
+            #         - prev_root_orientation_euler
+            #     )
+            #     / (1 / FPS)
             # )
+            # print(np.around(world_angular_vel, 2))
+            world_angular_vel = list(
+                quat_ang_vel(prev_root_quat, root_orientation_quat, 1 / FPS)
+            )
             # print(np.around(world_angular_vel, 2))
             # print("==")
 
