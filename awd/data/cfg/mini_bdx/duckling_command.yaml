@@ -10,7 +10,7 @@ env:
   keyboard_input: False
   export_onnx: False
 
-  pdControl: "custom" # or isaac custom
+  pdControl: "custom" # isaac or custom
   powerScale: 1.0
   controlFrequencyInv: 2 # 30 Hz
   stateInit: "Hybrid"

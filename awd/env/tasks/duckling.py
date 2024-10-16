@@ -925,12 +925,10 @@ def compute_duckling_observations(
 ):
     # type: (Tensor, Tensor, Tensor, Tensor, Tensor, Tensor, Tensor, bool, bool, int, List[int], List[int], Tensor, Tensor) -> Tensor
 
-    # dof_obs = dof_to_obs(dof_pos, dof_obs_size, dof_offsets, dof_axis)
-
+    # realistic observations
     obs = torch.cat(
         (
             projected_gravity,
-            # dof_obs,
             dof_pos,
             dof_vel,
             actions,
@@ -938,6 +936,9 @@ def compute_duckling_observations(
         dim=-1,
     )
     return obs
+
+    # Below is full obs (original implementation)
+    # If using full obs, need to edit dof_obs_size and num_obs in props.yaml
 
     # root_h = root_pos[:, 2:3]
     # heading_rot = torch_utils.calc_heading_quat_inv(root_rot)
