@@ -8,7 +8,7 @@ env:
   debugSaveObs: False
 
   keyboard_input: False
-  export_onnx: False
+  export_onnx: True
 
   pdControl: "custom" # isaac or custom
   powerScale: 1.0
@@ -48,8 +48,8 @@ env:
 
   randomCommandVelocityRanges:
     linear_x: [0.0, 0.14] # min max [m/s]
-    linear_y: [0.0, 0.0] # min max [m/s]
-    yaw: [0.0, 0.0] # min max [rad/s]
+    linear_y: [-0.1, 0.1] # min max [m/s]
+    yaw: [-0.3, 0.3] # min max [rad/s]
 
 sim:
   substeps: 2
