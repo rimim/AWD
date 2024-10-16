@@ -231,7 +231,9 @@ class Duckling(BaseTask):
         if self.cfg["env"]["debugSaveObs"]:
             self.saved_actions = []
 
-        self.period = 0.432
+        self.period = (
+            0.432  # TODO parametrize this, or read from the reference motion ?
+        )
         self.num_steps_per_period = int(self.period / self.dt)
 
         self.velocities_history = torch.zeros(
