@@ -31,6 +31,7 @@ import os
 import torch
 import yaml
 import xml.etree.ElementTree as ET
+import pickle
 
 from isaacgym import gymtorch
 from isaacgym import gymapi
@@ -96,6 +97,14 @@ class Duckling(BaseTask):
         self.dof_force_tensor = gymtorch.wrap_tensor(dof_force_tensor).view(
             self.num_envs, self.num_dof
         )
+
+        # self.gym.set_light_parameters(
+        #     self.sim,
+        #     0,
+        #     gymapi.Vec3(0.8, 0.8, 0.8),
+        #     gymapi.Vec3(0.8, 0.8, 0.8),
+        #     gymapi.Vec3(1, 2, 3),
+        # )
 
         self.gym.refresh_dof_state_tensor(self.sim)
         self.gym.refresh_actor_root_state_tensor(self.sim)
@@ -193,9 +202,34 @@ class Duckling(BaseTask):
             device=self.device,
             requires_grad=False,
         )
+        self.gravity_vec = to_torch(
+            get_axis_params(-1.0, self.up_axis_idx), device=self.device
+        ).repeat((self.num_envs, 1))
+
+        self.projected_gravity = quat_rotate_inverse(
+            self._root_states[: self.num_envs, 3:7], self.gravity_vec
+        )
+
+        self.actions = torch.zeros(
+            self.num_envs,
+            self.num_actions,
+            dtype=torch.float,
+            device=self.device,
+            requires_grad=False,
+        )
+        self.prev_actions = torch.zeros(
+            self.num_envs,
+            self.num_actions,
+            dtype=torch.float,
+            device=self.device,
+            requires_grad=False,
+        )
 
         if self.viewer != None:
             self._init_camera()
+
+        if self.cfg["env"]["debugSaveObs"]:
+            self.saved_actions = []
 
         return
 
@@ -641,6 +675,8 @@ class Duckling(BaseTask):
                 self._dof_obs_size,
                 self._dof_offsets,
                 self._dof_axis_array,
+                self.projected_gravity,
+                self.actions,
             )
         else:
             key_body_pos = self._rigid_body_pos[:, self._key_body_ids, :]
@@ -657,6 +693,8 @@ class Duckling(BaseTask):
                 self._dof_obs_size,
                 self._dof_offsets,
                 self._dof_axis_array,
+                self.projected_gravity[env_ids],
+                self.actions[env_ids],
             )
         # obs = compute_duckling_observations_max(body_pos, body_rot, body_vel, body_ang_vel, self._local_root_obs,
         #                                         self._root_height_obs)
@@ -687,6 +725,14 @@ class Duckling(BaseTask):
         #     device=self.device,
         #     requires_grad=False,
         # )
+        # if self.cfg["env"]["debugSaveObs"]:
+        #     self.saved_actions = []
+
+        if self.cfg["env"]["debugSaveObs"]:
+            self.saved_actions.append(actions[0].cpu().numpy())
+            pickle.dump(self.saved_actions, open("saved_actions.pkl", "wb"))
+
+        self.prev_actions = self.actions.clone()
         self.actions = actions.to(self.device).clone()
         if self._pd_control == "isaac":
             # TODO WARNING broke (?) this for go_bdx
@@ -732,6 +778,9 @@ class Duckling(BaseTask):
     def post_physics_step(self):
         self.progress_buf += 1
 
+        self.projected_gravity[:] = quat_rotate_inverse(
+            self._root_states[: self.num_envs, 3:7], self.gravity_vec
+        )
         self._refresh_sim_tensors()
         self._compute_observations()
         self._compute_reward(self.actions)
@@ -833,6 +882,7 @@ def dof_to_obs(pose, dof_obs_size, dof_offsets, dof_axis):
     joint_obs_size = 6
     num_joints = len(dof_offsets) - 1
 
+    dof_obs_size *= joint_obs_size  # Added
     dof_obs_shape = pose.shape[:-1] + (dof_obs_size,)
     dof_obs = torch.zeros(dof_obs_shape, device=pose.device)
     dof_obs_offset = 0
@@ -878,59 +928,78 @@ def compute_duckling_observations(
     dof_obs_size,
     dof_offsets,
     dof_axis,
+    projected_gravity,
+    actions,
 ):
-    # type: (Tensor, Tensor, Tensor, Tensor, Tensor, Tensor, Tensor, bool, bool, int, List[int], List[int]) -> Tensor
-    root_h = root_pos[:, 2:3]
-    heading_rot = torch_utils.calc_heading_quat_inv(root_rot)
+    # type: (Tensor, Tensor, Tensor, Tensor, Tensor, Tensor, Tensor, bool, bool, int, List[int], List[int], Tensor, Tensor) -> Tensor
 
-    if local_root_obs:
-        root_rot_obs = quat_mul(heading_rot, root_rot)
-    else:
-        root_rot_obs = root_rot
-    root_rot_obs = torch_utils.quat_to_tan_norm(root_rot_obs)
-
-    if not root_height_obs:
-        root_h_obs = torch.zeros_like(root_h)
-    else:
-        root_h_obs = root_h
-
-    local_root_vel = quat_rotate(heading_rot, root_vel)
-    local_root_ang_vel = quat_rotate(heading_rot, root_ang_vel)
-
-    root_pos_expand = root_pos.unsqueeze(-2)
-    local_key_body_pos = key_body_pos - root_pos_expand
-
-    heading_rot_expand = heading_rot.unsqueeze(-2)
-    heading_rot_expand = heading_rot_expand.repeat((1, local_key_body_pos.shape[1], 1))
-    flat_end_pos = local_key_body_pos.view(
-        local_key_body_pos.shape[0] * local_key_body_pos.shape[1],
-        local_key_body_pos.shape[2],
-    )
-    flat_heading_rot = heading_rot_expand.view(
-        heading_rot_expand.shape[0] * heading_rot_expand.shape[1],
-        heading_rot_expand.shape[2],
-    )
-    local_end_pos = quat_rotate(flat_heading_rot, flat_end_pos)
-    flat_local_key_pos = local_end_pos.view(
-        local_key_body_pos.shape[0],
-        local_key_body_pos.shape[1] * local_key_body_pos.shape[2],
-    )
-
-    dof_obs = dof_to_obs(dof_pos, dof_obs_size, dof_offsets, dof_axis)
-
+    # realistic observations
     obs = torch.cat(
         (
-            root_h_obs,
-            root_rot_obs,
-            local_root_vel,
-            local_root_ang_vel,
-            dof_obs,
+            projected_gravity,
+            dof_pos,
             dof_vel,
-            flat_local_key_pos,
+            actions,
         ),
         dim=-1,
     )
     return obs
+
+    # Below is full obs (original implementation)
+    # If using full obs, need to edit dof_obs_size and num_obs in props.yaml
+
+    # root_h = root_pos[:, 2:3]
+    # heading_rot = torch_utils.calc_heading_quat_inv(root_rot)
+
+    # if local_root_obs:
+    #     root_rot_obs = quat_mul(heading_rot, root_rot)
+    # else:
+    #     root_rot_obs = root_rot
+    # root_rot_obs = torch_utils.quat_to_tan_norm(root_rot_obs)
+
+    # if not root_height_obs:
+    #     root_h_obs = torch.zeros_like(root_h)
+    # else:
+    #     root_h_obs = root_h
+
+    # local_root_vel = quat_rotate(heading_rot, root_vel)
+    # local_root_ang_vel = quat_rotate(heading_rot, root_ang_vel)
+
+    # root_pos_expand = root_pos.unsqueeze(-2)
+    # local_key_body_pos = key_body_pos - root_pos_expand
+
+    # heading_rot_expand = heading_rot.unsqueeze(-2)
+    # heading_rot_expand = heading_rot_expand.repeat((1, local_key_body_pos.shape[1], 1))
+    # flat_end_pos = local_key_body_pos.view(
+    #     local_key_body_pos.shape[0] * local_key_body_pos.shape[1],
+    #     local_key_body_pos.shape[2],
+    # )
+    # flat_heading_rot = heading_rot_expand.view(
+    #     heading_rot_expand.shape[0] * heading_rot_expand.shape[1],
+    #     heading_rot_expand.shape[2],
+    # )
+    # local_end_pos = quat_rotate(flat_heading_rot, flat_end_pos)
+    # flat_local_key_pos = local_end_pos.view(
+    #     local_key_body_pos.shape[0],
+    #     local_key_body_pos.shape[1] * local_key_body_pos.shape[2],
+    # )
+
+    # dof_obs = dof_to_obs(dof_pos, dof_obs_size, dof_offsets, dof_axis)
+
+    # obs = torch.cat(
+    #     (
+    #         root_h_obs,
+    #         root_rot_obs,
+    #         local_root_vel,
+    #         local_root_ang_vel,
+    #         dof_obs,
+    #         dof_vel,
+    #         flat_local_key_pos,
+    #     ),
+    #     dim=-1,
+    # )
+
+    # return obs
 
 
 @torch.jit.script

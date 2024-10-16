@@ -6,7 +6,6 @@ joints:
   - left_ankle
   - head_pitch
   - head_yaw
-  - head_roll
   - left_antenna
   - right_antenna
   - right_hip_yaw
@@ -17,12 +16,17 @@ joints:
 dof_body_ids: [1, 2, 3, 4, 6, 7, 9, 10, 11, 12, 13, 14]
 dof_offsets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
 
-# 15*6
-dof_obs_size: 90
+# 15*6 if using 6 dof per joint dof_to_obs in compute_duckling_observations
+# dof_obs_size: 90
+# num_obs: 108
+
+dof_obs_size: 15
+num_obs: 48 # + 5 ???
+
 num_actions: 15
 
 # 1 + 15 * (3 + 6 + 3 + 3) - 3 ???
-num_obs: 124
+# num_obs: 125 # + 5 ???
 # motor_efforts:
 #   [0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8]
 motor_efforts: [10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10]

@@ -17,11 +17,16 @@ joints:
   - right_ankle
 dof_body_ids: [1, 2, 3, 4, 6, 7, 9, 10, 11, 12, 13, 14, 15]
 dof_offsets: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
-# 16*4
-dof_obs_size: 96
+# 16*4 if using 6 dof per joint dof_to_obs in compute_duckling_observations
+# dof_obs_size: 96
+# num_obs: 131
+
+dof_obs_size: 16
+num_obs: 51
+
 num_actions: 16
 # 1 + 15 * (3 + 6 + 3 + 3) - 3
-num_obs: 131
+
 motor_efforts:
   [100, 100, 100, 100, 100, 50, 50, 50, 50, 10, 10, 100, 100, 100, 100, 100]
 #13 + dof_obs_size + 28 + 3 * num_key_bodies # [root_h, root_rot, root_vel, root_ang_vel, dof_pos, dof_vel, key_body_pos]

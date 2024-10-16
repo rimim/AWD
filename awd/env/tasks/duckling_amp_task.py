@@ -27,6 +27,7 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import torch
+import pickle
 
 import env.tasks.duckling_amp as duckling_amp
 
@@ -45,6 +46,8 @@ class DucklingAMPTask(duckling_amp.DucklingAMP):
             device_id=device_id,
             headless=headless,
         )
+        if self.cfg["env"]["debugSaveObs"]:
+            self.saved_obs = []
         return
 
     def get_obs_size(self):
@@ -93,6 +96,10 @@ class DucklingAMPTask(duckling_amp.DucklingAMP):
             self.obs_buf[:] = obs
         else:
             self.obs_buf[env_ids] = obs
+
+        if self.cfg["env"]["debugSaveObs"]:
+            self.saved_obs.append(self.obs_buf[0].cpu().numpy())
+            pickle.dump(self.saved_obs, open("saved_obs.pkl", "wb"))
         return
 
     def _compute_task_obs(self, env_ids=None):
