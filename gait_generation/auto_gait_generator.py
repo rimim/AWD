@@ -15,7 +15,7 @@ from scipy.spatial.transform import Rotation as R
 
 from gait.placo_walk_engine import PlacoWalkEngine
 
-FPS = 30
+FPS = 60
 
 
 def quat_ang_vel(q1, q2, delta_t):

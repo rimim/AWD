@@ -7,7 +7,7 @@ env:
   enableDebugVis: False
   debugSaveObs: False
 
-  keyboard_input: False
+  keyboard_input: True
   export_onnx: False
 
   pdControl: "custom" # isaac or custom
