@@ -32,8 +32,8 @@ env:
     assetFileName: "mini_bdx/urdf/bdx.urdf"
 
   plane:
-    staticFriction: 2.0
-    dynamicFriction: 2.0
+    staticFriction: 1.0
+    dynamicFriction: 1.0
     restitution: 0.0
 
   learn:
@@ -41,16 +41,16 @@ env:
     linearVelocityXYRewardScale: 0.5
     angularVelocityZRewardScale: 0.25
     torqueRewardScale: -0.000025
-    actionRateRewardScale: -0.5
+    actionRateRewardScale: -0.1
 
     # normalization
     linearVelocityScale: 0.5
     angularVelocityScale: 0.25
 
   randomCommandVelocityRanges:
-    linear_x: [-0.14, 0.14] # min max [m/s]
+    linear_x: [-0.13, 0.13] # min max [m/s]
     linear_y: [-0.1, 0.1] # min max [m/s]
-    yaw: [-0.3, 0.3] # min max [rad/s]
+    yaw: [-0.6, 0.6] # min max [rad/s]
 
 sim:
   substeps: 2
