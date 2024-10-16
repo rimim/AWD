@@ -70,7 +70,7 @@ sim:
     warm_start: 0.25
 
 task:
-  randomize: True
+  randomize: False
   randomization_params:
     frequency: 600 # Define how many environment steps between generating new randomizations
     observations:
