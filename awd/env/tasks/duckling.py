@@ -231,6 +231,17 @@ class Duckling(BaseTask):
         if self.cfg["env"]["debugSaveObs"]:
             self.saved_actions = []
 
+        self.period = self.cfg["env"]["period"]
+        self.num_steps_per_period = int(self.period / self.dt)
+
+        self.velocities_history = torch.zeros(
+            self.num_envs,
+            6 * self.num_steps_per_period,
+            dtype=torch.float,
+            device=self.device,
+            requires_grad=False,
+        )
+
         return
 
     def get_obs_size(self):
@@ -781,6 +792,25 @@ class Duckling(BaseTask):
         self.projected_gravity[:] = quat_rotate_inverse(
             self._root_states[: self.num_envs, 3:7], self.gravity_vec
         )
+
+        # Computing average velocities over the last gait
+
+        # Shift back.
+        self.velocities_history[
+            :, : 6 * (self.num_steps_per_period - 1)
+        ] = self.velocities_history[:, 6 : 6 * self.num_steps_per_period]
+
+        # add
+        self.velocities_history[:, -6:] = self._root_states[:, 7:13]
+
+        # reshape velocities_history so that its (num_envs, num_steps_per_period, 6)
+        self.velocities_history_reshaped = self.velocities_history.view(
+            self.num_envs, self.num_steps_per_period, 6
+        )
+
+        # Compute average velocities for each environment
+        self.avg_velocities = torch.mean(self.velocities_history_reshaped, dim=1)
+
         self._refresh_sim_tensors()
         self._compute_observations()
         self._compute_reward(self.actions)

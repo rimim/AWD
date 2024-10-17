@@ -28,6 +28,13 @@ if "Debug_info" in episode:
     debug = episode["Debug_info"]
 else:
     debug = None
+
+
+# y_speeds = []
+# avg_y_speeds = []
+# gait_phase_size = 0.432 / frame_duration
+# prev_y_pos = 0
+# y_pos = 0
 pose = np.eye(4)
 if args.hardware:
     vels = {}
@@ -44,6 +51,13 @@ for i, frame in enumerate(frames):
     pose[:3, :3] = root_orientation_mat
 
     fv.pushFrame(pose, "aze")
+
+    # prev_y_pos = y_pos
+    # y_pos = pose[:3, 3][1]
+    # y_speed = (y_pos - prev_y_pos) / frame_duration
+    # y_speeds.append(y_speed)
+    # y_speeds = y_speeds[-int(gait_phase_size) :]
+    # avg_y_speeds.append(np.mean(y_speeds))
 
     if debug is not None:
         left_foot_pose = np.array(debug[i]["left_foot_pose"]).reshape(4, 4)
@@ -82,6 +96,8 @@ if args.hardware:
     plt.plot(angular_vel_x, label="angular_vel_x")
     plt.plot(angular_vel_y, label="angular_vel_y")
     plt.plot(angular_vel_z, label="angular_vel_z")
+
+    # plt.plot(avg_y_speeds, label="avg_y_speeds")
 
     plt.plot(root_z, label="root_z")
 

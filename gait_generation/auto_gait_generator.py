@@ -363,10 +363,10 @@ if __name__ == "__main__":
     )
     parser.add_argument("--mini", action="store_true", default=False)
     parser.add_argument("--preset", type=str, default="")
-    parser.add_argument("--min_dx", type=float, default=-0.04)
-    parser.add_argument("--max_dx", type=float, default=0.04)
-    parser.add_argument("--min_dy", type=float, default=-0.05)
-    parser.add_argument("--max_dy", type=float, default=0.05)
+    parser.add_argument("--min_dx", type=float, default=-0.03)
+    parser.add_argument("--max_dx", type=float, default=0.03)
+    parser.add_argument("--min_dy", type=float, default=-0.03)
+    parser.add_argument("--max_dy", type=float, default=0.03)
     parser.add_argument("--min_dtheta", type=float, default=-0.15)
     parser.add_argument("--max_dtheta", type=float, default=0.15)
     args = parser.parse_args()
@@ -410,6 +410,7 @@ if __name__ == "__main__":
     args_dict["output_dir"] = args.output_dir
     args_dict["debug"] = True
     args_dict["mini"] = args.mini
+    args_dict["period"] = pwe.period
 
     for i in range(args.num_recordings):
         args_dict["dx"] = round(np.random.uniform(dx_range[0], dx_range[1]), 2)

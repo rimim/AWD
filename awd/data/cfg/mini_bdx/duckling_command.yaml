@@ -24,6 +24,7 @@ env:
   headTerminationHeight: 0.2
   initHeight: 0.18
   initQuat: [0, -0.08, 0, 1]
+  period: 0.432
   enableEarlyTermination: True
   enableTaskObs: True
 
@@ -41,14 +42,15 @@ env:
     linearVelocityXYRewardScale: 0.5
     angularVelocityZRewardScale: 0.25
     torqueRewardScale: -0.000025
-    actionRateRewardScale: -0.5
+    actionRateRewardScale: -0.1
 
     # normalization
     linearVelocityScale: 0.5
     angularVelocityScale: 0.25
+    useAverageVelocities: True
 
   randomCommandVelocityRanges:
-    linear_x: [-0.14, 0.14] # min max [m/s]
+    linear_x: [-0.13, 0.13] # min max [m/s]
     linear_y: [-0.1, 0.1] # min max [m/s]
     yaw: [-0.3, 0.3] # min max [rad/s]
 

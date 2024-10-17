@@ -31,6 +31,8 @@ class DucklingCommand(duckling_amp_task.DucklingAMPTask):
         self.lin_vel_scale = self.cfg["env"]["learn"]["linearVelocityScale"]
         self.ang_vel_scale = self.cfg["env"]["learn"]["angularVelocityScale"]
 
+        self.use_average_velocities = self.cfg["env"]["learn"]["useAverageVelocities"]
+
         # reward scales
         self.rew_scales = {}
         self.rew_scales["lin_vel_xy"] = self.cfg["env"]["learn"][
@@ -186,7 +188,9 @@ class DucklingCommand(duckling_amp_task.DucklingAMPTask):
             self.torques,
             self.prev_actions,
             self.actions,
+            self.avg_velocities,
             self.rew_scales,
+            self.use_average_velocities,
         )
         return
 
@@ -212,16 +216,22 @@ def compute_task_reward(
     torques,
     prev_actions,
     actions,
+    avg_velocities,
     # Dict
     rew_scales,
+    use_average_velocities,
 ):
     # (reward, reset, feet_in air, feet_air_time, episode sums)
-    # type: (Tensor, Tensor, Tensor, Tensor, Tensor, Dict[str, float]) -> Tensor
+    # type: (Tensor, Tensor, Tensor, Tensor, Tensor, Tensor, Dict[str, float], bool) -> Tensor
 
     # prepare quantities (TODO: return from obs ?)
     base_quat = root_states[:, 3:7]
-    base_lin_vel = quat_rotate_inverse(base_quat, root_states[:, 7:10])
-    base_ang_vel = quat_rotate_inverse(base_quat, root_states[:, 10:13])
+    if not use_average_velocities:
+        base_lin_vel = quat_rotate_inverse(base_quat, root_states[:, 7:10])
+        base_ang_vel = quat_rotate_inverse(base_quat, root_states[:, 10:13])
+    else:
+        base_lin_vel = quat_rotate_inverse(base_quat, avg_velocities[:, :3])
+        base_ang_vel = quat_rotate_inverse(base_quat, avg_velocities[:, 3:])
 
     # velocity tracking reward
     lin_vel_error = torch.sum(
