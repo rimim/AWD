@@ -1,7 +1,7 @@
 # if given, will override the device setting in gym.
 env:
   numEnvs: 4096
-  envSpacing: 1
+  envSpacing: 2
   episodeLength: 500
   isFlagrun: False
   enableDebugVis: False
@@ -32,10 +32,32 @@ env:
     assetRoot: "awd/data/assets"
     assetFileName: "mini_bdx/urdf/bdx.urdf"
 
-  plane:
-    staticFriction: 1.0
-    dynamicFriction: 1.0
-    restitution: 0.0
+  terrain:
+    terrainType: trimesh # plane, or trimesh
+    staticFriction: 1.0 # [-]
+    dynamicFriction: 1.0 # [-]
+    restitution: 0. # [-]
+    # rough terrain only:
+    curriculum: false
+    maxInitMapLevel: 0
+    mapLength: 8.
+    mapWidth: 8.
+    numLevels: 10
+    numTerrains: 20
+    # terrain types: [smooth slope, rough slope, stairs up, stairs down, discrete]
+    terrainProportions: [0.1, 0.1, 0.35, 0.25, 0.2]
+    # tri mesh only:
+    slopeTreshold: 0.5
+    horizontalScale: 0.1
+    verticalScale: 0.005
+    borderSize: 5
+    numPerEnv: 2
+    minHeight: -0.005
+    maxHeight: 0.005
+    step: 0.05
+    platformSize: 0.5
+    stepHeightRange: [-0.05, 0.05]
+    stepWidth: 0.1
 
   learn:
     # rewards
@@ -72,7 +94,7 @@ sim:
     warm_start: 0.25
 
 task:
-  randomize: True
+  randomize: False
   randomization_params:
     frequency: 600 # Define how many environment steps between generating new randomizations
     observations:

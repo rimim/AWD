@@ -57,9 +57,9 @@ class Duckling(BaseTask):
         self.power_scale = self.cfg["env"]["powerScale"]
 
         self.debug_viz = self.cfg["env"]["enableDebugVis"]
-        self.plane_static_friction = self.cfg["env"]["plane"]["staticFriction"]
-        self.plane_dynamic_friction = self.cfg["env"]["plane"]["dynamicFriction"]
-        self.plane_restitution = self.cfg["env"]["plane"]["restitution"]
+        self.plane_static_friction = self.cfg["env"]["terrain"]["staticFriction"]
+        self.plane_dynamic_friction = self.cfg["env"]["terrain"]["dynamicFriction"]
+        self.plane_restitution = self.cfg["env"]["terrain"]["restitution"]
 
         self.max_episode_length = self.cfg["env"]["episodeLength"]
         self._local_root_obs = self.cfg["env"]["localRootObs"]
@@ -263,7 +263,10 @@ class Duckling(BaseTask):
             self.sim_params,
         )
 
-        self._create_ground_plane()
+        if self.cfg["env"]["terrain"]["terrainType"] == "plane":
+            self._create_ground_plane()
+        else:
+            self._create_trimesh()
         self._create_envs(
             self.num_envs, self.cfg["env"]["envSpacing"], int(np.sqrt(self.num_envs))
         )
@@ -330,6 +333,30 @@ class Duckling(BaseTask):
         plane_params.restitution = self.plane_restitution
         self.gym.add_ground(self.sim, plane_params)
         return
+
+    def _create_trimesh(self):
+        self.terrain = Terrain(self.cfg["env"]["terrain"], num_robots=self.num_envs)
+        tm_params = gymapi.TriangleMeshParams()
+        tm_params.nb_vertices = self.terrain.vertices.shape[0]
+        tm_params.nb_triangles = self.terrain.triangles.shape[0]
+        tm_params.transform.p.x = -self.terrain.border_size
+        tm_params.transform.p.y = -self.terrain.border_size
+        tm_params.transform.p.z = 0.0
+        tm_params.static_friction = self.cfg["env"]["terrain"]["staticFriction"]
+        tm_params.dynamic_friction = self.cfg["env"]["terrain"]["dynamicFriction"]
+        tm_params.restitution = self.cfg["env"]["terrain"]["restitution"]
+
+        self.gym.add_triangle_mesh(
+            self.sim,
+            self.terrain.vertices.flatten(order="C"),
+            self.terrain.triangles.flatten(order="C"),
+            tm_params,
+        )
+        self.height_samples = (
+            torch.tensor(self.terrain.heightsamples)
+            .view(self.terrain.tot_rows, self.terrain.tot_cols)
+            .to(self.device)
+        )
 
     def _get_asset_root(self):
         return self.cfg["env"]["asset"]["assetRoot"]
@@ -899,6 +926,225 @@ class Duckling(BaseTask):
     def _update_debug_viz(self):
         self.gym.clear_lines(self.viewer)
         return
+
+
+# terrain generator
+from isaacgym.terrain_utils import *
+
+
+class Terrain:
+    def __init__(self, cfg, num_robots) -> None:
+        self.type = cfg["terrainType"]
+        if self.type in ["none", "plane"]:
+            return
+        self.horizontal_scale = cfg["horizontalScale"]
+        self.vertical_scale = cfg["verticalScale"]
+        self.border_size = cfg["borderSize"]
+        self.num_per_env = cfg["numPerEnv"]
+        self.env_length = cfg["mapLength"]
+        self.env_width = cfg["mapWidth"]
+        self.min_height = cfg["minHeight"]
+        self.max_height = cfg["maxHeight"]
+        self.step = cfg["step"]
+        self.platform_size = cfg["platformSize"]
+        self.step_height_range = cfg["stepHeightRange"]
+        self.step_width = cfg["stepWidth"]
+        self.proportions = [
+            np.sum(cfg["terrainProportions"][: i + 1])
+            for i in range(len(cfg["terrainProportions"]))
+        ]
+
+        self.env_rows = cfg["numLevels"]
+        self.env_cols = cfg["numTerrains"]
+        self.num_maps = self.env_rows * self.env_cols
+        self.num_per_env = int(num_robots / self.num_maps)
+        self.env_origins = np.zeros((self.env_rows, self.env_cols, 3))
+
+        self.width_per_env_pixels = int(self.env_width / self.horizontal_scale)
+        self.length_per_env_pixels = int(self.env_length / self.horizontal_scale)
+
+        self.border = int(self.border_size / self.horizontal_scale)
+        self.tot_cols = int(self.env_cols * self.width_per_env_pixels) + 2 * self.border
+        self.tot_rows = (
+            int(self.env_rows * self.length_per_env_pixels) + 2 * self.border
+        )
+
+        self.height_field_raw = np.zeros((self.tot_rows, self.tot_cols), dtype=np.int16)
+        if cfg["curriculum"]:
+            self.curiculum(
+                num_robots, num_terrains=self.env_cols, num_levels=self.env_rows
+            )
+        else:
+            self.randomized_terrain()
+        self.heightsamples = self.height_field_raw
+        self.vertices, self.triangles = convert_heightfield_to_trimesh(
+            self.height_field_raw,
+            self.horizontal_scale,
+            self.vertical_scale,
+            cfg["slopeTreshold"],
+        )
+
+    def randomized_terrain(self):
+        for k in range(self.num_maps):
+            # Env coordinates in the world
+            (i, j) = np.unravel_index(k, (self.env_rows, self.env_cols))
+
+            # Heightfield coordinate system from now on
+            start_x = self.border + i * self.length_per_env_pixels
+            end_x = self.border + (i + 1) * self.length_per_env_pixels
+            start_y = self.border + j * self.width_per_env_pixels
+            end_y = self.border + (j + 1) * self.width_per_env_pixels
+
+            terrain = SubTerrain(
+                "terrain",
+                width=self.width_per_env_pixels,
+                length=self.width_per_env_pixels,
+                vertical_scale=self.vertical_scale,
+                horizontal_scale=self.horizontal_scale,
+            )
+            random_uniform_terrain(
+                terrain,
+                min_height=self.min_height,
+                max_height=self.max_height,
+                step=self.step,
+                downsampled_scale=0.2,
+            )
+            # choice = np.random.uniform(0, 1)
+            # if choice < 0.1:
+            #     if np.random.choice([0, 1]):
+            #         pyramid_sloped_terrain(
+            #             terrain,
+            #             np.random.choice([-0.3, -0.2, 0, 0.2, 0.3]),
+            #             self.platform_size,
+            #         )
+            #         random_uniform_terrain(
+            #             terrain,
+            #             min_height=self.min_height,
+            #             max_height=self.max_height,
+            #             step=self.step,
+            #             downsampled_scale=0.2,
+            #         )
+            #     else:
+            #         pyramid_sloped_terrain(
+            #             terrain,
+            #             np.random.choice([-0.3, -0.2, 0, 0.2, 0.3]),
+            #             self.platform_size,
+            #         )
+            # elif choice < 0.6:
+            #     # step_height = np.random.choice([-0.18, -0.15, -0.1, -0.05, 0.05, 0.1, 0.15, 0.18])
+            #     step_height = np.random.choice(self.step_height_range)
+            #     pyramid_stairs_terrain(
+            #         terrain,
+            #         step_width=self.step_width,
+            #         step_height=step_height,
+            #         platform_size=self.platform_size,
+            #     )
+            # elif choice < 1.0:
+            #     discrete_obstacles_terrain(
+            #         terrain, 0.15, 1.0, 2.0, 40, platform_size=self.platform_size
+            #     )
+
+            self.height_field_raw[
+                start_x:end_x, start_y:end_y
+            ] = terrain.height_field_raw
+
+            env_origin_x = (i + 0.5) * self.env_length
+            env_origin_y = (j + 0.5) * self.env_width
+            x1 = int((self.env_length / 2.0 - 1) / self.horizontal_scale)
+            x2 = int((self.env_length / 2.0 + 1) / self.horizontal_scale)
+            y1 = int((self.env_width / 2.0 - 1) / self.horizontal_scale)
+            y2 = int((self.env_width / 2.0 + 1) / self.horizontal_scale)
+            env_origin_z = (
+                np.max(terrain.height_field_raw[x1:x2, y1:y2]) * self.vertical_scale
+            )
+            self.env_origins[i, j] = [env_origin_x, env_origin_y, env_origin_z]
+
+    # TODO
+    def curiculum(self, num_robots, num_terrains, num_levels):
+        num_robots_per_map = int(num_robots / num_terrains)
+        left_over = num_robots % num_terrains
+        idx = 0
+        for j in range(num_terrains):
+            for i in range(num_levels):
+                terrain = SubTerrain(
+                    "terrain",
+                    width=self.width_per_env_pixels,
+                    length=self.width_per_env_pixels,
+                    vertical_scale=self.vertical_scale,
+                    horizontal_scale=self.horizontal_scale,
+                )
+                difficulty = i / num_levels
+                choice = j / num_terrains
+
+                slope = difficulty * 0.4
+                step_height = 0.05 + 0.175 * difficulty
+                discrete_obstacles_height = 0.025 + difficulty * 0.15
+                stepping_stones_size = 2 - 1.8 * difficulty
+                if choice < self.proportions[0]:
+                    if choice < 0.05:
+                        slope *= -1
+                    pyramid_sloped_terrain(terrain, slope=slope, platform_size=3.0)
+                elif choice < self.proportions[1]:
+                    if choice < 0.15:
+                        slope *= -1
+                    pyramid_sloped_terrain(terrain, slope=slope, platform_size=3.0)
+                    random_uniform_terrain(
+                        terrain,
+                        min_height=-0.1,
+                        max_height=0.1,
+                        step=0.025,
+                        downsampled_scale=0.2,
+                    )
+                elif choice < self.proportions[3]:
+                    if choice < self.proportions[2]:
+                        step_height *= -1
+                    pyramid_stairs_terrain(
+                        terrain,
+                        step_width=0.31,
+                        step_height=step_height,
+                        platform_size=3.0,
+                    )
+                elif choice < self.proportions[4]:
+                    discrete_obstacles_terrain(
+                        terrain,
+                        discrete_obstacles_height,
+                        1.0,
+                        2.0,
+                        40,
+                        platform_size=3.0,
+                    )
+                else:
+                    stepping_stones_terrain(
+                        terrain,
+                        stone_size=stepping_stones_size,
+                        stone_distance=0.1,
+                        max_height=0.0,
+                        platform_size=3.0,
+                    )
+
+                # Heightfield coordinate system
+                start_x = self.border + i * self.length_per_env_pixels
+                end_x = self.border + (i + 1) * self.length_per_env_pixels
+                start_y = self.border + j * self.width_per_env_pixels
+                end_y = self.border + (j + 1) * self.width_per_env_pixels
+                self.height_field_raw[
+                    start_x:end_x, start_y:end_y
+                ] = terrain.height_field_raw
+
+                robots_in_map = num_robots_per_map
+                if j < left_over:
+                    robots_in_map += 1
+
+                env_origin_x = (i + 0.5) * self.env_length
+                env_origin_y = (j + 0.5) * self.env_width
+                x1 = int((self.env_length / 2.0 - 1) / self.horizontal_scale)
+                x2 = int((self.env_length / 2.0 + 1) / self.horizontal_scale)
+                y1 = int((self.env_width / 2.0 - 1) / self.horizontal_scale)
+                y2 = int((self.env_width / 2.0 + 1) / self.horizontal_scale)
+                env_origin_z = (
+                    np.max(terrain.height_field_raw[x1:x2, y1:y2]) * self.vertical_scale
+                )
+                self.env_origins[i, j] = [env_origin_x, env_origin_y, env_origin_z]
 
 
 #####################################################################
