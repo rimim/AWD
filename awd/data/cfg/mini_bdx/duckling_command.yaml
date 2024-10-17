@@ -33,7 +33,7 @@ env:
     assetFileName: "mini_bdx/urdf/bdx.urdf"
 
   terrain:
-    terrainType: trimesh # plane, or trimesh
+    terrainType: plane # plane, or trimesh
     staticFriction: 1.0 # [-]
     dynamicFriction: 1.0 # [-]
     restitution: 0. # [-]
