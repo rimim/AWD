@@ -24,6 +24,7 @@ env:
   headTerminationHeight: 0.2
   initHeight: 0.18
   initQuat: [0, -0.08, 0, 1]
+  period: 0.432
   enableEarlyTermination: True
   enableTaskObs: True
 
@@ -46,6 +47,7 @@ env:
     # normalization
     linearVelocityScale: 0.5
     angularVelocityScale: 0.25
+    useAverageVelocities: True
 
   randomCommandVelocityRanges:
     linear_x: [-0.13, 0.13] # min max [m/s]
