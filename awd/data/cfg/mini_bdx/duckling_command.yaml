@@ -42,7 +42,7 @@ env:
     linearVelocityXYRewardScale: 0.5
     angularVelocityZRewardScale: 0.25
     torqueRewardScale: -0.000025
-    actionRateRewardScale: 0.0
+    actionRateRewardScale: -0.1
 
     # normalization
     linearVelocityScale: 0.5
@@ -72,7 +72,7 @@ sim:
     warm_start: 0.25
 
 task:
-  randomize: False
+  randomize: True
   randomization_params:
     frequency: 600 # Define how many environment steps between generating new randomizations
     observations:
