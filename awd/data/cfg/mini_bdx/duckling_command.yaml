@@ -19,7 +19,7 @@ env:
 
   pushRobots: True
   pushIntervalS: 2 #s
-  maxPushVelXy: 0.5
+  maxPushVelXy: 0.3
 
   # COM is randomized only once for each actor, but not at each reset
   randomizeCom: True
@@ -104,7 +104,7 @@ sim:
     warm_start: 0.25
 
 task:
-  randomize: False
+  randomize: True
   randomization_params:
     frequency: 600 # Define how many environment steps between generating new randomizations
     observations:
