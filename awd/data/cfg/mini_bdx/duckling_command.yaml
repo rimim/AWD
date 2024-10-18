@@ -98,16 +98,16 @@ task:
   randomization_params:
     frequency: 600 # Define how many environment steps between generating new randomizations
     observations:
-      range: [0, .005] # range for the white noise
+      range: [0, .001] # range for the white noise
       operation: "additive"
       distribution: "gaussian"
     actions:
-      range: [0., .005]
+      range: [0., .001]
       operation: "additive"
       distribution: "gaussian"
     sim_params:
       gravity:
-        range: [0, 0.05]
+        range: [0, 0.01]
         operation: "additive"
         distribution: "gaussian"
         schedule: "linear" # "linear" will linearly interpolate between no rand and max rand
@@ -117,7 +117,7 @@ task:
         color: True
         rigid_body_properties:
           mass:
-            range: [0.9, 1.1]
+            range: [0.99, 1.01]
             operation: "scaling"
             distribution: "uniform"
             setup_only: True # Property will only be randomized once before simulation is started. See Domain Randomization Documentation for more info.
@@ -126,13 +126,13 @@ task:
         rigid_shape_properties:
           friction:
             num_buckets: 500
-            range: [0.9, 1.1]
+            range: [0.99, 1.01]
             operation: "scaling"
             distribution: "uniform"
             schedule: "linear" # "linear" will scale the current random sample by `min(current num steps, schedule_steps) / schedule_steps`
             schedule_steps: 3000
           restitution:
-            range: [0., 0.1]
+            range: [0., 0.01]
             operation: "scaling"
             distribution: "uniform"
             schedule: "linear" # "linear" will scale the current random sample by `min(current num steps, schedule_steps) / schedule_steps`
