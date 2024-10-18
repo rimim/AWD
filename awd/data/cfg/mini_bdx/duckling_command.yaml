@@ -64,7 +64,7 @@ env:
     linearVelocityXYRewardScale: 0.5
     angularVelocityZRewardScale: 0.25
     torqueRewardScale: -0.000025
-    actionRateRewardScale: -0.1
+    actionRateRewardScale: -1.0
 
     # normalization
     linearVelocityScale: 0.5
@@ -74,7 +74,7 @@ env:
   randomCommandVelocityRanges:
     linear_x: [-0.13, 0.13] # min max [m/s]
     linear_y: [-0.1, 0.1] # min max [m/s]
-    yaw: [-0.3, 0.3] # min max [rad/s]
+    yaw: [-0.5, 0.5] # min max [rad/s]
 
 sim:
   substeps: 2
@@ -112,53 +112,53 @@ task:
         distribution: "gaussian"
         schedule: "linear" # "linear" will linearly interpolate between no rand and max rand
         schedule_steps: 3000
-    actor_params:
-      duckling:
-        color: True
-        rigid_body_properties:
-          mass:
-            range: [0.99, 1.01]
-            operation: "scaling"
-            distribution: "uniform"
-            setup_only: True # Property will only be randomized once before simulation is started. See Domain Randomization Documentation for more info.
-            schedule: "linear" # "linear" will linearly interpolate between no rand and max rand
-            schedule_steps: 3000
-        rigid_shape_properties:
-          friction:
-            num_buckets: 500
-            range: [0.99, 1.01]
-            operation: "scaling"
-            distribution: "uniform"
-            schedule: "linear" # "linear" will scale the current random sample by `min(current num steps, schedule_steps) / schedule_steps`
-            schedule_steps: 3000
-          restitution:
-            range: [0., 0.01]
-            operation: "scaling"
-            distribution: "uniform"
-            schedule: "linear" # "linear" will scale the current random sample by `min(current num steps, schedule_steps) / schedule_steps`
-            schedule_steps: 3000
-        # dof_properties:
-        #   damping:
-        #     range: [0.9, 1.1]
-        #     operation: "scaling"
-        #     distribution: "uniform"
-        #     schedule: "linear" # "linear" will scale the current random sample by `min(current num steps, schedule_steps) / schedule_steps`
-        #     schedule_steps: 3000
-        #   stiffness:
-        #     range: [0.9, 1.1]
-        #     operation: "scaling"
-        #     distribution: "uniform"
-        #     schedule: "linear" # "linear" will scale the current random sample by `min(current num steps, schedule_steps) / schedule_steps`
-        #     schedule_steps: 3000
-        #   lower:
-        #     range: [0, 0.01]
-        #     operation: "additive"
-        #     distribution: "gaussian"
-        #     schedule: "linear" # "linear" will scale the current random sample by `min(current num steps, schedule_steps) / schedule_steps`
-        #     schedule_steps: 3000
-        #   upper:
-        #     range: [0, 0.01]
-        #     operation: "additive"
-        #     distribution: "gaussian"
-        #     schedule: "linear" # "linear" will scale the current random sample by `min(current num steps, schedule_steps) / schedule_steps`
-        #     schedule_steps: 3000
+    # actor_params:
+    #   duckling:
+    #     color: True
+    #     rigid_body_properties:
+    #       mass:
+    #         range: [0.99, 1.01]
+    #         operation: "scaling"
+    #         distribution: "uniform"
+    #         setup_only: True # Property will only be randomized once before simulation is started. See Domain Randomization Documentation for more info.
+    #         schedule: "linear" # "linear" will linearly interpolate between no rand and max rand
+    #         schedule_steps: 3000
+    #     rigid_shape_properties:
+    #       friction:
+    #         num_buckets: 500
+    #         range: [0.99, 1.01]
+    #         operation: "scaling"
+    #         distribution: "uniform"
+    #         schedule: "linear" # "linear" will scale the current random sample by `min(current num steps, schedule_steps) / schedule_steps`
+    #         schedule_steps: 3000
+    #       restitution:
+    #         range: [0., 0.01]
+    #         operation: "scaling"
+    #         distribution: "uniform"
+    #         schedule: "linear" # "linear" will scale the current random sample by `min(current num steps, schedule_steps) / schedule_steps`
+    #         schedule_steps: 3000
+    # dof_properties:
+    #   damping:
+    #     range: [0.9, 1.1]
+    #     operation: "scaling"
+    #     distribution: "uniform"
+    #     schedule: "linear" # "linear" will scale the current random sample by `min(current num steps, schedule_steps) / schedule_steps`
+    #     schedule_steps: 3000
+    #   stiffness:
+    #     range: [0.9, 1.1]
+    #     operation: "scaling"
+    #     distribution: "uniform"
+    #     schedule: "linear" # "linear" will scale the current random sample by `min(current num steps, schedule_steps) / schedule_steps`
+    #     schedule_steps: 3000
+    #   lower:
+    #     range: [0, 0.01]
+    #     operation: "additive"
+    #     distribution: "gaussian"
+    #     schedule: "linear" # "linear" will scale the current random sample by `min(current num steps, schedule_steps) / schedule_steps`
+    #     schedule_steps: 3000
+    #   upper:
+    #     range: [0, 0.01]
+    #     operation: "additive"
+    #     distribution: "gaussian"
+    #     schedule: "linear" # "linear" will scale the current random sample by `min(current num steps, schedule_steps) / schedule_steps`
+    #     schedule_steps: 3000
