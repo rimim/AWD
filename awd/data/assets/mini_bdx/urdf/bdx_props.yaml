@@ -45,6 +45,8 @@ thickness: 0.001
 # used for custom pd control
 p_gains: 2.5
 d_gains: 0.095
+# p_gains: 1.25
+# d_gains: 0.0475
 max_effort: 0.8
 max_velocity: 8.7
 
