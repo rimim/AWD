@@ -76,9 +76,17 @@ class Duckling(BaseTask):
         self.cfg["device_id"] = device_id
         self.cfg["headless"] = headless
 
+        self.randomize_com = self.cfg["env"]["randomizeCom"]
+        self.com_range = self.cfg["env"]["comRange"]
+        self.randomize_torques = self.cfg["env"]["randomizeTorques"]
+        self.torque_multiplier_range = self.cfg["env"]["torqueMultiplierRange"]
+
         super().__init__(cfg=self.cfg)
 
         self.dt = self.control_freq_inv * sim_params.dt
+
+        self.common_step_counter = 0
+        self.push_interval = np.ceil(self.cfg["env"]["pushIntervalS"] / self.dt)
 
         # get gym GPU state tensors
         # self.gym.refresh_actor_root_state_tensor(self.sim)
@@ -241,9 +249,6 @@ class Duckling(BaseTask):
             device=self.device,
             requires_grad=False,
         )
-
-        self.common_step_counter = 0
-        self.push_interval = np.ceil(self.cfg["env"]["pushIntervalS"] / self.dt)
         return
 
     def get_obs_size(self):
@@ -305,6 +310,7 @@ class Duckling(BaseTask):
             self._reset_env_tensors(env_ids)
             self._refresh_sim_tensors()
             self._compute_observations(env_ids)
+            self._reset_custom_randomization(env_ids)
         return
 
     def _reset_env_tensors(self, env_ids):
@@ -326,6 +332,16 @@ class Duckling(BaseTask):
         self.reset_buf[env_ids] = 0
         self._terminate_buf[env_ids] = 0
         self.feet_air_time[env_ids] = 0
+        return
+
+    def _reset_custom_randomization(self, env_ids):
+        if self.randomize_torques:
+            self.randomize_torques_factors[env_ids, :] = (
+                (self.torque_multiplier_range[0] - self.torque_multiplier_range[1])
+                * torch.rand(len(env_ids), self.num_actions, device=self.device)
+                + self.torque_multiplier_range[1]
+            ).float()
+
         return
 
     def _create_ground_plane(self):
@@ -546,6 +562,33 @@ class Duckling(BaseTask):
 
         if self._pd_control == "isaac":
             self._build_pd_action_offset_scale()
+
+        self.randomize_torques_factors = torch.ones(
+            self.num_envs, self.num_actions, device=self.device
+        )
+
+        self.randomize_com_values = torch.zeros(self.num_envs, 3, device=self.device)
+
+        if self.randomize_com:
+            self.randomize_com_values[:, :] = (
+                self.com_range[0] - self.com_range[1]
+            ) * torch.rand(self.num_envs, 3, device=self.device) + self.com_range[1]
+
+            for i in range(self.num_envs):
+                body_props = self.gym.get_actor_rigid_body_properties(
+                    self.envs[i], self.duckling_handles[i]
+                )
+                body_props[0].com += gymapi.Vec3(
+                    self.randomize_com_values[i, 0],
+                    self.randomize_com_values[i, 1],
+                    self.randomize_com_values[i, 2],
+                )
+                self.gym.set_actor_rigid_body_properties(
+                    self.envs[i],
+                    self.duckling_handles[i],
+                    body_props,
+                    recomputeInertia=True,
+                )
         return
 
     def _build_env(self, env_id, env_ptr, duckling_asset):
@@ -793,6 +836,10 @@ class Duckling(BaseTask):
                     + self._default_dof_pos
                     - self._dof_pos
                 ) - (self.d_gains * self._dof_vel)
+
+                if self.randomize_torques:
+                    self.torques *= self.randomize_torques_factors
+
                 self.torques = torch.clip(
                     self.torques, -self.max_effort, self.max_effort
                 )
