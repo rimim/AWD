@@ -242,6 +242,8 @@ class Duckling(BaseTask):
             requires_grad=False,
         )
 
+        self.common_step_counter = 0
+        self.push_interval = np.ceil(self.cfg["env"]["pushIntervalS"] / self.dt)
         return
 
     def get_obs_size(self):
@@ -278,6 +280,7 @@ class Duckling(BaseTask):
                 np.arange(self.num_envs), device=self.device, dtype=torch.long
             )
         self._reset_envs(env_ids)
+
         return
 
     def set_char_color(self, col, env_ids):
@@ -815,6 +818,7 @@ class Duckling(BaseTask):
 
     def post_physics_step(self):
         self.progress_buf += 1
+        self.common_step_counter += 1
 
         self.projected_gravity[:] = quat_rotate_inverse(
             self._root_states[: self.num_envs, 3:7], self.gravity_vec
@@ -848,6 +852,12 @@ class Duckling(BaseTask):
         # debug viz
         if self.viewer and self.debug_viz:
             self._update_debug_viz()
+
+        # push robots
+        if self.cfg["env"]["pushRobots"] and (
+            self.common_step_counter % self.push_interval == 0
+        ):
+            self._push_robots()
 
         return
 
@@ -891,6 +901,16 @@ class Duckling(BaseTask):
     def _action_to_pd_targets(self, action):
         pd_tar = self._pd_action_offset + self._pd_action_scale * action
         return pd_tar
+
+    def _push_robots(self):
+        """Random pushes the robots. Emulates an impulse by setting a randomized base velocity."""
+        max_vel = self.cfg["env"]["maxPushVelXy"]
+        self._root_states[:, 7:9] = torch_rand_float(
+            -max_vel, max_vel, (self.num_envs, 2), device=self.device
+        )  # lin vel x/y
+        self.gym.set_actor_root_state_tensor(
+            self.sim, gymtorch.unwrap_tensor(self._root_states)
+        )
 
     def _init_camera(self):
         self.gym.refresh_actor_root_state_tensor(self.sim)

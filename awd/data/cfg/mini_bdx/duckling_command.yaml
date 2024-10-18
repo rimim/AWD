@@ -17,6 +17,10 @@ env:
   hybridInitProb: 0.0
   numAMPObsSteps: 10
 
+  pushRobots: True
+  pushIntervalS: 2 #s
+  maxPushVelXy: 0.5
+
   localRootObs: True
   keyBodies: ["left_foot", "right_foot"]
   contactBodies: ["left_foot", "right_foot"]
