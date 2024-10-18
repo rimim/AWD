@@ -14,17 +14,17 @@ env:
   powerScale: 1.0
   controlFrequencyInv: 2 # 30 Hz
   stateInit: "Hybrid"
-  hybridInitProb: 0.0
+  hybridInitProb: 0.0 # 0.0
   numAMPObsSteps: 10
 
-  pushRobots: True
+  pushRobots: False
   pushIntervalS: 2 #s
   maxPushVelXy: 0.3
 
   # COM is randomized only once for each actor, but not at each reset
-  randomizeCom: True
+  randomizeCom: False
   comRange: [-0.1, 0.1]
-  randomizeTorques: True
+  randomizeTorques: False
   torqueMultiplierRange: [0.85, 1.15]
 
   localRootObs: True
@@ -43,7 +43,7 @@ env:
     assetFileName: "mini_bdx/urdf/bdx.urdf"
 
   terrain:
-    terrainType: trimesh # plane, or trimesh
+    terrainType: plane # plane, or trimesh
     staticFriction: 1.0 # [-]
     dynamicFriction: 1.0 # [-]
     restitution: 0. # [-]
@@ -84,7 +84,7 @@ env:
   randomCommandVelocityRanges:
     linear_x: [-0.13, 0.13] # min max [m/s]
     linear_y: [-0.1, 0.1] # min max [m/s]
-    yaw: [-0.5, 0.5] # min max [rad/s]
+    yaw: [-0.3, 0.3] # min max [rad/s]
 
 sim:
   substeps: 2
@@ -104,7 +104,7 @@ sim:
     warm_start: 0.25
 
 task:
-  randomize: True
+  randomize: False
   randomization_params:
     frequency: 600 # Define how many environment steps between generating new randomizations
     observations:
