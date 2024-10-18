@@ -94,7 +94,7 @@ sim:
     warm_start: 0.25
 
 task:
-  randomize: True
+  randomize: False
   randomization_params:
     frequency: 600 # Define how many environment steps between generating new randomizations
     observations:
@@ -112,31 +112,31 @@ task:
         distribution: "gaussian"
         schedule: "linear" # "linear" will linearly interpolate between no rand and max rand
         schedule_steps: 3000
-    # actor_params:
-    #   duckling:
-    #     color: True
-    #     rigid_body_properties:
-    #       mass:
-    #         range: [0.99, 1.01]
-    #         operation: "scaling"
-    #         distribution: "uniform"
-    #         setup_only: True # Property will only be randomized once before simulation is started. See Domain Randomization Documentation for more info.
-    #         schedule: "linear" # "linear" will linearly interpolate between no rand and max rand
-    #         schedule_steps: 3000
-    #     rigid_shape_properties:
-    #       friction:
-    #         num_buckets: 500
-    #         range: [0.99, 1.01]
-    #         operation: "scaling"
-    #         distribution: "uniform"
-    #         schedule: "linear" # "linear" will scale the current random sample by `min(current num steps, schedule_steps) / schedule_steps`
-    #         schedule_steps: 3000
-    #       restitution:
-    #         range: [0., 0.01]
-    #         operation: "scaling"
-    #         distribution: "uniform"
-    #         schedule: "linear" # "linear" will scale the current random sample by `min(current num steps, schedule_steps) / schedule_steps`
-    #         schedule_steps: 3000
+    actor_params:
+      duckling:
+        color: True
+        rigid_body_properties:
+          mass:
+            range: [0.9, 1.1]
+            operation: "scaling"
+            distribution: "uniform"
+            setup_only: True # Property will only be randomized once before simulation is started. See Domain Randomization Documentation for more info.
+            schedule: "linear" # "linear" will linearly interpolate between no rand and max rand
+            schedule_steps: 3000
+        rigid_shape_properties:
+          friction:
+            num_buckets: 500
+            range: [0.9, 1.1]
+            operation: "scaling"
+            distribution: "uniform"
+            schedule: "linear" # "linear" will scale the current random sample by `min(current num steps, schedule_steps) / schedule_steps`
+            schedule_steps: 3000
+          restitution:
+            range: [0., 0.01]
+            operation: "scaling"
+            distribution: "uniform"
+            schedule: "linear" # "linear" will scale the current random sample by `min(current num steps, schedule_steps) / schedule_steps`
+            schedule_steps: 3000
     # dof_properties:
     #   damping:
     #     range: [0.9, 1.1]
