@@ -45,6 +45,9 @@ class DucklingCommand(duckling_amp_task.DucklingAMPTask):
         self.rew_scales["action_rate"] = self.cfg["env"]["learn"][
             "actionRateRewardScale"
         ]
+        self.rew_scales["stand_still"] = self.cfg["env"]["learn"][
+            "standStillRewardScale"
+        ]
 
         # randomization
         self.randomization_params = self.cfg["task"]["randomization_params"]
@@ -189,6 +192,8 @@ class DucklingCommand(duckling_amp_task.DucklingAMPTask):
             self.prev_actions,
             self.actions,
             self.avg_velocities,
+            self.dof_pos,
+            self.default_dof_pos,
             self.rew_scales,
             self.use_average_velocities,
         )
@@ -217,12 +222,14 @@ def compute_task_reward(
     prev_actions,
     actions,
     avg_velocities,
+    dof_pos,
+    default_dof_pos,
     # Dict
     rew_scales,
     use_average_velocities,
 ):
     # (reward, reset, feet_in air, feet_air_time, episode sums)
-    # type: (Tensor, Tensor, Tensor, Tensor, Tensor, Tensor, Dict[str, float], bool) -> Tensor
+    # type: (Tensor, Tensor, Tensor, Tensor, Tensor, Tensor, Tensor, Tensor, Dict[str, float], bool) -> Tensor
 
     # prepare quantities (TODO: return from obs ?)
     base_quat = root_states[:, 3:7]
@@ -244,12 +251,22 @@ def compute_task_reward(
     # torque penalty
     rew_torque = torch.sum(torch.square(torques), dim=1) * rew_scales["torque"]
 
+    # action rate penalty
     rew_action_rate = (
         torch.sum(torch.square(prev_actions - actions), dim=1)
         * rew_scales["action_rate"]
     )
 
-    total_reward = rew_lin_vel_xy + rew_ang_vel_z + rew_torque + rew_action_rate
+    # Penalize motion at zero commands
+    rew_stand_still = (
+        torch.sum(torch.abs(dof_pos - default_dof_pos), dim=1)
+        * (torch.norm(commands, dim=1) < 0.01)
+        * rew_scales["stand_still"]
+    )
+
+    total_reward = (
+        rew_lin_vel_xy + rew_ang_vel_z + rew_torque + rew_action_rate + rew_stand_still
+    )
     total_reward = torch.clip(total_reward, 0.0, None)
 
     # print("task reward:", total_reward)
