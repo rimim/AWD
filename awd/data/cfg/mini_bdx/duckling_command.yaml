@@ -8,7 +8,8 @@ env:
   debugSaveObs: False
 
   keyboard_input: False
-  export_onnx: False
+  export_onnx: True
+  rnn: True
 
   pdControl: "custom" # isaac or custom
   powerScale: 1.0

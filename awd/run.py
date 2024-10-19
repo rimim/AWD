@@ -295,30 +295,44 @@ def main():
     runner.reset()
 
     if cfg["env"]["export_onnx"]:
+        rnn = cfg["env"]["rnn"]
+
         # https://www.tylerbarkin.com/isaac-gym-to-onnx
         class ModelWrapper(torch.nn.Module):
-            def __init__(self, model, running_mean_std):
+            def __init__(self, model, running_mean_std, rnn=False):
                 torch.nn.Module.__init__(self)
                 self._model = model
                 self.running_mean_std = running_mean_std
+                self.rnn = rnn
 
             def forward(self, input_dict):
                 input_dict["obs"] = self.running_mean_std(input_dict["obs"])
 
-                x = self._model.a2c_network.actor_mlp(input_dict["obs"])
-                x = self._model.a2c_network.mu(x)
+                if not self.rnn:
+                    x = self._model.a2c_network.actor_mlp(input_dict["obs"])
+                    x = self._model.a2c_network.mu(x)
+                else:
+                    x = self._model.a2c_network(input_dict)
                 return x
 
         player = runner.create_player()
         player.restore(cfg["args"].checkpoint)
+        if rnn:
+            player.init_rnn()
 
-        inputs = {
-            "obs": torch.zeros((1,) + player.obs_shape).to(player.device),
-        }
+        if not rnn:
+            inputs = {
+                "obs": torch.zeros((1,) + player.obs_shape).to(player.device),
+            }
+        else:
+            inputs = {
+                "obs": torch.zeros((1,) + player.obs_shape).to(player.device),
+                "rnn_states": player.states,
+            }
 
         with torch.no_grad():
             adapter = flatten.TracingAdapter(
-                ModelWrapper(player.model, player.running_mean_std),
+                ModelWrapper(player.model, player.running_mean_std, rnn=rnn),
                 inputs,
                 allow_non_tensor=True,
             )
@@ -330,15 +344,29 @@ def main():
 
         # torch.jit.save(traced, "TEST.pt")
         # print("SAVE TO TEST.pt")
-        torch.onnx.export(
-            traced,
-            *adapter.flattened_inputs,
-            "ONNX.onnx",
-            verbose=True,
-            input_names=["obs"],
-            output_names=["actions"],
-        )
-        print("SAVE TO ONNX.onnx")
+        export_name = "ONNX.onnx"
+        if not rnn:
+            torch.onnx.export(
+                traced,
+                *adapter.flattened_inputs,
+                export_name,
+                verbose=True,
+                input_names=["obs"],
+                output_names=["actions"],
+            )
+        else:
+            export_name = "ONNX_RNN.onnx"
+            torch.onnx.export(
+                traced,
+                adapter.flattened_inputs,
+                export_name,
+                verbose=True,
+                input_names=["obs", "out_state", "hidden_state"],
+                output_names=["mu", "log_std", "value", "out_state", "hidden_state"],
+                # output_names=["out_state", "hidden_state", "value"],
+            )
+
+        print(f"SAVED TO {export_name}")
         exit()
 
     runner.run(vargs)
