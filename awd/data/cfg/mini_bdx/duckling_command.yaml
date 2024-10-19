@@ -75,7 +75,7 @@ env:
     angularVelocityZRewardScale: 0.25
     torqueRewardScale: -0.000025
     actionRateRewardScale: -1.0
-    standStillRewardScale: -0.5
+    standStillRewardScale: 0.0
 
     # normalization
     linearVelocityScale: 0.5
