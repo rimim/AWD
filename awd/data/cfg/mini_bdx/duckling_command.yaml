@@ -7,8 +7,8 @@ env:
   enableDebugVis: False
   debugSaveObs: False
 
-  keyboard_input: False
-  export_onnx: True
+  keyboard_input: True
+  export_onnx: False
   rnn: True
 
   pdControl: "custom" # isaac or custom
@@ -23,10 +23,10 @@ env:
   maxPushVelXy: 0.3
 
   # COM is randomized only once for each actor, but not at each reset
-  randomizeCom: False
-  comRange: [-0.1, 0.1]
-  randomizeTorques: False
-  torqueMultiplierRange: [0.85, 1.15]
+  randomizeCom: True
+  comRange: [-0.05, 0.05]
+  randomizeTorques: True
+  torqueMultiplierRange: [0.95, 1.05]
 
   localRootObs: True
   keyBodies: ["left_foot", "right_foot"]
@@ -44,7 +44,7 @@ env:
     assetFileName: "mini_bdx/urdf/bdx.urdf"
 
   terrain:
-    terrainType: plane # plane, or trimesh
+    terrainType: trimesh # plane, or trimesh
     staticFriction: 1.0 # [-]
     dynamicFriction: 1.0 # [-]
     restitution: 0. # [-]
