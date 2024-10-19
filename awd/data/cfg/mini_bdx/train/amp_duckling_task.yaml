@@ -24,7 +24,8 @@ params:
         learn_sigma: False
 
     mlp:
-      units: [1024, 512]
+      # units: [1024, 512]
+      units: [512, 256]
       activation: relu
       d2rl: False
 
@@ -32,6 +33,13 @@ params:
         name: default
       regularizer:
         name: None
+    rnn:
+      name: lstm
+      units: 256 #128
+      layers: 1
+      before_mlp: False #True
+      concat_input: True
+      layer_norm: False
 
     disc:
       units: [1024, 512]
