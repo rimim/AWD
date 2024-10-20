@@ -49,6 +49,10 @@ class DucklingCommand(duckling_amp_task.DucklingAMPTask):
             "standStillRewardScale"
         ]
 
+        self.stand_still_command_threshold = self.cfg["env"]["learn"][
+            "standStillCommandThreshold"
+        ]
+
         # randomization
         self.randomization_params = self.cfg["task"]["randomization_params"]
         self.randomize = self.cfg["task"]["randomize"]
@@ -196,6 +200,7 @@ class DucklingCommand(duckling_amp_task.DucklingAMPTask):
             self.default_dof_pos,
             self.rew_scales,
             self.use_average_velocities,
+            self.stand_still_command_threshold,
         )
         return
 
@@ -226,10 +231,13 @@ def compute_task_reward(
     default_dof_pos,
     # Dict
     rew_scales,
+    # Bool
     use_average_velocities,
+    # Float
+    stand_still_command_threshold,
 ):
     # (reward, reset, feet_in air, feet_air_time, episode sums)
-    # type: (Tensor, Tensor, Tensor, Tensor, Tensor, Tensor, Tensor, Tensor, Dict[str, float], bool) -> Tensor
+    # type: (Tensor, Tensor, Tensor, Tensor, Tensor, Tensor, Tensor, Tensor, Dict[str, float], bool, float) -> Tensor
 
     # prepare quantities (TODO: return from obs ?)
     base_quat = root_states[:, 3:7]
@@ -260,7 +268,7 @@ def compute_task_reward(
     # Penalize motion at zero commands
     rew_stand_still = (
         torch.sum(torch.abs(dof_pos - default_dof_pos), dim=1)
-        * (torch.norm(commands, dim=1) < 0.01)
+        * (torch.norm(commands, dim=1) < stand_still_command_threshold)
         * rew_scales["stand_still"]
     )
 
