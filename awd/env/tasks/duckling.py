@@ -38,6 +38,7 @@ from isaacgym import gymapi
 from isaacgym.torch_utils import *
 
 from utils import torch_utils
+from utils.action_filter import LowPassActionFilter
 
 from env.tasks.base_task import BaseTask
 
@@ -249,6 +250,16 @@ class Duckling(BaseTask):
             device=self.device,
             requires_grad=False,
         )
+        if self.cfg["env"]["actionFilter"]:
+            control_freq = 1 / self.dt
+            self.action_filter = LowPassActionFilter(
+                control_freq,
+                self.cfg["env"]["cutoffFrequency"],
+                self.num_envs,
+                self.num_actions,
+                self.device,
+            )
+
         return
 
     def get_obs_size(self):
@@ -811,6 +822,10 @@ class Duckling(BaseTask):
         # )
         # if self.cfg["env"]["debugSaveObs"]:
         #     self.saved_actions = []
+
+        if self.cfg["env"]["actionFilter"]:
+            self.action_filter.push(actions)
+            actions = self.action_filter.get_filtered_action()
 
         if self.cfg["env"]["debugSaveObs"]:
             self.saved_actions.append(actions[0].cpu().numpy())
