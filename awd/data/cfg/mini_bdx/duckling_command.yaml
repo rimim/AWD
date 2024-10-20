@@ -17,7 +17,7 @@ env:
   hybridInitProb: 0.0 # 0.0
   numAMPObsSteps: 10
 
-  actionFilter: True
+  actionFilter: False
   cutoffFrequency: 40
 
   pushRobots: False
@@ -25,7 +25,7 @@ env:
   maxPushVelXy: 0.3
 
   # COM is randomized only once for each actor, but not at each reset
-  randomizeCom: True
+  randomizeCom: False
   comRange: [-0.05, 0.05]
   randomizeTorques: True
   torqueMultiplierRange: [0.95, 1.05]
@@ -78,7 +78,7 @@ env:
     angularVelocityZRewardScale: 0.25
     torqueRewardScale: -0.000025
     actionRateRewardScale: -1.0
-    standStillRewardScale: -1.0
+    standStillRewardScale: 0.0
 
     standStillCommandThreshold: 0.03
 
@@ -110,7 +110,7 @@ sim:
     warm_start: 0.25
 
 task:
-  randomize: False
+  randomize: True
   randomization_params:
     frequency: 600 # Define how many environment steps between generating new randomizations
     observations:
@@ -133,7 +133,7 @@ task:
         color: True
         rigid_body_properties:
           mass:
-            range: [0.95, 1.05]
+            range: [1.0, 1.0]
             operation: "scaling"
             distribution: "uniform"
             setup_only: True # Property will only be randomized once before simulation is started. See Domain Randomization Documentation for more info.
@@ -142,13 +142,13 @@ task:
         rigid_shape_properties:
           friction:
             num_buckets: 500
-            range: [0.95, 1.05]
+            range: [1.0, 1.0]
             operation: "scaling"
             distribution: "uniform"
             schedule: "linear" # "linear" will scale the current random sample by `min(current num steps, schedule_steps) / schedule_steps`
             schedule_steps: 3000
           restitution:
-            range: [0., 0.01]
+            range: [0., 0.00] # 0.01
             operation: "scaling"
             distribution: "uniform"
             schedule: "linear" # "linear" will scale the current random sample by `min(current num steps, schedule_steps) / schedule_steps`
