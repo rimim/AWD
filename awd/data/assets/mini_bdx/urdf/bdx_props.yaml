@@ -34,21 +34,27 @@ motor_efforts: [10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10]
 #13 + dof_obs_size + 28 + 3 * num_key_bodies # [root_h, root_rot, root_vel, root_ang_vel, dof_pos, dof_vel, key_body_pos]
 num_amp_obs_per_step: 124
 
-# 15 + dof_obs_size + 28 + 3 * 7 ?
-# num_amp_obs_per_step: 154
-friction: 0.058
+# TODO make lists to differentiate motors ?
+# used for custom pd control
+# m1
+# p_gains: 2.5
+# d_gains: 0.095
+# max_effort: 0.8
+# max_velocity: 8.7
+# friction: 0.0058
+# angular_damping: 0.0
+# armature: 0.0018
+# thickness: 0.001
+
+# m6
+p_gains: 3.52
+d_gains: 0.11
+max_effort: 1.11
+max_velocity: 8.7
+friction: 0.002
 angular_damping: 0.0
 armature: 0.0018
 thickness: 0.001
-
-# TODO make lists to differentiate motors ?
-# used for custom pd control
-p_gains: 2.5
-d_gains: 0.095
-# p_gains: 1.25
-# d_gains: 0.0475
-max_effort: 0.8
-max_velocity: 8.7
 
 # Used for isaac pd control
 damping:
