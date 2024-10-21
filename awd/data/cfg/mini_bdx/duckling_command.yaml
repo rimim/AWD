@@ -24,11 +24,16 @@ env:
   pushIntervalS: 2 #s
   maxPushVelXy: 0.3
 
+  # Custom domain rand
   # COM is randomized only once for each actor, but not at each reset
   randomizeCom: False
   comRange: [-0.05, 0.05]
   randomizeTorques: True
   torqueMultiplierRange: [0.95, 1.05]
+  obsNoise: True
+  noiseScales:
+    dofPos: 0.01
+    dofVel: 0.01
 
   localRootObs: True
   keyBodies: ["left_foot", "right_foot"]
@@ -110,7 +115,7 @@ sim:
     warm_start: 0.25
 
 task:
-  randomize: True
+  randomize: False
   randomization_params:
     frequency: 600 # Define how many environment steps between generating new randomizations
     observations:

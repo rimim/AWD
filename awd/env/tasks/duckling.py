@@ -82,6 +82,10 @@ class Duckling(BaseTask):
         self.randomize_torques = self.cfg["env"]["randomizeTorques"]
         self.torque_multiplier_range = self.cfg["env"]["torqueMultiplierRange"]
 
+        self.obs_noise = self.cfg["env"]["obsNoise"]
+        self.dof_pos_noise_scale = self.cfg["env"]["noiseScales"]["dofPos"]
+        self.dof_vel_noise_scale = self.cfg["env"]["noiseScales"]["dofVel"]
+
         super().__init__(cfg=self.cfg)
 
         self.dt = self.control_freq_inv * sim_params.dt
@@ -772,6 +776,9 @@ class Duckling(BaseTask):
                 self._dof_axis_array,
                 self.projected_gravity,
                 self.actions,
+                self.obs_noise,
+                self.dof_pos_noise_scale,
+                self.dof_vel_noise_scale,
             )
         else:
             key_body_pos = self._rigid_body_pos[:, self._key_body_ids, :]
@@ -1288,8 +1295,15 @@ def compute_duckling_observations(
     dof_axis,
     projected_gravity,
     actions,
+    obs_noise,
+    dof_pos_noise_scale,
+    dof_vel_noise_scale,
 ):
-    # type: (Tensor, Tensor, Tensor, Tensor, Tensor, Tensor, Tensor, bool, bool, int, List[int], List[int], Tensor, Tensor) -> Tensor
+    # type: (Tensor, Tensor, Tensor, Tensor, Tensor, Tensor, Tensor, bool, bool, int, List[int], List[int], Tensor, Tensor, bool, float, float) -> Tensor
+
+    if obs_noise:
+        dof_pos += (2 * torch.randn_like(dof_pos) - 1) * dof_pos_noise_scale
+        dof_vel += (2 * torch.randn_like(dof_vel) - 1) * dof_vel_noise_scale
 
     # realistic observations
     obs = torch.cat(
