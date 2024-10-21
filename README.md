@@ -5,6 +5,8 @@ A mallard version of ASE (https://xbpeng.github.io/projects/ASE/index.html)
 
 This repo unifies the training code using AMP for Open Duck Mini and the go_duck (real size version).
 
+> **_NOTE:_**  The ASE part of this repo does not work yet. We only use the AMP implementation for now
+
 ## Installation
 
 Download Isaac Gym from the [website](https://developer.nvidia.com/isaac-gym), then
