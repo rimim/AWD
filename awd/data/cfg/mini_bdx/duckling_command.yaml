@@ -30,10 +30,10 @@ env:
   comRange: [-0.05, 0.05]
   randomizeTorques: False
   torqueMultiplierRange: [0.95, 1.05]
-  obsNoise: False
+  obsNoise: True
   noiseScales:
     dofPos: 0.01
-    dofVel: 0.01
+    dofVel: 0.1
 
   localRootObs: True
   keyBodies: ["left_foot", "right_foot"]
