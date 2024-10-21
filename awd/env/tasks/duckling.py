@@ -797,6 +797,9 @@ class Duckling(BaseTask):
                 self._dof_axis_array,
                 self.projected_gravity[env_ids],
                 self.actions[env_ids],
+                self.obs_noise,
+                self.dof_pos_noise_scale,
+                self.dof_vel_noise_scale,
             )
         # obs = compute_duckling_observations_max(body_pos, body_rot, body_vel, body_ang_vel, self._local_root_obs,
         #                                         self._root_height_obs)
