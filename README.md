@@ -3,7 +3,11 @@
 A mallard version of ASE (https://xbpeng.github.io/projects/ASE/index.html)
 ![Skills](images/banner.png)
 
-### Installation
+This repo unifies the training code using AMP for Open Duck Mini and the go_duck (real size version).
+
+> **_NOTE:_**  The ASE part of this repo does not work yet. We only use the AMP implementation for now
+
+## Installation
 
 Download Isaac Gym from the [website](https://developer.nvidia.com/isaac-gym), then
 follow the installation instructions.
@@ -15,72 +19,53 @@ pip install -r requirements.txt
 ```
 
 
-### AWD
+## AWD
 
-#### Pre-Training
+[AMP](https://xbpeng.github.io/projects/AMP/index.html) works with reference motion. It can come from motion capture, or from some kind of reference motion generator.
 
-First, an AWD model can be trained to imitate a dataset of motions clips using the following command:
+We use [placo](https://github.com/Rhoban/placo) to generate parametric gait reference motion.
+
+See [this](gait_generation/README.md) to generate some reference motion. To train a forward only walking motion, only one example of walking forward is enough. For a holonomous walk, generating ~100 random trajectories seems to be enough.
+
+### Training
+
+#### Relevent source and config files
+
+These are the files that you are most likely to edit:
+
+In `awd/data/`
+- `assets/` contains the URDF and related mesh files
+  - `assets/<robot>/urdf/<robot>_props.yaml` contains actuator and joints properties
+- `cfg/` contains the configuration files for the different tasks, for each robot.
+  - `<robot>/duckling_command.yaml` contains the configuration of the `command` task
+  - `<robot>/train/amp_duckling_task.yaml` contains the training configuration and hyperparameters
+- `motion/` contains the reference motion files (`.json`)
+
+In `awd/env/tasks/`
+- `awd/env/tasks/duckling.py`
+- `awd/env/tasks/duckling_command.py`
+- `awd/env/tasks/duckling_amp.py`
+- `awd/env/tasks/duckling_amp_task.py`
+
+We mainly use the command task, in which the agent is trained to track velocities, as well as following the reference motion style using AMP.
+
+Train using the following command:
+```bash
+python awd/run.py --task DucklingCommand --num_envs <...> --cfg_env awd/data/cfg/<robot>/duckling_command.yaml --cfg_train awd/data/cfg/<robot>/train/amp_duckling_task.yaml --motion_file awd/data/motions/<robot>/
 ```
-python awd/run.py --task DucklingAMP --cfg_env awd/data/cfg/go_bdx/duckling.yaml --cfg_train awd/data/cfg/go_bdx/train/awd_duckling.yaml --motion_file awd/data/motions/go_bdx/walk_forward.txt --headless
+
+`--motion_file` can be used to specify a dataset of motion clips that the model should imitate. You can specify a specific file or a directory containing multiple files.
+
+Checkpoints are saved in `output/`.
+
+To test a trained model, use the following command:
+```bash
+python awd/run.py --test --task DucklingCommand --num_envs <...> --cfg_env awd/data/cfg/<robot>/duckling_command.yaml --cfg_train awd/data/cfg/<robot>/train/amp_duckling_task.yaml --motion_file awd/data/motions/<robot>/ --checkpoint <path_to_checkpoint.pth>
 ```
-`--motion_file` can be used to specify a dataset of motion clips that the model should imitate.
-The task `GoBDX` will train a model to imitate a dataset of motion clips.
-Over the course of training, the latest checkpoint `Checkpoint.pth` will be regularly saved to `output/`,
-along with a Tensorboard log. `--headless` is used to disable visualizations. If you want to view the
-simulation, simply remove this flag. To test a trained model, use the following command:
-```
-python awd/run.py --test --task DucklingAMP --num_envs 8 --cfg_env awd/data/cfg/go_bdx/duckling.yaml --cfg_train awd/data/cfg/go_bdx/train/awd_duckling.yaml --motion_file awd/data/motions/go_bdx/walk_forward.txt --checkpoint [path_to_awd_checkpoint]
-```
-You can also test the robustness of the model with `--task GoBDXPerturb`, which will throw projectiles at the character.
 
 &nbsp;
 
-&nbsp;
-
-### AMP
-
-We also provide an implementation of Adversarial Motion Priors (https://xbpeng.github.io/projects/AMP/index.html).
-A model can be trained to imitate a given reference motion using the following command:
-```
-python awd/run.py --task DucklingAMP --cfg_env awd/data/cfg/go_bdx/train/amp_duckling.yaml --cfg_train awd/data/cfg/go_bdx/train/amp_duckling.yaml --motion_file awd/data/motions/go_bdx/walk_forward.txt --headless
-```
-The trained model can then be tested with:
-```
-python awd/run.py --test --task DucklingAMP --num_envs 16 --cfg_env awd/data/cfg/go_bdx/train/amp_duckling.yaml --cfg_train awd/data/cfg/go_bdx/train/amp_duckling.yaml --motion_file awd/data/motions/go_bdx/walk_forward.txt --checkpoint [path_to_amp_checkpoint]
-```
-
-&nbsp;
-
-&nbsp;
-
-### Motion Data
-
-Motion clips are located in `awd/data/motions/`. Individual motion clips are stored as `.json` files. Motion datasets are specified by `.yaml` files, which contains a list of motion clips to be included in the dataset. Motion clips can be visualized with the following command:
-```
-python awd/run.py --test --task DucklingViewMotion --num_envs 2 --cfg_env awd/data/cfg/go_bdx/duckling.yaml --cfg_train awd/data/cfg/go_bdx/train/amp_duckling.yaml --motion_file awd/data/motions/go_bdx/walk_forward.json
-```
-
-```
-python awd/run.py --test --task DucklingViewMotion --num_envs 2 --cfg_env awd/data/cfg/mini_bdx/duckling.yaml --cfg_train awd/data/cfg/mini_bdx/train/amp_duckling.yaml --motion_file awd/data/motions/mini_bdx/walk_forward.json
-```
-`--motion_file` can be used to visualize a single motion clip `.npy` or a motion dataset `.yaml`.
-
-
-### Gait Generation
-
-See [this](gait_generation/README.md)
-
-#### Gait Playground
-
-```
-python gait_playground.py
-```
-
-```
-python gait_playground.py --mini
-```
-
-#### Viewing URDF
+### Viewing URDF
 
 ```
 python view_urdf.py awd/data/assets/go_bdx/go_bdx.urdf
@@ -90,7 +75,7 @@ python view_urdf.py awd/data/assets/go_bdx/go_bdx.urdf
 python view_urdf.py awd/data/assets/mini_bdx/urdf/bdx.urdf
 ```
 
-#### Viewing Placo Frames
+### Viewing Placo Frames
 
 ```
 python view_urdf.py awd/data/assets/go_bdx/go_bdx.urdf --frames left_foot right_foot trunk head
