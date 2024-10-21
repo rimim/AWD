@@ -18,9 +18,9 @@ for i in range(num_dofs):
     dof_poses.append([])
     actions.append([])
     for obs in obses:
-        dof_poses[i].append(obs[4 : 4 + 15][i])
-        actions[i].append(obs[-18:-3][i])
-        # actions[i].append(obs[34 : 34 + 15][i])
+        dof_poses[i].append(obs[3 : 3 + 15][i])
+        # actions[i].append(obs[-18:-3][i])
+        actions[i].append(obs[33 : 33 + 15][i])
 
 
 isaac_joints_order = [
