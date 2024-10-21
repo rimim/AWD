@@ -3,7 +3,7 @@
 A mallard version of ASE (https://xbpeng.github.io/projects/ASE/index.html)
 ![Skills](images/banner.png)
 
-This repo unifies the training code using AMP for Open Duck Mini and the go_duck (real size version).
+This repo unifies the training code using AMP for [Open Duck Mini](https://github.com/apirrone/Open_Duck_Mini) and the go_duck (real size version).
 
 > **_NOTE:_**  The ASE part of this repo does not work yet. We only use the AMP implementation for now
 
